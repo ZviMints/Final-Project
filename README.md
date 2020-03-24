@@ -36,7 +36,7 @@ of users that are sharing close enough behavioral patterns.
 
 # Scheduling
 - **Start Date:** 24/03/2020
-- **End Date: ** `Start Date` + 12 week
+- **End Date:** `Start Date` + 12 week
 
 # Winning Plan
 [![Plain](https://i.ibb.co/DzG2QJG/Screen-Shot-2020-03-24-at-15-05-50.png "Plain")](https://i.ibb.co/DzG2QJG/Screen-Shot-2020-03-24-at-15-05-50.png "Plain")
