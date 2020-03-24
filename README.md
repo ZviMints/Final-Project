@@ -17,9 +17,10 @@ graph, we will apply a spectral clustering algorithm in order to detect communit
 of users that are sharing close enough behavioral patterns.
 # Useful Links
 - **Dataset Source**
-	- https://pan.webis.de/clef12/pan12-web/sexualpredator-identification.html
+	- https://pan.webis.de/clef12/pan12-web/sexual-predator-identification.html
 - **Knowledge Graph Vertices Embedding**
-	- https://github.com/jimmywangheng/knowledge_representation_pytorch https://radimrehurek.com/gensim/models/word2vec.html
+	- https://github.com/jimmywangheng/knowledge_representation_pytorch
+	- https://radimrehurek.com/gensim/models/word2vec.html
 - **PCA (Principal Component Analysis)**
 	- https://en.wikipedia.org/wiki/Principal_component_analysis
 	- https://scikit-learn.org/stable/modules/generated/sklearn.decomposition.PCA.html
