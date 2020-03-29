@@ -1,0 +1,14 @@
+define
+
+  connected sub relation,
+    relates talk,
+    has conversation_id;
+
+  user sub entity,
+    plays talk,
+    has user_id;
+
+  user_id sub attribute,
+	  datatype string;
+  conversation_id sub attribute,
+	  datatype string;
