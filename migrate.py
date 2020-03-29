@@ -1,30 +1,49 @@
 from grakn.client import GraknClient
 import ijson
 
-def build_phone_call_graph(inputs):
+def build_phone_call_graph(input): # Step 2
     with GraknClient(uri="localhost:48555") as client:
-        with client.session(keyspace = "phone_calls") as session:
-            for input in inputs:
-                print("Loading from [" + input["data_path"] + "] into Grakn ...")
+        with client.session(keyspace = "graph") as session: # graph is the name of the keyspace
                 load_data_into_grakn(input, session)
 
-def load_data_into_grakn(input, session):
-    items = parse_data_to_dictionaries(input)
+def load_data_into_grakn(input, session): # Step 3
+    conversations = parse_data_to_dictionaries(input) # gets all conversations
 
-    for item in items:
+    for conversation in conversations: # item is now one conversation
         with session.transaction().write() as transaction:
-            graql_insert_query = input["template"](item)
+            graql_insert_query = input["template"](conversation)
             print("Executing Graql Query: " + graql_insert_query)
             transaction.query(graql_insert_query)
             transaction.commit()
 
-    print("\nInserted " + str(len(items)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
+    print("\nInserted " + str(len(conversations)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
 
-def company_template(company):
-    return 'insert $company isa company, has name "' + company["name"] + '";'
+def conversation_template(conversation):
+    # insert conversation
 
-def person_template(person):
-    # insert person
+    # Safety check if message list is empty then return
+    first_user_id = "" # First author
+    graql_insert_query = 'insert $user isa person, has user_id "' + first_user_id
+
+    # loop to find the second user
+    second_user_id = "" # Second author
+    graql_insert_query = 'insert $user isa person, has user_id "' + second_user_id
+
+
+    # Need to initialize relation between the two users with "play talk"
+
+    # Need to initialize connected relation with "@id"
+
+    # Match company | first user
+    graql_insert_query = 'match #user isa company, has user_id "' + first_user_id + ';'
+    # Match person | second user
+    graql_insert_query += 'match #user isa company, has user_id "' + second_user_id + ';'
+    # insert contract | connected relation
+    graql_insert_query += " insert (talk: $user, talk: $user) isa connected, has conversation_id " + conversation["@id"] + ';'
+
+
+
+    # ------------------------- Correct
     graql_insert_query = 'insert $person isa person, has phone-number "' + person["phone_number"] + '"'
     if "first_name" in person:
         # person is a customer
@@ -39,50 +58,16 @@ def person_template(person):
     graql_insert_query += ";"
     return graql_insert_query
 
-def contract_template(contract):
-    # match company
-    graql_insert_query = 'match $company isa company, has name "' + contract["company_name"] + '";'
-    # match person
-    graql_insert_query += ' $customer isa person, has phone-number "' + contract["person_id"] + '";'
-    # insert contract
-    graql_insert_query += " insert (provider: $company, customer: $customer) isa contract;"
-    return graql_insert_query
-
-def call_template(call):
-    # match caller
-    graql_insert_query = 'match $caller isa person, has phone-number "' + call["caller_id"] + '";'
-    # match callee
-    graql_insert_query += ' $callee isa person, has phone-number "' + call["callee_id"] + '";'
-    # insert call
-    graql_insert_query += (" insert $call(caller: $caller, callee: $callee) isa call; " +
-                           "$call has started-at " + call["started_at"] + "; " +
-                           "$call has duration " + str(call["duration"]) + ";")
-    return graql_insert_query
-
-def parse_data_to_dictionaries(input):
+def parse_data_to_dictionaries(input): # Step 4
     items = []
     with open(input["data_path"] + ".json") as data:
         for item in ijson.items(data, "item"):
             items.append(item)
     return items
 
-inputs = [
-    {
-        "data_path": "files/phone-calls/data/companies",
-        "template": company_template
-    },
-    {
+input = {
         "data_path": "files/phone-calls/data/people",
-        "template": person_template
-    },
-    {
-        "data_path": "files/phone-calls/data/contracts",
-        "template": contract_template
-    },
-    {
-        "data_path": "files/phone-calls/data/calls",
-        "template": call_template
-    }
-]
+        "template": conversation_template
+}
 
-build_phone_call_graph(inputs)
+build_phone_call_graph(input) # Step 1

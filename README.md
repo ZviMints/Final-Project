@@ -18,6 +18,8 @@ of users that are sharing close enough behavioral patterns.
 # Useful Links
 - **Dataset Source**
 	- https://pan.webis.de/clef12/pan12-web/sexual-predator-identification.html
+	- `.json` format **training** dataset: https://f2h.io/8b3xzuy6rnq4
+	- `.json` format **test** dataset: https://f2h.io/5n7mcc7cx3b6 	
 - **Knowledge Graph Vertices Embedding**
 	- https://github.com/jimmywangheng/knowledge_representation_pytorch
 	- https://radimrehurek.com/gensim/models/word2vec.html
