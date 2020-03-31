@@ -35,10 +35,10 @@ def load_data_into_grakn(input, session):
             transaction.query(thirdQuery)
 
             print("(->) Executed: \n" + firstQuery + secondQuery + thirdQuery + "\n")
-            transaction.commit()
+
 
     print("\nInserted " + str(len(conversations)) + " items from [ " + input["data_path"] + "] into Grakn.\n")
-
+    transaction.commit()
 
 # Insert first Author at conversation
 def insertFirstUser(conversation):
@@ -84,7 +84,7 @@ def parse_data_to_dictionaries(input):
 
 
 input = {
-    "data_path": "C:/Users/user/Documents/studies 3.2/final_project/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
+    "data_path": "C:/Users/user/Documents/studies 3.2/final_project/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/demo_train",
 }
 
 build_graph(input)
