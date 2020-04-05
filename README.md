@@ -45,6 +45,6 @@ of users that are sharing close enough behavioral patterns.
 
 # Initialize
 - ❯ `grakn server start`
-- ❯ `grakn console --keyspace graph --file /Users/Zvi/Desktop/FinalProject/Final-Project/init_graph.gql`
-- ❯ `grakn console --keyspace graph`
+- ❯ `grakn console --keyspace conversations_graph --file /Users/Zvi/Desktop/FinalProject/Final-Project/init_graph.gql`
+- ❯ `grakn console --keyspace conversations_graph`
 - ❯ `match $user isa user; get;`
