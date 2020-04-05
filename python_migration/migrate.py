@@ -21,7 +21,7 @@ def load_data_into_grakn(input, session):
     i = 0
     for conversation in conversations:  # item is now one conversation
         with session.transaction().write() as transaction:
-            print("We are looking at conversation number: " + i )
+            print("We are looking at conversation number: " + str(i) )
             i = i + 1
             (firstQuery, first_user_id) = insertFirstUser(conversation)
             (secondQuery, second_user_id) = insertSecondUser(conversation)
@@ -87,7 +87,7 @@ def parse_data_to_dictionaries(input):
 
 
 input = {
-    "data_path": "/Users/Zvi/Desktop/FinalProject/Dataset/pan12-sexual-predator-identification-training-corpus-2012-05-01/small_train",
+    "data_path": "/Users/Zvi/Desktop/FinalProject/Dataset/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
 }
 
 # build_conversations_graph(input)
