@@ -1,6 +1,7 @@
 import networkx as nx
 import ijson
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 
@@ -47,31 +48,22 @@ def find_second_user(first_user_author, conversation):
 # Build Graph of conversations
 def build_graph(input):
     G = nx.MultiGraph()
-    conversations = parse_data_to_case_class(input) # Parse to case class
-    totalConnection = 0
-    totalNodes = 0
+    conversations = parse_data_to_case_class(input)
     for conversation in conversations:
             if(conversation.firstAuthor != conversation.secondAuthor):
                 G.add_node(conversation.firstAuthor)
                 G.add_node(conversation.secondAuthor)
                 G.add_edge(conversation.firstAuthor, conversation.secondAuthor)
                 print("(%s) --- (%s) Inserted to G" % (conversation.firstAuthor, conversation.secondAuthor))
-                totalConnection = totalConnection + 1
-                totalNodes = totalNodes + 2
-            else:
-                totalNodes  = totalNodes + 1
-    print("G with %s totalConnection with %s totalNodes" % (totalConnection, totalNodes))
+
+    print("G with %s totalConnection with %s totalNodes" % (G.number_of_edges(), G.number_of_nodes()))
     return G
 
 def parse_data_to_case_class(input):
     conversations = []
     with open(input["data_path"] + ".json", encoding="utf8") as data:
         print("Successfully opened " + input["data_path"] + ".json...")
-        i=0
         for conversation in ijson.items(data, 'conversations.conversation.item'):
-            i = i +1
-            if i ==10000:
-                break
             id = conversation["@id"]
             messages = []
             for message in conversation["message"]:
@@ -87,8 +79,15 @@ input = {
 # Building Graph
 G = build_graph(input)
 
-# Plot
-nx.draw(G , node_size = 0.5)
+# Remove All 2-Connected-Components in G
+for component in list(nx.connected_components(G)):
+    if len(component) <= 2: # This will actually remove only 2-connected
+        for node in component:
+            G.remove_node(node)
 
-# Show Graph
-plt.show()
+print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
+#nx.draw(G, node_size = 5)
+#plt.savefig("conversations.png")
+pd.to_pickle(G, "shery&more.pkl")
+#plt.show()
+
