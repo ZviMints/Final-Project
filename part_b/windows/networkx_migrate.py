@@ -70,7 +70,7 @@ def parse_data_to_case_class(input):
         i=0
         for conversation in ijson.items(data, 'conversations.conversation.item'):
             i = i +1
-            if i ==10000:
+            if i ==2000:
                 break
             id = conversation["@id"]
             messages = []
@@ -87,8 +87,14 @@ input = {
 # Building Graph
 G = build_graph(input)
 
-# Plot
-nx.draw(G , node_size = 0.5)
+# Remove All 2-Connected-Components in G
+for component in list(nx.connected_components(G)):
+    if len(component) <= 2: # This will actually remove only 2-connected
+        for node in component:
+            G.remove_node(node)
 
-# Show Graph
+print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
+nx.draw(G, node_size = 5)
+plt.savefig("conversations.png")
 plt.show()
+

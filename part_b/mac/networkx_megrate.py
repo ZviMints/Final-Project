@@ -84,8 +84,6 @@ input = {
 
 G = build_graph(input)
 
-nx.enumerate_all_cliques(G)
-
 # Remove All 2-Connected-Components in G
 for component in list(nx.connected_components(G)):
     if len(component) <= 2: # This will actually remove only 2-connected
