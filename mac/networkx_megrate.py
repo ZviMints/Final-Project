@@ -48,12 +48,19 @@ def find_second_user(first_user_author, conversation):
 def build_graph(input):
     G = nx.Graph()
     conversations = parse_data_to_case_class(input) # Parse to case class
+    totalConnection = 0
+    totalNodes = 0
     for conversation in conversations:
             if(conversation.firstAuthor != conversation.secondAuthor):
                 G.add_node(conversation.firstAuthor)
                 G.add_node(conversation.secondAuthor)
                 G.add_edge(conversation.firstAuthor, conversation.secondAuthor)
                 print("(%s) --- (%s) Inserted to G" % (conversation.firstAuthor, conversation.secondAuthor))
+                totalConnection = totalConnection + 1
+                totalNodes = totalNodes + 2
+            else:
+                totalNodes  = totalNodes + 1
+    print("G with %s totalConnection with %s totalNodes" % (totalConnection, totalNodes))
     return G
 
 def parse_data_to_case_class(input):
@@ -65,9 +72,8 @@ def parse_data_to_case_class(input):
                 id = conversation["@id"]
                 messages = []
                 for message in conversation["message"]:
-                    messages.append(Message(message["author"], message["time"],message["message"]))
+                    messages.append(Message(message["author"], message["time"],message["text"]))
                 conversations.append(Conversation(id, messages))
-                print("Added Conversations: \n%s" % Conversation(id,messages) )
     return conversations
 
 
