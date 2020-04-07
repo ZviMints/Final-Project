@@ -8,7 +8,7 @@ class conversationWrapper:
         self.messages = messages
 
 
-def build_graph():
+def build_graph():#build a networkx graph. nodes are users id and edges are represents conversation between them
     G = nx.Graph()
     conversations = parse_data_to_dictionaries(input)
     i = 0
@@ -23,7 +23,7 @@ def build_graph():
             print(i)
     return G
 
-def parse_data_to_dictionaries(input):
+def parse_data_to_dictionaries(input):#create list of conversationWrapper objects that each of them contain a conversation data
     conversationsWrapper = []
     with open(input["data_path"] + ".json", encoding="utf8") as data:
         print("successfully opened " + input["data_path"] + ".json")
@@ -46,7 +46,7 @@ def find_second_user(conversation):
         index = index + 1
     return second_user_id
 
-input = {
+input = {#path to data set
     "data_path": "C:/Users/EILON/PycharmProjects/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
 }
 
