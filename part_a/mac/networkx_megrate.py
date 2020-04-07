@@ -1,6 +1,7 @@
 import networkx as nx
 import ijson
 import matplotlib as matplotlib
+from matplotlib import pyplot as plt
 matplotlib.use('MacOSX')
 
 
@@ -46,21 +47,15 @@ def find_second_user(first_user_author, conversation):
 
 # Build Graph of conversations
 def build_graph(input):
-    G = nx.Graph()
+    G = nx.MultiGraph()
     conversations = parse_data_to_case_class(input) # Parse to case class
-    totalConnection = 0
-    totalNodes = 0
     for conversation in conversations:
             if(conversation.firstAuthor != conversation.secondAuthor):
                 G.add_node(conversation.firstAuthor)
                 G.add_node(conversation.secondAuthor)
                 G.add_edge(conversation.firstAuthor, conversation.secondAuthor)
                 print("(%s) --- (%s) Inserted to G" % (conversation.firstAuthor, conversation.secondAuthor))
-                totalConnection = totalConnection + 1
-                totalNodes = totalNodes + 2
-            else:
-                totalNodes  = totalNodes + 1
-    print("G with %s totalConnection with %s totalNodes" % (totalConnection, totalNodes))
+    print("G with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
     return G
 
 def parse_data_to_case_class(input):
@@ -68,25 +63,22 @@ def parse_data_to_case_class(input):
     with open(input["data_path"] + ".json") as data:
         print("Successfully opened " + input["data_path"] + ".json...")
         for root in ijson.items(data, 'conversations.conversation'):
+            print("Start to process conversations...")
             for conversation in root:
-                id = conversation["@id"]
-                messages = []
-                for message in conversation["message"]:
-                    messages.append(Message(message["author"], message["time"],message["text"]))
-                conversations.append(Conversation(id, messages))
+                    id = conversation["@id"]
+                    messages = []
+                    for message in conversation["message"]:
+                        messages.append(Message(message["author"], message["time"],message["text"]))
+                    conversations.append(Conversation(id, messages))
     return conversations
 
 
 input = {
-    # "data_path": "/Users/Zvi/Desktop/FinalProject/Dataset/train/small_train"
     "data_path": "/Users/Zvi/Desktop/FinalProject/Dataset/train/pan12-sexual-predator-identification-training-corpus-2012-05-01"
 }
 
-# Building Graph
 G = build_graph(input)
 
-# Plot
-nx.draw(G)
-
-# Show Graph
-matplotlib.pyplot.show()
+nx.draw(G, nodes_size = 0.001)
+plt.savefig("conversations.png")
+plt.show()
