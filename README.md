@@ -43,8 +43,3 @@ of users that are sharing close enough behavioral patterns.
 # Winning Plan
 [![Plain](https://i.ibb.co/DzG2QJG/Screen-Shot-2020-03-24-at-15-05-50.png "Plain")](https://i.ibb.co/DzG2QJG/Screen-Shot-2020-03-24-at-15-05-50.png "Plain")
 
-# Initialize
-- ❯ `grakn server start`
-- ❯ `grakn console --keyspace conversations_graph --file /Users/Zvi/Desktop/FinalProject/Final-Project/init_graph.gql`
-- ❯ `grakn console --keyspace conversations_graph`
-- ❯ `match $user isa user; get;`
