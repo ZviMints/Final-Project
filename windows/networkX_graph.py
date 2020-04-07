@@ -50,6 +50,4 @@ input = {#path to data set
     "data_path": "C:/Users/EILON/PycharmProjects/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
 }
 
-G = build_graph()
-nx.draw(G)
-plt.show()
+build_graph()
