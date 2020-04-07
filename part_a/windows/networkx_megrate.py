@@ -1,6 +1,6 @@
 import networkx as nx
 import ijson
-import matplotlib.pyplot  as matplotlib
+import matplotlib.pyplot as plt
 
 
 
@@ -46,7 +46,7 @@ def find_second_user(first_user_author, conversation):
 
 # Build Graph of conversations
 def build_graph(input):
-    G = nx.Graph()
+    G = nx.MultiGraph()
     conversations = parse_data_to_case_class(input) # Parse to case class
     totalConnection = 0
     totalNodes = 0
@@ -67,7 +67,11 @@ def parse_data_to_case_class(input):
     conversations = []
     with open(input["data_path"] + ".json", encoding="utf8") as data:
         print("Successfully opened " + input["data_path"] + ".json...")
+        i=0
         for conversation in ijson.items(data, 'conversations.conversation.item'):
+            i = i +1
+            if i ==10000:
+                break
             id = conversation["@id"]
             messages = []
             for message in conversation["message"]:
@@ -84,7 +88,7 @@ input = {
 G = build_graph(input)
 
 # Plot
-#nx.draw(G)
+nx.draw(G , node_size = 0.5)
 
 # Show Graph
-#matplotlib.pyplot.show()
+plt.show()
