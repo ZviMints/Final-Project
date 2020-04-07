@@ -1,53 +1,90 @@
 import networkx as nx
 import ijson
-import matplotlib.pyplot as plt
+import matplotlib.pyplot  as matplotlib
 
-class conversationWrapper:
+
+
+# Zvi Mints and Eilon Tsadok - Windows Version
+
+# Conversation case class
+class Message:
+    def __init__(self, author, time, message):
+        self.author = author
+        self.time = time
+        self.message = message
+    def __str__(self):
+        return "(%s, %s): %s" % (self.author,self.time,self.message)
+
+
+class Conversation:
     def __init__(self, id, messages):
         self.id = id
-        self.messages = messages
+        self.messages = messages  # Array of 'Messages' case class
+        self.firstAuthor = messages[0].author
+        self.secondAuthor = self.getSecondAuthor(self.firstAuthor, messages)
+
+    def __str__(self):
+        return "[Conversation] ConversationId: " + self.id + " \n" + "\n".join(
+            [str(message) for message in self.messages]) + "\n"
+
+    def getSecondAuthor(self, firstAuthor, messages):
+            secondAuthor = self.firstAuthor
+            index = 0
+            while (secondAuthor == firstAuthor) & (index < len(messages)):
+                secondAuthor = messages[index].author
+                index = index + 1
+            return secondAuthor
 
 
-def build_graph():#build a networkx graph. nodes are users id and edges are represents conversation between them
+def find_second_user(first_user_author, conversation):
+    second_user_author = first_user_author
+    index = 1
+    while (second_user_author  == first_user_author) & (index < len(conversation.messages)):
+        second_user = conversation.messages[index].message
+        index = index + 1
+    return second_user
+
+# Build Graph of conversations
+def build_graph(input):
     G = nx.Graph()
-    conversations = parse_data_to_dictionaries(input)
-    i = 0
+    conversations = parse_data_to_case_class(input) # Parse to case class
+    totalConnection = 0
+    totalNodes = 0
     for conversation in conversations:
-        first_user = conversation.messages[0]["author"]
-        second_user = find_second_user(conversation)
-        if first_user!= second_user:
-            G.add_node(first_user)
-            G.add_node(second_user)
-            G.add_edge(first_user, second_user)
-            i = i+1
-            print(i)
+            if(conversation.firstAuthor != conversation.secondAuthor):
+                G.add_node(conversation.firstAuthor)
+                G.add_node(conversation.secondAuthor)
+                G.add_edge(conversation.firstAuthor, conversation.secondAuthor)
+                print("(%s) --- (%s) Inserted to G" % (conversation.firstAuthor, conversation.secondAuthor))
+                totalConnection = totalConnection + 1
+                totalNodes = totalNodes + 2
+            else:
+                totalNodes  = totalNodes + 1
+    print("G with %s totalConnection with %s totalNodes" % (totalConnection, totalNodes))
     return G
 
-def parse_data_to_dictionaries(input):#create list of conversationWrapper objects that each of them contain a conversation data
-    conversationsWrapper = []
+def parse_data_to_case_class(input):
+    conversations = []
     with open(input["data_path"] + ".json", encoding="utf8") as data:
-        print("successfully opened " + input["data_path"] + ".json")
+        print("Successfully opened " + input["data_path"] + ".json...")
         for conversation in ijson.items(data, 'conversations.conversation.item'):
             id = conversation["@id"]
             messages = []
-            for msg in conversation["message"]:
-                messages.append(msg)
-            conversationsWrapper.append(conversationWrapper(id, messages))
-            print("added conversation number: " + id)
-    return conversationsWrapper
+            for message in conversation["message"]:
+                messages.append(Message(message["author"], message["time"],message["text"]))
+            conversations.append(Conversation(id, messages))
+    return conversations
 
 
-def find_second_user(conversation):
-    first_user_id = conversation.messages[0]["author"]
-    second_user_id = first_user_id
-    index = 1
-    while (second_user_id == first_user_id) & (index < len(conversation.messages)):
-        second_user_id = conversation.messages[index]["author"]
-        index = index + 1
-    return second_user_id
-
-input = {#path to data set
+input = {
     "data_path": "C:/Users/EILON/PycharmProjects/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
 }
 
-build_graph()
+# Building Graph
+G = build_graph(input)
+
+# Plot
+#nx.draw(G)
+
+# Show Graph
+#matplotlib.pyplot.show()
