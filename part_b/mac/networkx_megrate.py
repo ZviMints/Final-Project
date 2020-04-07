@@ -2,6 +2,8 @@ import networkx as nx
 import ijson
 import matplotlib as matplotlib
 from matplotlib import pyplot as plt
+import pandas as pd
+
 import itertools
 
 matplotlib.use('MacOSX')
@@ -93,4 +95,5 @@ for component in list(nx.connected_components(G)):
 print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
 nx.draw(G, node_size = 5)
 plt.savefig("conversations.png")
+pd.to_pickle(G, "shery&more.pkl")
 plt.show()
