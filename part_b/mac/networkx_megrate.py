@@ -81,8 +81,16 @@ input = {
 }
 
 G = build_graph(input)
-nx.draw(G, node_size = 3)
 
+# Remove All 2-Connected-Components in G
+for component in list(nx.connected_components(G)):
+    if len(component) <= 2: # This will actually remove only 2-connected
+        for node in component:
+            G.remove_node(node)
+
+print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
+
+nx.draw(G, node_size = 3)
 plt.savefig("conversations.png") # Safe as png file
 print(".png saved.")
 
