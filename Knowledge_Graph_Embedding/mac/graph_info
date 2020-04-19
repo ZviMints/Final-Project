@@ -1,0 +1,2 @@
+Original Dataset: G with 54154 edges and 88720 nodes
+G after remove 2-Connected-Components remains with 11720 edges and 5014 nodes
