@@ -2,12 +2,8 @@ import networkx as nx
 import ijson
 import matplotlib as matplotlib
 from matplotlib import pyplot as plt
-import pandas as pd
-
-import itertools
-
+import networkx as nx
 matplotlib.use('MacOSX')
-
 
 # Zvi Mints and Eilon Tsadok - Mac Version
 
@@ -85,15 +81,11 @@ input = {
 }
 
 G = build_graph(input)
+nx.draw(G, node_size = 3)
 
-# Remove All 2-Connected-Components in G
-for component in list(nx.connected_components(G)):
-    if len(component) <= 2: # This will actually remove only 2-connected
-        for node in component:
-            G.remove_node(node)
+plt.savefig("conversations.png") # Safe as png file
+print(".png saved.")
 
-print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
-nx.draw(G, node_size = 5)
-plt.savefig("conversations.png")
-pd.to_pickle(G, "shery&more.pkl")
-plt.show()
+nx.write_multiline_adjlist(G,"convesations.adjlist") # Safe as adjlist
+print(".adjlist saved.")
+
