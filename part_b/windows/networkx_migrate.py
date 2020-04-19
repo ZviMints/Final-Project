@@ -86,8 +86,8 @@ for component in list(nx.connected_components(G)):
             G.remove_node(node)
 
 print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
-#nx.draw(G, node_size = 5)
-#plt.savefig("conversations.png")
-pd.to_pickle(G, "shery&more.pkl")
-#plt.show()
+nx.draw(G, node_size = 5)
+plt.savefig("conversations.png")
+pd.to_pickle(G, "graph_after_remove_2_connected.pkl")
+plt.show()
 
