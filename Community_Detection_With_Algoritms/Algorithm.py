@@ -6,18 +6,28 @@ from .algorithms import Undefined
 matplotlib.use('MacOSX')
 
 class Algorithm:
-    def __init__(self, figure, vectors_3dim, algorithm):
+    def __init__(self, figure, vectors_3dim):
+
         self.vectors_3dim = vectors_3dim
         self.figure = figure
 
-        switcher = {
-            "k-means": KMeans(self.vectors_3dim, self.figure),
-            "connected-componenets": ConnectedComponents(self.vectors_3dim, self.figure),
-            "spectral-clustering": SpectralClustering(self.vectors_3dim, self.figure),
-        }
-        self.algorithm = switcher.get(algorithm, Undefined())
+        self.kmeans = KMeans(self.vectors_3dim, self.figure)
+        self.cc = ConnectedComponents(self.vectors_3dim, self.figure)
+        self.spectral = SpectralClustering(self.vectors_3dim, self.figure)
 
 
-    # Plotting the Graph
-    def show(self):
-            self.algorithm.run().show()
+    # Plotting the Graph with KMeans
+    def kmeansPlot(self):
+        self.kmeans.run().show()
+
+    # Plotting the Graph with ConnectedComponents
+    def ccPlot(self):
+        self.cc.run().show()
+
+    # Plotting the Graph with SpectralClustering
+    def spectralPlot(self):
+        self.cc.run().show()
+
+    def combinedPlot(self):
+        ()
+

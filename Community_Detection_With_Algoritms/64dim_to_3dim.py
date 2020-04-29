@@ -43,10 +43,5 @@ figure.scatter(
 
 
 # Plot the Algorithm
-kmeans = "k-means"
-cc = "connected-componenets"
-spectral = "spectral-clustering"
-
-algorithm = Algorithm(vectors_3dim,figure,kmeans)\
-            .show()
+Algorithm(vectors_3dim,figure).kmeansPlot()
 
