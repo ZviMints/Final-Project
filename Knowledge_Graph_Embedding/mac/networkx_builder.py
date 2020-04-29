@@ -51,3 +51,4 @@ print(model.wv.get_vector('f139aba52f9fa1394b4034a7954b2220'))
 fname = "embedded_vectors.kv"
 path = get_tmpfile(fname)
 model.wv.save(path)
+print("file %s saved" % fname)
