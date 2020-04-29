@@ -6,8 +6,8 @@ from gensim.models import KeyedVectors
 from gensim.test.utils import get_tmpfile
 from sklearn.decomposition import PCA  # From 64dim to 3dim
 from sklearn.preprocessing import StandardScaler  # Normalized
-from . import Algorithm
-matplotlib.use('MacOSX')
+from Community_Detection_With_Algoritms import Algorithm
+# matplotlib.use('MacOSX')
 
 # Zvi Mints and Eilon Tsadok - Mac Version
 

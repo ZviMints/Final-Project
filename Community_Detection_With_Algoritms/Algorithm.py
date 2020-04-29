@@ -2,15 +2,10 @@ import matplotlib as matplotlib
 from .algorithms import KMeans
 from .algorithms import ConnectedComponents
 from .algorithms import SpectralClustering
-from .algorithms import Undefined
-matplotlib.use('MacOSX')
+#matplotlib.use('MacOSX')
 
 class Algorithm:
     def __init__(self, figure, vectors_3dim):
-
-        self.vectors_3dim = vectors_3dim
-        self.figure = figure
-
         self.kmeans = KMeans(self.vectors_3dim, self.figure)
         self.cc = ConnectedComponents(self.vectors_3dim, self.figure)
         self.spectral = SpectralClustering(self.vectors_3dim, self.figure)

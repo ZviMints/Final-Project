@@ -1,6 +1,6 @@
 import matplotlib as matplotlib
 from sklearn.cluster import KMeans # Algorithm
-matplotlib.use('MacOSX')
+# matplotlib.use('MacOSX')
 
 class KMeans:
     def __init__(self, figure, vectors_3dim):

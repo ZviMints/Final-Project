@@ -1,5 +1,5 @@
 import matplotlib as matplotlib
-matplotlib.use('MacOSX')
+# matplotlib.use('MacOSX')
 
 class ConnectedComponents:
     def __init__(self, figure, vectors_3dim):
