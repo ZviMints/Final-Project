@@ -2,7 +2,7 @@ import matplotlib as matplotlib
 from . import algorithms
 matplotlib.use('MacOSX')
 
-class Algorithms:
+class Algorithm:
     def __init__(self, figure, vectors_3dim, algorithm):
         self.vectors_3dim = vectors_3dim
         self.figure = figure
