@@ -2,18 +2,13 @@ import matplotlib as matplotlib
 from .algorithms import KMeans
 from .algorithms import ConnectedComponents
 from .algorithms import SpectralClustering
-from .algorithms import Undefined
 matplotlib.use('MacOSX')
 
 class Algorithm:
-    def __init__(self, figure, vectors_3dim):
-
-        self.vectors_3dim = vectors_3dim
-        self.figure = figure
-
-        self.kmeans = KMeans(self.vectors_3dim, self.figure)
-        self.cc = ConnectedComponents(self.vectors_3dim, self.figure)
-        self.spectral = SpectralClustering(self.vectors_3dim, self.figure)
+    def __init__(self, base_figure, vectors_3dim):
+        self.kmeans = KMeans(vectors_3dim, base_figure)
+        self.cc = ConnectedComponents(vectors_3dim, base_figure)
+        self.spectral = SpectralClustering(vectors_3dim, base_figure)
 
 
     # Plotting the Graph with KMeans
