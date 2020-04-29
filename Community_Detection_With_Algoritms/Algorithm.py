@@ -9,7 +9,7 @@ class Algorithm:
         self.algorithm = algorithm
 
     # Getting the write algorithm
-    def __getPlot(self):
+    def getPlot(self):
         switcher = {
             "k-means": algorithms.KMeans(self.vectors_3dim,self.figure).run(),
             "connected-componenets": algorithms.ConnectedComponents(self.vectors_3dim,self.figure).run(),
