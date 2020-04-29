@@ -3,12 +3,11 @@ import matplotlib.pyplot as plt
 matplotlib.use('MacOSX')
 
 class SpectralClustering:
-    def __init__(self,  vectors_3dim):
+    def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
-
-
+        self.color = color
 
     def getPlot(self):
-        print("hey")
+        print(self.color)
 
 

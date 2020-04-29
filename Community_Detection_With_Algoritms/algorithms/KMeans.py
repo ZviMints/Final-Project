@@ -5,8 +5,9 @@ import pandas as pd
 matplotlib.use('MacOSX')
 
 class KMeans:
-    def __init__(self, vectors_3dim):
+    def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
+        self.color = color
 
     def getPlot(self):
         df = pd.DataFrame(
@@ -27,8 +28,7 @@ class KMeans:
 
         km = KMeansAlgorithm(n_clusters=4, init='k-means++', max_iter=300, n_init=10, random_state=0)
         km.fit_predict(self.vectors_3dim)
-        base_figure.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1], km.cluster_centers_[:, 2], s=10000,
-                            c='red')
+        base_figure.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1], km.cluster_centers_[:, 2], s=10000,c=self.color)
         base_figure.set_xlabel('pca-one')
         base_figure.set_ylabel('pca-two')
         base_figure.set_zlabel('pca-three')
