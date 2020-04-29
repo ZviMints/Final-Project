@@ -2,7 +2,7 @@ import matplotlib as matplotlib
 from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm # Algorithm
 import matplotlib.pyplot as plt
 import pandas as pd
-# matplotlib.use('MacOSX')
+matplotlib.use('MacOSX')
 
 class SpectralClustering:
     def __init__(self, vectors_3dim):

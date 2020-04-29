@@ -2,7 +2,7 @@ import matplotlib as matplotlib
 from Community_Detection_With_Algoritms.algorithms import KMeans
 from Community_Detection_With_Algoritms.algorithms import ConnectedComponents
 from Community_Detection_With_Algoritms.algorithms import SpectralClustering
-# matplotlib.use('MacOSX')
+matplotlib.use('MacOSX')
 
 
 class Plotter:

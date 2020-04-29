@@ -6,7 +6,7 @@ from sklearn.decomposition import PCA  # From 64dim to 3dim
 from sklearn.preprocessing import StandardScaler  # Normalized
 import matplotlib.pyplot
 
-# matplotlib.use('MacOSX')
+matplotlib.use('MacOSX')
 # Zvi Mints and Eilon Tsadok - Mac Version
 
 G = nx.read_multiline_adjlist("convesations.adjlist")
