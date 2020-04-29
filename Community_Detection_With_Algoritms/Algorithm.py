@@ -13,9 +13,14 @@ class Algorithm:
     # Getting the write algorithm
     def getPlot(self):
         switcher = {
-            "k-means": KMeans(self.vectors_3dim,self.figure).run(),
-            "connected-componenets": ConnectedComponents(self.vectors_3dim,self.figure).run(),
-            "spectral-clustering": SpectralClustering(self.vectors_3dim,self.figure).run()
+            "k-means": KMeans(self.vectors_3dim,self.figure)
+                                    .run(),
+
+            "connected-componenets": ConnectedComponents(self.vectors_3dim,self.figure)
+                                    .run(),
+
+            "spectral-clustering": SpectralClustering(self.vectors_3dim,self.figure)
+                                    .run()
         }
         return switcher.get(self.algorithm, None)
 
