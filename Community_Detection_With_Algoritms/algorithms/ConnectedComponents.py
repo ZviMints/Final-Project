@@ -1,6 +1,6 @@
 import matplotlib as matplotlib
 import matplotlib.pyplot as plt
-matplotlib.use('MacOSX')
+# matplotlib.use('MacOSX')
 
 class ConnectedComponents:
     def __init__(self, vectors_3dim, color):

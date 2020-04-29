@@ -2,7 +2,7 @@ import matplotlib as matplotlib
 from sklearn.cluster import KMeans as KMeansAlgorithm # Algorithm
 import matplotlib.pyplot as plt
 import pandas as pd
-matplotlib.use('MacOSX')
+# matplotlib.use('MacOSX')
 
 class KMeans:
     def __init__(self, vectors_3dim, color):
