@@ -33,8 +33,8 @@ df['pca-two'] = vectors_3dim[:,1]
 df['pca-three'] = vectors_3dim[:,2]
 
 # Create a scatter plot
-figure = plt.figure(dpi= 50, figsize=(160, 100)).gca(projection='3d')
-figure.scatter(
+base_figure = plt.figure(dpi= 50, figsize=(160, 100)).gca(projection='3d')
+base_figure.scatter(
     xs=df["pca-one"],
     ys=df["pca-two"],
     zs=df["pca-three"],
@@ -43,5 +43,5 @@ figure.scatter(
 
 
 # Plot the Algorithm
-Algorithm(vectors_3dim,figure).kmeansPlot()
+Algorithm(vectors_3dim,base_figure).kmeansPlot()
 
