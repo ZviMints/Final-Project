@@ -1,3 +1,4 @@
+# This file represent adjlist of the graph after removing 2-connected componenets
 #/Users/Zvi/PycharmProjects/networkx_megrate/networkx_megrate.py
 # GMT Sun Apr 19 11:11:35 2020
 # 
