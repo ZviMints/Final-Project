@@ -1,5 +1,7 @@
 import matplotlib as matplotlib
-from . import algorithms
+from .algorithms import KMeans
+from .algorithms import ConnectedComponents
+from .algorithms import SpectralClustering
 matplotlib.use('MacOSX')
 
 class Algorithm:
@@ -11,9 +13,9 @@ class Algorithm:
     # Getting the write algorithm
     def getPlot(self):
         switcher = {
-            "k-means": algorithms.KMeans(self.vectors_3dim,self.figure).run(),
-            "connected-componenets": algorithms.ConnectedComponents(self.vectors_3dim,self.figure).run(),
-            "spectral-clustering": algorithms.SpectralClustering(self.vectors_3dim,self.figure).run()
+            "k-means": KMeans(self.vectors_3dim,self.figure).run(),
+            "connected-componenets": ConnectedComponents(self.vectors_3dim,self.figure).run(),
+            "spectral-clustering": SpectralClustering(self.vectors_3dim,self.figure).run()
         }
         return switcher.get(self.algorithm, None)
 

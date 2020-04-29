@@ -1,7 +1,7 @@
 import matplotlib as matplotlib
 matplotlib.use('MacOSX')
 
-class ConnectedComponenets:
+class ConnectedComponents:
     def __init__(self, figure, vectors_3dim):
         self.vectors_3dim = vectors_3dim
         self.figure = figure
