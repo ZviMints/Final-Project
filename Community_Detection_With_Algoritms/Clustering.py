@@ -25,6 +25,6 @@ vectors_3dim = pca.fit_transform(vectors64_scale)
 
 # Plot the Algorithm
 plt = Plotter.Plotter(vectors_3dim)
-# plt.showWithKMeans()
-plt.showWithSpectral()
-
+plt.showWithKMeans()
+# plt.showWithSpectral()
+# plt.kmeans.find_elbow()

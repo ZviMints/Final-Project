@@ -3,11 +3,35 @@ from sklearn.cluster import KMeans as KMeansAlgorithm # Algorithm
 import matplotlib.pyplot as plt
 import pandas as pd
 matplotlib.use('MacOSX')
+from sklearn.preprocessing import MinMaxScaler
+
 
 class KMeans:
     def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
         self.color = color
+
+    def find_elbow(self):
+        mms = MinMaxScaler()
+        mms.fit(self.vectors_3dim)
+        data_transformed = mms.transform(self.vectors_3dim)
+
+        Sum_of_squared_distances = []
+        K = range(1, int(0.01*len(data_transformed)))
+        for k in K:
+            km = KMeansAlgorithm(n_clusters=k)
+            km = km.fit(self.vectors_3dim)
+            Sum_of_squared_distances.append(km.inertia_)
+            if (len(Sum_of_squared_distances))>1:
+                gradient= Sum_of_squared_distances[k-1]-Sum_of_squared_distances[k-2]
+                if gradient>-1000:
+                    return k-1
+        # plt.plot(K, Sum_of_squared_distances, 'bx-')
+        # plt.xlabel('k')
+        # plt.ylabel('Sum_of_squared_distances')
+        # plt.title('Elbow Method For Optimal k')
+        # plt.show()
+
 
     def getPlot(self):
         df = pd.DataFrame(
@@ -26,7 +50,9 @@ class KMeans:
             cmap='red'
         )
 
-        km = KMeansAlgorithm(n_clusters=4, init='k-means++', max_iter=300, n_init=10, random_state=0)
+
+
+        km = KMeansAlgorithm(n_clusters=self.find_elbow(), init='k-means++', max_iter=300, n_init=10, random_state=0)
         km.fit_predict(self.vectors_3dim)
         base_figure.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1], km.cluster_centers_[:, 2], s=10000,c=self.color)
         base_figure.set_xlabel('pca-one')
