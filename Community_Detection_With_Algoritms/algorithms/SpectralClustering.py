@@ -5,9 +5,9 @@ import pandas as pd
 matplotlib.use('MacOSX')
 
 class SpectralClustering:
-    def __init__(self, vectors_3dim):
+    def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
-
+        self.color = color
 
     def getPlot(self):
         df = pd.DataFrame(
@@ -26,9 +26,9 @@ class SpectralClustering:
             cmap='red'
         )
 
-        sc = SpectralClusteringAlgorithm(n_clusters=4, affinity='nearest_neighbors')
+        sc = SpectralClusteringAlgorithm(n_clusters=20, assign_labels="discretize",  random_state=0)
         labels = sc.fit_predict(self.vectors_3dim)
-        base_figure.scatter(self.vectors_3dim[:,0] , self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=50,c=labels)
+        base_figure.scatter(sc.affinity_matrix_[:,0] , sc.affinity_matrix_[:, 1], sc.affinity_matrix_[:, 2], s=7000,c=self.color)
         base_figure.set_xlabel('pca-one')
         base_figure.set_ylabel('pca-two')
         base_figure.set_zlabel('pca-three')

@@ -14,8 +14,8 @@ class Plotter:
     def __init__(self, vectors_3dim):
         self.vectors_3dim = vectors_3dim
         self.kmeans = KMeans.KMeans(vectors_3dim, "red")
-        self.cc = ConnectedComponents.ConnectedComponents(vectors_3dim, "yellow")
-        self.spectral = SpectralClustering.SpectralClustering(vectors_3dim)
+        self.cc = ConnectedComponents.ConnectedComponents(vectors_3dim, "blue")
+        self.spectral = SpectralClustering.SpectralClustering(vectors_3dim, "yellow")
 
 
 
