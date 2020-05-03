@@ -9,24 +9,24 @@ class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      "current": <Visualization />
+      "page": <Visualization />,
     };
   }
 
    handleClick = (component) => {
-    this.setState({current : component})
+    this.setState({page : component})
   }
 
   render() {
     return (
       <div id="body">
 
-      <button onClick={() => this.handleClick(<Visualization/>)}>Visualization</button>
-      <button onClick={() => this.handleClick(<Abstract/>)}>Abstract</button>
-      <button onClick={() => this.handleClick(<About/>)}>About Us</button>
-      <button onClick={() => this.handleClick(<Process/>)}>Our Process</button>
+      <button onClick={() => this.handleClick(<Visualization />)}>Visualization</button>
+      <button onClick={() => this.handleClick(<Abstract />)}>Abstract</button>
+      <button onClick={() => this.handleClick(<About />)}>About Us</button>
+      <button onClick={() => this.handleClick(<Process />)}>Our Process</button>
 
-      {this.state.current}
+      {this.state.page}
 
       </div>
     );

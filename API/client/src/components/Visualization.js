@@ -1,12 +1,17 @@
 import React, {useEffect, useState } from 'react';
 
-import { Graph } from './Graph'
+import Graph from './Graph'
 import Algorithms from './Algorithms'
 import Menu from './Menu'
 
 const Visualization = () => {
 
-      const [graph, setGraph] = useState();
+  const [graph, setGraph] = useState();
+
+  const [algorithms, updateList] = useState([]);
+  const remoteItem = (name) => {
+    updateList(algorithms.filter(algorithm => algorithm !== name));
+  };
 
       useEffect(() => {
         fetch("/graph")
@@ -18,16 +23,15 @@ const Visualization = () => {
           <div id="visualization">
               <div className="row">
                 <div className="menu_column">
-                  <Algorithms />
+                  <Algorithms algorithms={algorithms} updateList={updateList} remoteItem={remoteItem} />
                   <Menu />
                 </div>
 
                 <div className="graph_column">
-                  <Graph graph={graph} />
+                  <Graph algorithms={algorithms} graph={graph} />
                 </div>
               </div>
           </div>
         );
 }
-
 export default Visualization;
