@@ -9,10 +9,7 @@ class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      "current": <Visualization />,
-      "abstract":  <Abstract />,
-      "about":  <About />,
-      "process": <Process />
+      "current": <Visualization />
     };
   }
 
