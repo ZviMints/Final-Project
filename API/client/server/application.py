@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -7,4 +8,4 @@ app = Flask(__name__)
 
 @app.route("/graph")
 def graph():
-    return "graph"
+    return jsonify("this is text that i get from backend")

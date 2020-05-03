@@ -1,0 +1,17 @@
+body {
+    font-family: Arial,Verdana,'sans serif';
+    font-size: 12px;
+    background-color:#fafafa;
+}
+
+#header {
+    background-color: yellow;
+}
+
+#footer {
+  background-color: cyan;
+}
+
+#body {
+  background-color: red;
+}
