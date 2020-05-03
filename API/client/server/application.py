@@ -8,4 +8,4 @@ app = Flask(__name__)
 
 @app.route("/graph")
 def graph():
-    return jsonify("this is text that i get from backend")
+    return jsonify("this is text that i get from backend via Flask framework (here will be the graph)")

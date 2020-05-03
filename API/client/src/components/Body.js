@@ -1,19 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { browserHistory } from 'react-router';
+import React, { Component } from 'react';
 
-const Body = () => {
-  const [graph, setGraph] = useState();
-  useEffect(() => {
-    fetch("/graph")
-    .then(res => res.json())
-    .then(data => setGraph(data));
-  })
+import Visualization from './Visualization'
+import Abstract from './Abstract'
+import About from './About'
+import Process from './Process'
 
+class Body extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      "current": <Visualization />,
+      "abstract":  <Abstract />,
+      "about":  <About />,
+      "process": <Process />
+    };
+  }
+
+   handleClick = (component) => {
+    this.setState({current : component})
+  }
+
+  render() {
     return (
       <div id="body">
-      <h1>Sup {graph}</h1>
+
+      <button onClick={() => this.handleClick(<Visualization/>)}>Visualization</button>
+      <button onClick={() => this.handleClick(<Abstract/>)}>Abstract</button>
+      <button onClick={() => this.handleClick(<About/>)}>About Us</button>
+      <button onClick={() => this.handleClick(<Process/>)}>Our Process</button>
+
+      {this.state.current}
+
       </div>
     );
   }
+}
 
 export default Body;

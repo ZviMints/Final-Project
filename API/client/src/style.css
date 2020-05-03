@@ -1,17 +1,86 @@
 body {
     font-family: Arial,Verdana,'sans serif';
     font-size: 12px;
-    background-color:#fafafa;
+    background-color: #fafafa;
 }
 
 #header {
-    background-color: yellow;
+  background: #0575E6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #021B79, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  box-shadow: 1px 1px 2px black;
+  padding: 5px 5px 5px 15px;
 }
 
+#header h1 {
+  color: #FFFFFF;
+
+  text-shadow: 1px 1px 0 black;
+}
+
+
 #footer {
-  background-color: cyan;
+  padding: 2px 10px 2px 10px;
 }
 
 #body {
-  background-color: red;
+  border-radius: 4px;
+  margin: 15px 15px 15px 15px;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 2px #fff inset,
+            -1px -1px 2px #fff inset;
+  padding: 12px;
+}
+
+#body .menu_column {
+  float: left;
+  width: 30%;
+  padding: 10px;
+}
+
+#body .graph_column {
+  float: right;
+  width: 65%;
+}
+
+/* Clear floats after the columns */
+#body .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#body .graph_column .graph {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: white;
+  height: 500px;
+  box-shadow: 0px 0px 1px 1px #001f3f inset;
+  border-radius: 3px;
+
+  background: #E0EAFC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+#body #visualization .menu_column .algorithms {
+  margin-bottom: 35px;
+  background: #F2F2F2;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 2px #fff inset,
+            -1px -1px 2px #fff inset;
+  border-radius: 3px;
+  padding: 15px;
+}
+#body .menu_column .algorithms input {
+  margin-right: 10px;
+}
+
+
+/* visualization */
+#body #visualization .menu_column .menu {
+  margin: auto;
+  width: 50%;
 }

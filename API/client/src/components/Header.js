@@ -3,7 +3,7 @@ class Header extends Component {
     render() {
         return (
             <div id="header">
-                <h1>Final Project</h1>
+            <h1>Pedophilles Community Detection in Knowledge Graphs</h1>
             </div>
           );
     }
