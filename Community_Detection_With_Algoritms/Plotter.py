@@ -1,14 +1,23 @@
 import matplotlib as matplotlib
-import algorithms
+from sklearn.preprocessing import MinMaxScaler
+
+from Community_Detection_With_Algoritms.algorithms import KMeans
+from Community_Detection_With_Algoritms.algorithms import ConnectedComponents
+from Community_Detection_With_Algoritms.algorithms import SpectralClustering
+from sklearn.cluster import KMeans as KMeansAlgorithm # Algorithm
+import matplotlib.pyplot as plt
 
 matplotlib.use('MacOSX')
 
 
 class Plotter:
     def __init__(self, vectors_3dim):
-        self.kmeans = algorithms.KMeans(vectors_3dim, "red")
-        self.cc = algorithms.ConnectedComponents(vectors_3dim, "yellow")
-        self.spectral = algorithms.SpectralClustering(vectors_3dim, "blue")
+        self.vectors_3dim = vectors_3dim
+        self.kmeans = KMeans.KMeans(vectors_3dim, "red")
+        self.cc = ConnectedComponents.ConnectedComponents(vectors_3dim, "blue")
+        self.spectral = SpectralClustering.SpectralClustering(vectors_3dim, "yellow")
+
+
 
     # Plotting the Graph with KMeans
     def showWithKMeans(self):
