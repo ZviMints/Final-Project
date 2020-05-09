@@ -6,7 +6,7 @@ import Menu from './Menu'
 
 const Visualization = () => {
 
-  const [graph, setGraph] = useState();
+  const [graph_path, setGraphPath] = useState();
 
   const [algorithms, updateList] = useState([]);
   const remoteItem = (name) => {
@@ -14,9 +14,17 @@ const Visualization = () => {
   };
 
       useEffect(() => {
-        fetch("/graph")
-        .then(res => res.json())
-        .then(data => setGraph(data));
+
+      // POST request using fetch inside useEffect React hook
+      const requestOptions = {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({ algorithms: "kmeans" })
+      };
+
+      fetch("/graph", requestOptions)
+                .then(res => res.json())
+                .then(data => setGraphPath(data));
       })
 
         return (
@@ -28,7 +36,7 @@ const Visualization = () => {
                 </div>
 
                 <div className="graph_column">
-                  <Graph algorithms={algorithms} graph={graph} />
+                  <Graph algorithms={algorithms} graph_path={graph_path} />
                 </div>
               </div>
           </div>

@@ -5,25 +5,51 @@ class Graph extends Component {
     super(props);
   }
 
+// This method is responsoible to render header above the graph
+renderHeader = () => {
 
-  getAlgo = () => {
+  const getAlgo = () => {
+
     const algorithms = this.props.algorithms;
+
+    const combiner = (string) => {
+      if(string === "") return "";
+      else return ", ";
+    }
+
     if(algorithms && algorithms.length) {
-      return algorithms.reduce((string,algo) => string + "," + algo, "");
+      return algorithms.reduce((string,algo) => string + combiner(string) + algo, "");
     } else return "None";
   }
 
+  return (
+    <div>
+      <h1> Graph </h1>
+      <h2> Cool Description </h2>
+      <h3> Algorithms: {getAlgo()}</h3>
+    </div>
+  );
+}
+
+  // This is the main render function
   render() {
     return (
         <div id="main">
-        <div className="graph">
-          <h1> { this.props.graph } </h1>
-          <h3> algo checked:  { this.getAlgo() } </h3>
-        </div>
-          <p> here will be explanation about the graph </p>
+         { this.renderHeader() }
+         <div className="graph">
+          <h1> { this.props.graph_path } </h1>
+            <img src={'data:image/png;base64,' + this.props.graph_path} />
+          </div>
+          { this.renderDescription() }
         </div>
       );
   }
+
+  // This method is responsoible to render description bellow the graph
+  renderDescription = () => {
+    return  <p> here will be explanation about the graph </p>
+  }
+
 }
 
 export default Graph;

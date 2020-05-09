@@ -1,11 +1,26 @@
-
-from flask import Flask, render_template
+import base64
+from io import BytesIO
 from flask import jsonify
+
+from flask import Flask, request
+from matplotlib.figure import Figure
 
 app = Flask(__name__)
 
-# Zvi Mints And Eilon Tsadok
-
-@app.route("/graph")
+@app.route("/graph", methods = ["POST"])
 def graph():
-    return jsonify("this is text that i get from backend via Flask framework (here will be the graph)")
+   algorithms = request.get_json().get('algorithms','')
+   print("algorithms:" + algorithms)
+
+   # Generate the figure **without using pyplot**.
+   fig = Figure()
+   ax = fig.subplots()
+   ax.plot([1, 2])
+
+   # Save it to a temporary buffer.
+   buf = BytesIO()
+   fig.savefig(buf, format="png")
+
+   # Embed the result in the html output.
+   data = base64.b64encode(buf.getbuffer()).decode("ascii")
+   return jsonify(data)
