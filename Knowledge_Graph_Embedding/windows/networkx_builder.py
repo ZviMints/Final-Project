@@ -2,27 +2,24 @@ import networkx as nx
 import matplotlib as matplotlib
 from node2vec import Node2Vec
 from gensim.test.utils import get_tmpfile
-from gensim.models import KeyedVectors
+# matplotlib.use('MacOSX')
 
-# Zvi Mints and Eilon Tsadok - Windows Version
+# Zvi Mints and Eilon Tsadok - Mac Version
 
-def make_file_of_sampling_sentences():
-    f = open("sampling_sentences.txt", "w+")
-    sampling_sentences = list(node2vec.walks)
-    i = 1
-    for sentence in sampling_sentences:
-        f.write(str(i))
-        f.write(":        ")
-        i = i + 1
+def saveWalks(walks):
+    f = open("walks_test.txt", "w+")
+    row = 1
+    for sentence in walks:
+        f.write("row %s:    " % str(row))
+        row = row + 1
         for word in sentence:
             f.write(word)
             f.write("  ")
-        f.write("\n\n")
-
+        f.write("\n")
     f.close()
 
-
-G = nx.read_multiline_adjlist("convesations.adjlist")
+# Start Point:
+G = nx.read_multiline_adjlist("test_networkxAfterRemove.adjlist")
 
 
 # Part A
@@ -35,23 +32,23 @@ G = nx.read_multiline_adjlist("convesations.adjlist")
 """
 
 # Precompute probabilities and generate walks
-node2vec = Node2Vec(G, dimensions=64, walk_length=25, num_walks=10, workers=1)  # Use temp_folder for big graphs
+node2vec = Node2Vec(G, dimensions=64, walk_length=25, num_walks=10, workers=1)
 
-# the sampling sentences
-make_file_of_sampling_sentences()
+saveWalks(list(node2vec.walks))
 
 # Embed nodes
-model = node2vec.fit(window=10, min_count=1, batch_words=4)  # Any keywords acceptable by gensim.Word2Vec can be passed, `diemnsions` and `workers` are automatically passed (from the Node2Vec constructor)
+model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
 # Look for most similar nodes
 for node, enc in model.wv.most_similar('f139aba52f9fa1394b4034a7954b2220'):  # Output node names are always strings
     print(node, enc)
 
-print("vector of f139aba52f9fa1394b4034a7954b2220 is: ")
+# Print the 64dim of vector
+print("64dim vector representation for `f139aba52f9fa1394b4034a7954b2220`: ")
 print(model.wv.get_vector('f139aba52f9fa1394b4034a7954b2220'))
-model.wv.save(get_tmpfile("vectors.kv"))
 
-#largest_cc = min(nx.connected_components(G), key=len)
-#print(largest_cc)
-#print(len(largest_cc))
-
+# Save the model into
+fname = "test_embedded_vectors_model.kv"
+path = get_tmpfile(fname)
+model.wv.save(path)
+print("file %s saved" % fname)
