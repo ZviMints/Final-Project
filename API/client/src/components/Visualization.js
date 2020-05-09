@@ -6,6 +6,7 @@ import Menu from './Menu'
 
 const Visualization = () => {
 
+  const [step, setStep] = useState("load");
   const [graph_path, setGraphPath] = useState();
 
   const [algorithms, updateList] = useState([]);
@@ -32,7 +33,7 @@ const Visualization = () => {
               <div className="row">
                 <div className="menu_column">
                   <Algorithms algorithms={algorithms} updateList={updateList} remoteItem={remoteItem} />
-                  <Menu />
+                  <Menu step={step} setStep={setStep}/>
                 </div>
 
                 <div className="graph_column">
