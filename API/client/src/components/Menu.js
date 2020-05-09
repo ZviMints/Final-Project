@@ -1,39 +1,32 @@
 
 import React, { Component } from 'react';
 
-export default class menu extends Component {
+
+import Load from './menu_items/Load'
+import Convert from './menu_items/Convert'
+import PCA from './menu_items/PCA'
+import Results from './menu_items/Results'
 
 
-
-  renderLoad() {
-    return (
-      <button type="button" className="btn btn-primary btn-lg active">Load</button>
-    );
+class Menu  extends Component {
+  constructor(props) {
+    super(props);
   }
 
-  renderConvert() {
-    return (
-      <button type="button" className="btn btn-outline-primary mr-2">Convert</button>
-    );
+  renderItem = () => {
+    if(this.props.step === "load") { return <Load setStep={this.props.setStep} setDataset={this.props.setDataset} /> } // Need to fix that problem
+    else if(this.props.step === "convert") { return <Convert />}
+    else if(this.props.step === "pca") { return  <PCA /> }
+    else if(this.props.step === "results") { return <Results algorithms={this.props.algorithms} updateAlgorithm={this.props.updateAlgorithm} removeAlgorithm={this.props.removeAlgorithm} /> }
   }
 
-  renderPCA() {
-    return (
-      <button type="button" className="btn btn-outline-primary mr-2">PCA</button>
+  render() {
+      // Main render function
+      return (
+        <div className="menu">
+            { this.renderItem() }
+        </div>
     );
   }
-
-  renderResults() {
-    return (
-      <button type="button" className="btn btn-outline-primary mr-2">Results</button>
-    );
-  }
-
-    render() {
-        return (
-            <div className="menu">
-              { if({this.props.step} === "load") { this.renderLoad() } }
-            </div>
-          );
-    }
 }
+export default Menu;

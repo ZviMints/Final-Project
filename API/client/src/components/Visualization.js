@@ -1,46 +1,62 @@
-import React, {useEffect, useState } from 'react';
+import React, { Component } from 'react';
 
-import Graph from './Graph'
-import Algorithms from './Algorithms'
+import Content from './Content'
 import Menu from './Menu'
 
-const Visualization = () => {
+class Visualization  extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: "load", // can be load, convert, pca, results
+      dataset: "",
+      algorithms: []
+    }
+  }
 
-  const [step, setStep] = useState("load");
-  const [graph_path, setGraphPath] = useState();
+  // ================ Handlers ================ //
+  setStep = (newStep) => { this.setState({step: newStep})}
+  setDataset = (newDataset) => { this.setState({dataset: newDataset})}
 
-  const [algorithms, updateList] = useState([]);
-  const remoteItem = (name) => {
-    updateList(algorithms.filter(algorithm => algorithm !== name));
-  };
+  updateAlgorithm = (name) => {
+      let clone = [...this.state.algorithms];
+      clone.push(name);
+      this.setState({algorithms: clone})
+  }
 
-      useEffect(() => {
+  removeAlgorithm = (name) => {
+    const newList = this.state.algorithms.filter(algorithm => algorithm != name)
+    this.setState({algorithms: newList})
+  }
 
-      // POST request using fetch inside useEffect React hook
-      const requestOptions = {
-               method: 'POST',
-               headers: { 'Content-Type': 'application/json' },
-               body: JSON.stringify({ algorithms: "kmeans" })
-      };
-
-      fetch("/graph", requestOptions)
-                .then(res => res.json())
-                .then(data => setGraphPath(data));
-      })
-
+  // ================ Rendering ================ //
+  render() {
         return (
           <div id="visualization">
               <div className="row">
                 <div className="menu_column">
-                  <Algorithms algorithms={algorithms} updateList={updateList} remoteItem={remoteItem} />
-                  <Menu step={step} setStep={setStep}/>
-                </div>
 
-                <div className="graph_column">
-                  <Graph algorithms={algorithms} graph_path={graph_path} />
+                  // Menu Componenet
+                  <Menu
+                  step={this.state.step}
+                  setStep={this.setStep}
+                  dataset={this.state.dataset}
+                  algorithms={this.state.algorithms} updateAlgorithm={this.updateAlgorithm} removeAlgorithm={this.removeAlgorithm}
+                  setDataset={this.setDataset} />
+
+
+                </div>
+                <div className="content_column">
+
+                // Content Componenet
+                <Content
+                          step={this.state.step}
+                          dataset={this.state.dataset}
+                          algorithms={this.state.algorithms}/>
                 </div>
               </div>
           </div>
         );
+    }
 }
 export default Visualization;
