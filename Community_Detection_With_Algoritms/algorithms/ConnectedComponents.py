@@ -27,7 +27,7 @@ def ConnectedComponents_center_radius(set_3dim_vec):
             max_dist[i] = max(max_dist[i],dist[i])
     return (center,max(max_dist[0],max_dist[1],max_dist[2])/2)
 
-class ConnectedComponents_:
+class ConnectedComponents:
     def __init__(self, sets_vectors_3dim, df, color):
         self.sets_vectors_3dim = sets_vectors_3dim
         self.df = df

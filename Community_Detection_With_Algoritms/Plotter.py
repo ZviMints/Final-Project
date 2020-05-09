@@ -4,7 +4,7 @@ import pandas as pd
 
 from Community_Detection_With_Algoritms.algorithms import KMeans
 from Community_Detection_With_Algoritms.algorithms import No_Algo
-from Community_Detection_With_Algoritms.algorithms import ConnectedComponents_
+from Community_Detection_With_Algoritms.algorithms import ConnectedComponents
 from Community_Detection_With_Algoritms.algorithms import SpectralClustering
 import matplotlib.pyplot as plt
 
@@ -29,7 +29,7 @@ class Plotter:
         self.make_df()
         self.NoAlgo = No_Algo.No_Algo(self.union_vecs,self.df)
         self.kmeans = KMeans.KMeans(self.union_vecs, self.df, "red")
-        self.cc = ConnectedComponents_.ConnectedComponents_(sets_vectors_3dim, self.df, "green")
+        self.cc = ConnectedComponents.ConnectedComponents(sets_vectors_3dim, self.df, "green")
         self.spectral = SpectralClustering.SpectralClustering(self.union_vecs,self.df, "yellow")
 
 
