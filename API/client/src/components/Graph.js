@@ -37,7 +37,6 @@ renderHeader = () => {
         <div id="main">
          { this.renderHeader() }
          <div className="graph">
-          <h1> { this.props.graph_path } </h1>
             <img src={'data:image/png;base64,' + this.props.graph_path} />
           </div>
           { this.renderDescription() }
