@@ -81,7 +81,7 @@ def parse_data_to_case_class(input):
 
 
 input = {
-    "data_path": "C:/Users/EILON/PycharmProjects/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
+    "data_path": "C:/Users/EILON/PycharmProjects/data_set/test/pan12-sexual-predator-identification-test-corpus-2012-05-21/pan12-sexual-predator-identification-test-corpus-2012-05-17",
 }
 
 # Building Graph
