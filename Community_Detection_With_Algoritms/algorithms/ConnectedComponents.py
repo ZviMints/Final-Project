@@ -61,7 +61,7 @@ class ConnectedComponents:
             ys=component_centers[:,1],
             zs=component_centers[:,2],
             depthshade=False,
-            s=1000,
+            s=component_radiuses,
             c=self.color
         )
 
