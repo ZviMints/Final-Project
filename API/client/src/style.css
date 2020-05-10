@@ -22,6 +22,16 @@ body {
   padding: 2px 10px 2px 10px;
 }
 
+#menu {
+  margin-top: 15px;
+  margin-left: 15px;
+}
+#menu button {
+  padding:  3px 10px 3px 10px;
+  margin: 3px;
+  box-shadow: 0px 0px 1px 1px #001f3f inset;
+  border-radius: 3px;
+}
 #body {
   border-radius: 4px;
   margin: 15px 15px 15px 15px;
@@ -29,7 +39,8 @@ body {
   border: 1px solid #ccc;
   box-shadow: 1px 1px 2px #fff inset,
             -1px -1px 2px #fff inset;
-  padding: 12px;
+  padding: 20px;
+  margin-right: 10px;
 }
 
 #body .menu_column {
@@ -40,7 +51,7 @@ body {
 
 #body .content_column {
   float: right;
-  width: 65%;
+  width: 70%;
 }
 
 /* Clear floats after the columns */
@@ -86,5 +97,16 @@ body {
   margin-top: 10px;
 }
 
-
-/* visualization */
+/* Main Content */
+#steps_visualization .column {
+  float: right;
+  width: 50%;
+}
+#steps_visualization .title {
+  padding: 10px;
+  background: #F2F2F2;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 2px #fff inset,
+            -1px -1px 2px #fff inset;
+  border-radius: 3px;
+}

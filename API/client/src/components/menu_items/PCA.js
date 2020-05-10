@@ -5,8 +5,8 @@ class PCA extends Component {
     super(props);
   }
 
-  handleClick() {
-    alert("here")
+  handleClick =() => {
+    this.props.setStep("results")
   }
 
   render() {
@@ -14,5 +14,5 @@ class PCA extends Component {
       <button type="button" name="results" onClick={this.handleClick} className="btn btn-primary btn-lg active">PCA</button>
     );
   }
-}  
+}
 export default PCA;

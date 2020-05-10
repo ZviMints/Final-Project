@@ -20,13 +20,12 @@ class Load extends Component {
   render() {
     return(
       <div className="load">
-        <h1> Load dataset </h1>
-        <hr />
         <h3> Select dataset: </h3>
           <select value={this.state.dataset} onChange={this.handleChange}>
             <option value="pan12-sexual-predator-identification-test-corpus-2012-05-17.json">pan12-sexual-predator-identification-test-corpus-2012-05-17.json</option>
             <option value="pan12-sexual-predator-identification-training-corpus-2012-05-01.json">pan12-sexual-predator-identification-training-corpus-2012-05-01.json</option>
           </select>
+          <br />
         <button type="button" onClick={this.handleClick} className="btn btn-primary btn-lg active">Load</button>
       </div>
     );

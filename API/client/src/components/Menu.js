@@ -24,10 +24,14 @@ class Menu extends Component {
       case "convert":
         return (
           <Convert
+            setStep={this.props.setStep}
             dataset={this.props.dataset} />
           );
       case "pca":
-        return <PCA />
+        return (
+         <PCA
+          setStep={this.props.setStep} />
+        );
       case "results":
       return (
         <Results

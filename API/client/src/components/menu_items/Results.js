@@ -6,8 +6,8 @@ class Results extends Component {
     super(props);
   }
 
-  handleClick() {
-    alert("here")
+  handleClick = () => {
+    alert("end of the pipline")
   }
 
   render() {
