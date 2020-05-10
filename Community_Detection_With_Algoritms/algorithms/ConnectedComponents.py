@@ -2,6 +2,7 @@ import matplotlib as matplotlib
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+from sklearn import decomposition
 from sklearn.cluster import linkage_tree # Algorithm
 from sklearn.cluster import AgglomerativeClustering # Algorithm
 from sklearn.cluster import AffinityPropagation # Algorithm
@@ -26,6 +27,8 @@ def ConnectedComponents_center_radius(set_3dim_vec):
         for i in range(3):
             max_dist[i] = max(max_dist[i],dist[i])
     return (center,max(max_dist[0],max_dist[1],max_dist[2])/2)
+
+
 
 class ConnectedComponents:
     def __init__(self, sets_vectors_3dim, df, color):

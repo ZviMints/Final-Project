@@ -6,7 +6,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 # matplotlib.use('MacOSX')
 
-
 class KMeans:
     def __init__(self, vectors_3dim, df, color):
         self.vectors_3dim = vectors_3dim
@@ -29,17 +28,7 @@ class KMeans:
                 if gradient > -1200:
                     return k-1
 
-
-        # plt.plot(K, Sum_of_squared_distances, 'bx-')
-        # plt.xlabel('k')
-        # plt.ylabel('Sum_of_squared_distances')
-        # plt.title('Elbow Method For Optimal k')
-        # plt.show()
-
-
     def getPlot(self):
-
-
         # Create a scatter plot
         base_figure = plt.figure(dpi=120, figsize=(160, 100)).gca(projection='3d')
         base_figure.scatter(
