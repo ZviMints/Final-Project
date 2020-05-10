@@ -14,13 +14,18 @@ import matplotlib.pyplot
 # Zvi Mints and Eilon Tsadok - Mac Version
 
 def main():
-    G = nx.read_multiline_adjlist("test_networkxAfterRemove.adjlist")
+    # ======================================== Getting (G,model) ======================================== #
+    # Taking G from memory
+    G = nx.read_multiline_adjlist("adjlists/test_networkxAfterRemove.adjlist")
+
+    # Taking Memory from memory
     fname = "test_embedded_vectors_model.kv"
     path = get_tmpfile(fname)
     model = KeyedVectors.load(path, mmap='r')
 
-    # Plot the algorithm
+    # ======================================== Plotting ======================================== #
     plt = Plotter.Plotter(G, model)
+
     plt.showWithNoAlgo()
     plt.showWithKMeans()
     plt.showWithCC()

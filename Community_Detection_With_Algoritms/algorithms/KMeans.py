@@ -38,8 +38,6 @@ class KMeans:
             s=1
         )
 
-
-
         km = KMeansAlgorithm(n_clusters=self.find_elbow(), init='k-means++', max_iter=300, n_init=10, random_state=0)
         km.fit_predict(self.vectors_3dim)
         base_figure.scatter(km.cluster_centers_[:, 0], km.cluster_centers_[:, 1], km.cluster_centers_[:, 2], s=1000,c=self.color, depthshade=False)

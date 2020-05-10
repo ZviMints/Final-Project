@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 
 # matplotlib.use('MacOSX')
 
-def union(sets_3dim_vecs):
+# =============================================== Help Methods ===============================================
+def union_to_one_componenet(sets_3dim_vecs):
     # for set in sets_3dim_vecs:
     union_3dim = list()
     for nodes_set in sets_3dim_vecs:
@@ -44,27 +45,43 @@ def get_3dim_sets_from_64dim(connected_nodes_sets_64dim):
     return sets_of_3dim
 
 
-def make_sets_3dim_vec(G, model):
+def make_PCA(G, model):
     sets_of_64dim = get_connect_nodes_by_64dim(G, model)
     return get_3dim_sets_from_64dim(sets_of_64dim)
 
+
+# =============================================== Plotter ===============================================
+# This class is responsible to plot
+# He has algorithms and functions
 class Plotter:
+
+    # G is networkx
+    # model is after node2vec embedded
     def __init__(self, G, model):
-        sets_vectors_3dim = make_sets_3dim_vec(G, model)
-        union_vecs = union(sets_vectors_3dim)
-        self.make_df(union_vecs)
-        self.BaseGraph = BaseGraph.BaseGraph(union_vecs, self.df)
-        self.kmeans = KMeans.KMeans(union_vecs, self.df, "red")
-        self.cc = ConnectedComponents.ConnectedComponents(sets_vectors_3dim, self.df, "green")
-        self.spectral = SpectralClustering.SpectralClustering(union_vecs, self.df, "yellow")
+        all_connected_componenets_after_pca = make_PCA(G, model)
 
-    def make_df(self,union_vecs):
-        self.df = pd.DataFrame(
-            union_vecs)  # 2-dimensional labeled data structure with columns of potentially different types
+        one_componenet_after_pca = union_to_one_componenet(all_connected_componenets_after_pca)
 
-        self.df['pca-one'] = union_vecs[:, 0]
-        self.df['pca-two'] = union_vecs[:, 1]
-        self.df['pca-three'] = union_vecs[:, 2]
+        self.make_df(one_componenet_after_pca)
+
+        # Make base graph (without algorithm)
+        self.BaseGraph = BaseGraph.BaseGraph(one_componenet_after_pca, self.df)
+
+        # Make Kmeans
+        self.kmeans = KMeans.KMeans(one_componenet_after_pca, self.df, "red")
+
+        # Make Connected Componenet
+        self.cc = ConnectedComponents.ConnectedComponents(all_connected_componenets_after_pca, self.df, "green")
+
+        # Make Spectral
+        self.spectral = SpectralClustering.SpectralClustering(one_componenet_after_pca, self.df, "yellow")
+
+    def make_df(self,one_componenet_after_pca):
+        self.df = pd.DataFrame(one_componenet_after_pca)  # 2-dimensional labeled data structure with columns of potentially different types
+
+        self.df['pca-one'] = one_componenet_after_pca[:, 0]
+        self.df['pca-two'] = one_componenet_after_pca[:, 1]
+        self.df['pca-three'] = one_componenet_after_pca[:, 2]
 
     # Plotting the Graph with no algo
     def showWithNoAlgo(self):
@@ -82,5 +99,5 @@ class Plotter:
     def showWithSpectral(self):
         self.spectral.getPlot().show()
 
-    def showCombined(self):
+    def showCombined(self): #todo: eilon
         ()
