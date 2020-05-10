@@ -35,18 +35,17 @@ class ConnectedComponents:
         self.sets_vectors_3dim = sets_vectors_3dim
         self.df = df
         self.color = color
+        self.component_centers = []
+        self.component_radiuses = []
+        for vectors_set in self.sets_vectors_3dim:
+            (center, radius) = ConnectedComponents_center_radius(vectors_set)
+            self.component_centers.append(center)
+            self.component_radiuses.append(radius)
+
+        self.component_centers = np.array(self.component_centers)
+        self.component_radiuses = np.array(self.component_radiuses) * 100
 
     def getPlot(self):
-        component_centers = []
-        component_radiuses = []
-        for vectors_set in self.sets_vectors_3dim:
-            (center,radius) = ConnectedComponents_center_radius(vectors_set)
-            component_centers.append(center)
-            component_radiuses.append(radius)
-
-        component_centers = np.array(component_centers)
-        component_radiuses = np.array(component_radiuses)*100
-
         # Create a scatter plot
         base_figure = plt.figure(dpi=120, figsize=(160, 100)).gca(projection='3d')
         base_figure.scatter(
@@ -57,11 +56,11 @@ class ConnectedComponents:
         )
 
         base_figure.scatter(
-            xs=component_centers[:,0],
-            ys=component_centers[:,1],
-            zs=component_centers[:,2],
+            xs=self.component_centers[:,0],
+            ys=self.component_centers[:,1],
+            zs=self.component_centers[:,2],
             depthshade=False,
-            s=1000,
+            s=self.component_radiuses,
             c=self.color
         )
 
@@ -70,4 +69,3 @@ class ConnectedComponents:
         base_figure.set_zlabel('z axis')
 
         return plt
-
