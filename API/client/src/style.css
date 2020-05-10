@@ -26,12 +26,14 @@ body {
   margin-top: 15px;
   margin-left: 15px;
 }
+
 #menu button {
   padding:  3px 10px 3px 10px;
   margin: 3px;
   box-shadow: 0px 0px 1px 1px #001f3f inset;
   border-radius: 3px;
 }
+
 #body {
   border-radius: 4px;
   margin: 15px 15px 15px 15px;
@@ -40,7 +42,7 @@ body {
   box-shadow: 1px 1px 2px #fff inset,
             -1px -1px 2px #fff inset;
   padding: 20px;
-  margin-right: 10px;
+  margin-right: 10
 }
 
 #body .menu_column {
@@ -76,6 +78,34 @@ body {
 }
 
 /* visualization */
+#column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+#row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#row {
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.odd {
+  border-radius: 5px;
+  background: #F2F2F2;
+  border: 1px solid #ccc;
+}
+
+.even {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
 #body #visualization .menu_column .algorithms {
   margin-bottom: 35px;
   background: #F2F2F2;
@@ -85,28 +115,11 @@ body {
   border-radius: 3px;
   padding: 15px;
 }
-#body .menu_column .algorithms input {
-  margin-right: 10px;
-}
 
-#body #visualization .menu_column .menu {
+#body #visualization .other_buttons {
   margin-left: 10px;
 }
-
-#body #visualization .menu_column .menu button {
+#body #visualization .other_buttons #button {
   margin-top: 10px;
-}
-
-/* Main Content */
-#steps_visualization .column {
-  float: right;
-  width: 50%;
-}
-#steps_visualization .title {
-  padding: 10px;
-  background: #F2F2F2;
-  border: 1px solid #ccc;
-  box-shadow: 1px 1px 2px #fff inset,
-            -1px -1px 2px #fff inset;
-  border-radius: 3px;
+  margin-right: 10px;
 }

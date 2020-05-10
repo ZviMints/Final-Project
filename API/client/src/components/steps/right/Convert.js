@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 
 class Convert extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-
   checkIfTrain = (string) => { return string.includes("train") }
-
   renderScreen = (dataset) => {
     const train = this.checkIfTrain(dataset)
     if(train) {
@@ -42,15 +36,13 @@ class Convert extends Component {
 
   render() {
     return(
-      <div className="vis_convert">
+      <div className="right_convert">
         <div className="title">
           <h3>Dataset: </h3>
           {this.props.dataset}
         </div>
         <hr />
-
         { this.renderScreen(this.props.dataset) }
-
       </div>
     );
   }
