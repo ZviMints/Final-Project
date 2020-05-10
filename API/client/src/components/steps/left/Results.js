@@ -8,11 +8,12 @@ class Results extends Component {
       clicked: false
     }
   }
-
+  // ================ handleClick ================ //
   handleClick = () => {
     alert("end of the pipline")
     this.setState({clicked: true})
   }
+  // ================ Rendering ================ //
 
   render() {
     const renderButton = () => {
@@ -26,7 +27,7 @@ class Results extends Component {
 
     return(
       <div className="results">
-      <Algorithms algorithms={this.props.algorithms} updateAlgorithm={this.props.updateAlgorithm} removeAlgorithm={this.props.removeAlgorithm} />
+      <Algorithms updateAlgorithm={this.props.updateAlgorithm} removeAlgorithm={this.props.removeAlgorithm} />
       {renderButton()}
       </div>
     );

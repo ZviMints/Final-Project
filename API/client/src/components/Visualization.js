@@ -25,20 +25,20 @@ class Visualization  extends Component {
     this.total_states = ["load","convert","pca","results"];
 
     this.map = new Map();
-    this.map.set("load",        { "left": <Left_Load setStep={this.setStep} setDataset={this.setDataset} />,
+    this.map.set("load",        { "left": <Left_Load steps={this.state.steps} setStep={this.setStep} setDataset={this.setDataset} />,
                                   "right": <Right_Load /> }
                                 );
 
-    this.map.set("convert",     { "left": <Left_Convert setStep={this.setStep} dataset={this.state.dataset}  />,
+    this.map.set("convert",     { "left": <Left_Convert steps={this.state.steps} setStep={this.setStep} dataset={this.state.dataset}  />,
                                   "right": <Right_Convert dataset={this.state.dataset} /> }
                                 );
 
-    this.map.set("pca",         { "left": <Left_PCA setStep={this.setStep}/>,
+    this.map.set("pca",         { "left": <Left_PCA steps={this.state.steps} setStep={this.setStep}/>,
                                   "right": <Right_PCA /> }
                                 );
 
-    this.map.set("results",     { "left": <Left_Results setStep={this.setStep} algorithms={this.state.algorithms} />,
-                                  "right": <Right_Results /> }
+    this.map.set("results",     { "left": <Left_Results steps={this.state.steps} setStep={this.setStep} removeAlgorithm ={this.removeAlgorithm}  updateAlgorithm = {this.updateAlgorithm} />,
+                                  "right": <Right_Results algorithms={this.state.algorithms} /> }
                                 );
   }
 
@@ -75,13 +75,6 @@ componentDidMount(){
     this.setState({algorithms: newList})
   }
 
-  resetState = () => {
-    this.setState({ dataset: "",
-                    steps: ["load"],
-                    algorithms: []
-                  })
-  }
-
 
   // ================ Rendering ================ //
   render() {
@@ -106,7 +99,6 @@ componentDidMount(){
                               .map(step => <button id="button" onClick={() => alert("step '" + step + "' cannot be completed yet, following the previous steps")} type="button" name="results" className="btn btn-secondary">{step.charAt(0).toUpperCase() + step.slice(1)}</button>)
 
       }
-      <button id="button" onClick={this.resetState} type="button" name="results" className="btn btn-info">Reset</button>
       </div>
     );
   }
