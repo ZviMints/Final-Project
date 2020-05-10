@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 from sklearn import decomposition
 from sklearn.preprocessing import StandardScaler
-from Community_Detection_With_Algoritms.algorithms import KMeans
-from Community_Detection_With_Algoritms.algorithms import BaseGraph
-from Community_Detection_With_Algoritms.algorithms import ConnectedComponents
-from Community_Detection_With_Algoritms.algorithms import SpectralClustering
+from Community_Detection_With_Algoritms.algorithms import KMeans, BaseGraph, \
+    ConnectedComponents, SpectralClustering, Combined
+
+
 import matplotlib.pyplot as plt
 
 # matplotlib.use('MacOSX')
@@ -76,6 +76,9 @@ class Plotter:
         # Make Spectral
         self.spectral = SpectralClustering.SpectralClustering(one_componenet_after_pca, self.df, "yellow")
 
+        #Make Combined
+        self.Combined = Combined.Combined( self.df,self.kmeans,self.spectral,self.cc)
+
     def make_df(self,one_componenet_after_pca):
         self.df = pd.DataFrame(one_componenet_after_pca)  # 2-dimensional labeled data structure with columns of potentially different types
 
@@ -84,7 +87,7 @@ class Plotter:
         self.df['pca-three'] = one_componenet_after_pca[:, 2]
 
     # Plotting the Graph with no algo
-    def showWithNoAlgo(self):
+    def showWithBaseGraph(self):
         self.BaseGraph.getPlot().show()
 
     # Plotting the Graph with KMeans
@@ -99,5 +102,5 @@ class Plotter:
     def showWithSpectral(self):
         self.spectral.getPlot().show()
 
-    def showCombined(self): #todo: eilon
-        ()
+    def showCombined(self, mode):
+        self.Combined.getPlot(mode).show()

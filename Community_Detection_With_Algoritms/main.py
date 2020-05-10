@@ -21,10 +21,11 @@ def main():
     # ======================================== Plotting ======================================== #
     plt = Plotter.Plotter(G, model)
 
-    plt.showWithNoAlgo()
-    plt.showWithKMeans()
-    plt.showWithCC()
-    plt.showWithSpectral()
+    # plt.showWithBaseGraph()
+    # plt.showWithKMeans()
+    # plt.showWithCC()
+    # plt.showWithSpectral()
+    plt.showCombined("kmeans+spectral")
 
 if __name__ == '__main__':
     main()

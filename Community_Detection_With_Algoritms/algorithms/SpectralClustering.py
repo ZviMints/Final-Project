@@ -12,6 +12,8 @@ class SpectralClustering:
         self.vectors_3dim = vectors_3dim
         self.df = df
         self.color = color
+        self.sc = SpectralClusteringAlgorithm(n_clusters=11, assign_labels="discretize",n_init=10, random_state=0)
+        self.sc.fit_predict(self.vectors_3dim)
 
     def find_elbow(self):
         mms = MinMaxScaler()
@@ -45,9 +47,8 @@ class SpectralClustering:
             s=1
         )
 
-        sc = SpectralClusteringAlgorithm(n_clusters=11, assign_labels="discretize",n_init=10, random_state=0)
-        sc.fit_predict(self.vectors_3dim)
-        base_figure.scatter(sc.affinity_matrix_[:,0] , sc.affinity_matrix_[:, 1], sc.affinity_matrix_[:, 2], s=1000,c=self.color, depthshade=False)
+
+        base_figure.scatter(self.sc.affinity_matrix_[:,0] , self.sc.affinity_matrix_[:, 1], self.sc.affinity_matrix_[:, 2], s=1000,c=self.color, depthshade=False)
 
         base_figure.set_xlabel('x axis')
         base_figure.set_ylabel('y axis')
