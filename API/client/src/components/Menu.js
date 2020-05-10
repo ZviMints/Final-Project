@@ -8,23 +8,43 @@ import PCA from './menu_items/PCA'
 import Results from './menu_items/Results'
 
 
-class Menu  extends Component {
-  constructor(props) {
-    super(props);
-  }
+class Menu extends Component {
 
-  renderItem = () => {
-    if(this.props.step === "load") { return <Load setStep={this.props.setStep} setDataset={this.props.setDataset} /> } // Need to fix that problem
-    else if(this.props.step === "convert") { return <Convert />}
-    else if(this.props.step === "pca") { return  <PCA /> }
-    else if(this.props.step === "results") { return <Results algorithms={this.props.algorithms} updateAlgorithm={this.props.updateAlgorithm} removeAlgorithm={this.props.removeAlgorithm} /> }
+  constructor(props) {
+    super(props)
+  };
+
+  renderStep = (step) => {
+    switch (step) {
+      case "load":
+      return (
+           <Load
+           setStep={this.props.setStep}
+           setDataset={this.props.setDataset} />);
+      case "convert":
+        return (
+          <Convert
+            dataset={this.props.dataset} />
+          );
+      case "pca":
+        return <PCA />
+      case "results":
+      return (
+        <Results
+        algorithms={this.props.algorithms}
+        updateAlgorithm={this.props.updateAlgorithm}
+        removeAlgorithm={this.props.removeAlgorithm} /> );
+      default:
+        alert("unknown step")
+
+    }
   }
 
   render() {
       // Main render function
       return (
         <div className="menu">
-            { this.renderItem() }
+             { this.renderStep(this.props.step) }
         </div>
     );
   }

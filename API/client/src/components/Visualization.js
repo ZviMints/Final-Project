@@ -4,7 +4,7 @@ import Content from './Content'
 import Menu from './Menu'
 
 class Visualization  extends Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +15,7 @@ class Visualization  extends Component {
   }
 
   // ================ Handlers ================ //
-  setStep = (newStep) => { this.setState({step: newStep})}
+  setStep = (newStep) => { this.setState({step: newStep}) }
   setDataset = (newDataset) => { this.setState({dataset: newDataset})}
 
   updateAlgorithm = (name) => {
@@ -25,7 +25,7 @@ class Visualization  extends Component {
   }
 
   removeAlgorithm = (name) => {
-    const newList = this.state.algorithms.filter(algorithm => algorithm != name)
+    const newList = this.state.algorithms.filter(algorithm => algorithm !== name)
     this.setState({algorithms: newList})
   }
 
@@ -36,7 +36,6 @@ class Visualization  extends Component {
               <div className="row">
                 <div className="menu_column">
 
-                  // Menu Componenet
                   <Menu
                   step={this.state.step}
                   setStep={this.setStep}
@@ -48,7 +47,6 @@ class Visualization  extends Component {
                 </div>
                 <div className="content_column">
 
-                // Content Componenet
                 <Content
                           step={this.state.step}
                           dataset={this.state.dataset}
