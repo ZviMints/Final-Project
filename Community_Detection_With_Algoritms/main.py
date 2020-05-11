@@ -24,8 +24,9 @@ def main():
     # plt.showWithBaseGraph()
     # plt.showWithKMeans()
     # plt.showWithCC()
-    # plt.showWithSpectral()
-    plt.showCombined("kmeans+spectral")
+    plt.showWithSpectral()
+    # plt.showCombined("kmeans+spectral")
+    # print(plt.spectral.getPlot().show())
 
 if __name__ == '__main__':
     main()

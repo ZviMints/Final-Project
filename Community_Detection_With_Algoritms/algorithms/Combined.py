@@ -26,12 +26,12 @@ class Combined:
 
         if mode == "kmeans+spectral":
             base_figure.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                                self.kmeans.km.cluster_centers_[:, 2], s=1000, c=self.kmeans.color, depthshade=False)
-            base_figure.scatter(self.spectral.sc.affinity_matrix_[:, 0], self.spectral.sc.affinity_matrix_[:, 1],
-                                self.spectral.sc.affinity_matrix_[:, 2], s=1000, c=self.spectral.color, depthshade=False)
+                                self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, depthshade=False)
+            base_figure.scatter(self.spectral.vectors_3dim[:,0] , self.spectral.vectors_3dim[:, 1], self.spectral.vectors_3dim[:, 2],
+                                s=1,c=self.spectral.sc.labels_, depthshade=False)
         elif mode == "kmeans+connected":
             base_figure.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                                self.kmeans.km.cluster_centers_[:, 2], s=1000, c=self.kmeans.color, depthshade=False)
+                                self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, depthshade=False)
             base_figure.scatter(
                 xs=self.connected.component_centers[:, 0],
                 ys=self.connected.component_centers[:, 1],
@@ -42,9 +42,9 @@ class Combined:
             )
 
         elif mode == "spectral+connected":
-            base_figure.scatter(self.spectral.sc.affinity_matrix_[:, 0], self.spectral.sc.affinity_matrix_[:, 1],
-                                self.spectral.sc.affinity_matrix_[:, 2], s=1000, c=self.spectral.color,
-                                depthshade=False)
+            base_figure.scatter(self.spectral.vectors_3dim[:, 0], self.spectral.vectors_3dim[:, 1],
+                                self.spectral.vectors_3dim[:, 2],
+                                s=1, c=self.spectral.sc.labels_, depthshade=False)
             base_figure.scatter(
                 xs=self.connected.component_centers[:, 0],
                 ys=self.connected.component_centers[:, 1],
@@ -55,10 +55,10 @@ class Combined:
 
         elif mode == "kmeans+spectral+connected":
             base_figure.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                                self.kmeans.km.cluster_centers_[:, 2], s=1000, c=self.kmeans.color, depthshade=False)
-            base_figure.scatter(self.spectral.sc.affinity_matrix_[:, 0], self.spectral.sc.affinity_matrix_[:, 1],
-                                self.spectral.sc.affinity_matrix_[:, 2], s=1000, c=self.spectral.color,
-                                depthshade=False)
+                                self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, depthshade=False)
+            base_figure.scatter(self.spectral.vectors_3dim[:, 0], self.spectral.vectors_3dim[:, 1],
+                                self.spectral.vectors_3dim[:, 2],
+                                s=1, c=self.spectral.sc.labels_, depthshade=False)
             base_figure.scatter(
                 xs=self.connected.component_centers[:, 0],
                 ys=self.connected.component_centers[:, 1],

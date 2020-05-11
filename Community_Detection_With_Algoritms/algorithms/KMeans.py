@@ -1,7 +1,6 @@
 import matplotlib as matplotlib
 from sklearn.cluster import KMeans as KMeansAlgorithm # Algorithm
 import matplotlib.pyplot as plt
-from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm # Algorithm
 from sklearn.preprocessing import MinMaxScaler
 
 # matplotlib.use('MacOSX')
@@ -41,7 +40,7 @@ class KMeans:
         )
 
 
-        base_figure.scatter(self.km.cluster_centers_[:, 0], self.km.cluster_centers_[:, 1], self.km.cluster_centers_[:, 2], s=1000,c=self.color, depthshade=False)
+        base_figure.scatter(self.km.cluster_centers_[:, 0], self.km.cluster_centers_[:, 1], self.km.cluster_centers_[:, 2], s=700,c=self.color, depthshade=False)
 
         base_figure.set_xlabel('x axis')
         base_figure.set_ylabel('y axis')
