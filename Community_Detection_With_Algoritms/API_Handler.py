@@ -1,12 +1,6 @@
 import networkx as nx
-from gensim.models import KeyedVectors
 from node2vec import Node2Vec
-from sklearn import decomposition
-from sklearn.preprocessing import StandardScaler
-from Community_Detection_With_Algoritms.algorithms import KMeans, BaseGraph, \
-    ConnectedComponents, SpectralClustering, Combined
 from Community_Detection_With_Algoritms import Plotter
-from gensim.test.utils import get_tmpfile
 import matplotlib.pyplot as plt
 
 import matplotlib.pyplot
@@ -73,7 +67,7 @@ def main():
     plt.savefig("API_results/PCA/BaseGraph.png")
 
     #results
-    plt = plotter.kmeans.getPlot()
+    plt = plotter.Combined.getPlot("kmeans+spectral+connected")
     plt.savefig("API_results/results/result_cluster.png")
 
 if __name__ == '__main__':

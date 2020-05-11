@@ -1,8 +1,5 @@
-import matplotlib as matplotlib
-from sklearn.cluster import KMeans as KMeansAlgorithm # Algorithm
+
 import matplotlib.pyplot as plt
-from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm # Algorithm
-from sklearn.preprocessing import MinMaxScaler
 
 # matplotlib.use('MacOSX')
 

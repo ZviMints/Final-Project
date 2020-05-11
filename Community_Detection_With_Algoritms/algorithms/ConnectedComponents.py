@@ -1,14 +1,9 @@
-import matplotlib as matplotlib
+
 import matplotlib.pyplot as plt
-import networkx as nx
 import numpy as np
-from sklearn import decomposition
-from sklearn.cluster import linkage_tree # Algorithm
-from sklearn.cluster import AgglomerativeClustering # Algorithm
-from sklearn.cluster import AffinityPropagation # Algorithm
-from sklearn.decomposition import PCA  # From 64dim to 3dim
-from sklearn.preprocessing import StandardScaler, RobustScaler, Normalizer  # Normalized
-import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+np.set_printoptions(threshold=np.inf)
 
 # matplotlib.use('MacOSX')
 
@@ -43,7 +38,7 @@ class ConnectedComponents:
             self.component_radiuses.append(radius)
 
         self.component_centers = np.array(self.component_centers)
-        self.component_radiuses = np.array(self.component_radiuses) * 180
+        self.component_radiuses = np.array(self.component_radiuses) * 170
 
     def getPlot(self):
         # Create a scatter plot
