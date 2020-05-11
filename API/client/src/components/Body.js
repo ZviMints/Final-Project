@@ -9,7 +9,7 @@ class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      "page": <Visualization />,
+      "page": [<Visualization />],
     };
   }
 
@@ -19,15 +19,16 @@ class Body extends Component {
 
   render() {
     return (
-      <div id="body">
-
-      <button onClick={() => this.handleClick(<Visualization />)}>Visualization</button>
-      <button onClick={() => this.handleClick(<Abstract />)}>Abstract</button>
-      <button onClick={() => this.handleClick(<About />)}>About Us</button>
-      <button onClick={() => this.handleClick(<Process />)}>Our Process</button>
-
-      {this.state.page}
-
+      <div>
+        <div id="menu">
+          <button onClick={() => this.handleClick(<Visualization />)}>Visualization</button>
+          <button onClick={() => this.handleClick(<Abstract />)}>Abstract</button>
+          <button onClick={() => this.handleClick(<About />)}>About Us</button>
+          <button onClick={() => this.handleClick(<Process />)}>Our Process</button>
+        </div>
+        <div id="body">
+          {this.state.page}
+        </div>
       </div>
     );
   }

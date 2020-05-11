@@ -5,14 +5,11 @@ class PCA extends Component {
     super(props);
   }
 
-  handleClick() {
-    alert("here")
-  }
-
   render() {
     return(
-      <button type="button" name="results" onClick={this.handleClick} className="btn btn-primary btn-lg active">PCA</button>
+      <div className="vis_pca">
+      </div>
     );
   }
-}  
+}
 export default PCA;
