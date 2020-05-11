@@ -1,8 +1,8 @@
 from collections import defaultdict
-
+from mpl_toolkits.mplot3d import Axes3D
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm # Algorithm
 import matplotlib.pyplot as plt
-import numpy as np
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
@@ -10,20 +10,30 @@ np.set_printoptions(threshold=np.inf)
 
 
 # matplotlib.use('MacOSX')
+# def makeTriangle(center):
+#     x = np.array([center[0]+3,center[1],center[2]])
+#     y = np.array([center[0],center[1]+3,center[2]])
+#     z = np.array([center[0],center[1],center[2]+3])
+#     return (x,y,z)
+
 def dist3D(p1, p2):
     p1 = np.array(p1)
     p2 = np.array(p2)
     squared_dist = np.sum((p1 - p2) ** 2, axis=0)
     return np.sqrt(squared_dist)
 
-def makeCenterClusterList(vectors_3dim,k,sc):
-    CenterClusterList = list()
+def makeNodeDevidedByCluster(vectors_3dim,k,sc):
     nodeDevidedByCluster = defaultdict(list)
-    for i,node in enumerate(vectors_3dim):
+    for i, node in enumerate(vectors_3dim):
         nodeDevidedByCluster[sc.labels_[i]].append(node)
-
     for i in range(k):
         nodeDevidedByCluster[i] = np.array(nodeDevidedByCluster[i])
+    return nodeDevidedByCluster
+
+def makeCenterClusterList(vectors_3dim,k,sc):
+    nodeDevidedByCluster = makeNodeDevidedByCluster(vectors_3dim,k,sc)
+    CenterClusterList = list()
+    for i in range(k):
         sum = np.array([0, 0, 0])
         for node in nodeDevidedByCluster[i]:
             sum = sum + np.array(node)
@@ -47,11 +57,10 @@ class SpectralClustering:
         self.vectors_3dim = vectors_3dim
         self.df = df
         self.color = color
-        self.sc = SpectralClusteringAlgorithm(n_clusters=self.find_elbow(), assign_labels="discretize",n_init=10, random_state=0)
+        self.sc = SpectralClusteringAlgorithm(n_clusters=11, assign_labels="discretize",n_init=10, random_state=0)
         self.sc.fit_predict(self.vectors_3dim)
 
     def find_elbow(self):
-
         mms = MinMaxScaler()
         mms.fit(self.vectors_3dim)
         data_transformed = mms.transform(self.vectors_3dim)
@@ -74,20 +83,25 @@ class SpectralClustering:
         # plt.show()
 
     def getPlot(self):
+        #create the centers of the clusters
+        CenterClusterList = makeCenterClusterList(self.vectors_3dim, 11, self.sc)
 
         # Create a scatter plot
-        base_figure = plt.figure(dpi=120, figsize=(8.0, 5.0)).gca(projection='3d')
-        base_figure.scatter(
-            xs=self.df["pca-one"],
-            ys=self.df["pca-two"],
-            zs=self.df["pca-three"],
-            s=1
-        )
+        fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
+        ax = fig.add_subplot(111,projection='3d')
+
+        #drow all the nodes in the grapg
+        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
+
+        #drow the clusters
+        for i in range(len(CenterClusterList)):
+            center = CenterClusterList[i]
+            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=700)
 
 
-        base_figure.scatter(self.vectors_3dim[:,0] , self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1,c=self.sc.labels_, depthshade=False)
+        #the axis labels
+        ax.set_xlabel('X Label')
+        ax.set_ylabel('Y Label')
+        ax.set_zlabel('Z Label')
 
-        base_figure.set_xlabel('x axis')
-        base_figure.set_ylabel('y axis')
-        base_figure.set_zlabel('z axis')
         return plt

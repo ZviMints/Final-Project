@@ -22,10 +22,10 @@ def main():
     plotter = Plotter.Plotter(G, model)
     # plt = plotter.BaseGraph.getPlot()
 
-    plotter.showWithBaseGraph()
-    plotter.showWithKMeans()
+    # plotter.showWithBaseGraph()
+    # plotter.showWithKMeans()
     # plotter.showWithCC()
-    # plotter.showWithSpectral()
+    plotter.showWithSpectral()
     # plotter.showCombined("kmeans+spectral")
     # print(plotter.spectral.getPlot().show())
 

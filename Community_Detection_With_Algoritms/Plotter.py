@@ -75,10 +75,10 @@ class Plotter:
         self.cc = ConnectedComponents.ConnectedComponents(all_connected_componenets_after_pca, self.df, "green")
 
         # Make Spectral
-        #self.spectral = SpectralClustering.SpectralClustering(one_componenet_after_pca, self.df, "yellow")
+        self.spectral = SpectralClustering.SpectralClustering(one_componenet_after_pca, self.df, "yellow")
 
         #Make Combined
-        #self.Combined = Combined.Combined( self.df,self.kmeans,self.spectral,self.cc)
+        self.Combined = Combined.Combined( self.df,self.kmeans,self.spectral,self.cc)
 
     def make_df(self,one_componenet_after_pca):
         self.df = pd.DataFrame(one_componenet_after_pca)  # 2-dimensional labeled data structure with columns of potentially different types
