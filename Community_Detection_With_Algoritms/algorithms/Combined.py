@@ -17,7 +17,7 @@ class Combined:
 
     def getPlot(self, mode):
         # Create a scatter plot
-        base_figure = plt.figure(dpi=120, figsize=(160, 100)).gca(projection='3d')
+        base_figure = plt.figure(dpi=120, figsize=(8.0, 5.0)).gca(projection='3d')
         base_figure.scatter(
             xs=self.df["pca-one"],
             ys=self.df["pca-two"],

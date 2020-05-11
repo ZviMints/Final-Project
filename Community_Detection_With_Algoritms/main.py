@@ -19,14 +19,15 @@ def main():
     model = KeyedVectors.load(path, mmap='r')
 
     # ======================================== Plotting ======================================== #
-    plt = Plotter.Plotter(G, model)
+    plotter = Plotter.Plotter(G, model)
+    # plt = plotter.BaseGraph.getPlot()
 
-    # plt.showWithBaseGraph()
-    # plt.showWithKMeans()
-    # plt.showWithCC()
-    plt.showWithSpectral()
-    # plt.showCombined("kmeans+spectral")
-    # print(plt.spectral.getPlot().show())
+    plotter.showWithBaseGraph()
+    # plotter.showWithKMeans()
+    # plotter.showWithCC()
+    # plotter.showWithSpectral()
+    # plotter.showCombined("kmeans+spectral")
+    # print(plotter.spectral.getPlot().show())
 
 if __name__ == '__main__':
     main()

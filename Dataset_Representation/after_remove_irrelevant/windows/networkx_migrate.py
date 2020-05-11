@@ -73,7 +73,7 @@ def parse_data_to_case_class(input):
 
 
 input = {
-    "data_path": "C:/Users/EILON/PycharmProjects/data_set/test/pan12-sexual-predator-identification-test-corpus-2012-05-21/pan12-sexual-predator-identification-test-corpus-2012-05-17",
+    "data_path": "C:/Users/EILON/PycharmProjects/data_set/traning/pan12-sexual-predator-identification-training-corpus-2012-05-01/pan12-sexual-predator-identification-training-corpus-2012-05-01",
 }
 
 # Building Graph
@@ -85,11 +85,11 @@ for component in list(nx.connected_components(G)):
         for node in component:
             G.remove_node(node)
 
-nx.write_multiline_adjlist(G, "test_networkxAfterRemove.adjlist")
+nx.write_multiline_adjlist(G, "train_networkxBeforeRemove.adjlist")
 
 print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
 nx.draw(G, node_size = 5)
-plt.savefig("test_after_remove.png")
-pd.to_pickle(G, "test_graph_after_remove_2_connected.pkl")
+plt.savefig("train_before_remove.png")
+pd.to_pickle(G, "train_graph_before_remove_2_connected.pkl")
 plt.show()
 
