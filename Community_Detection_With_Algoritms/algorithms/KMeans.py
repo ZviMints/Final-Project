@@ -6,9 +6,8 @@ from sklearn.preprocessing import MinMaxScaler
 # matplotlib.use('MacOSX')
 
 class KMeans:
-    def __init__(self, vectors_3dim, df, color):
+    def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
-        self.df = df
         self.color = color
         self.km = KMeansAlgorithm(n_clusters=self.find_elbow(), init='k-means++', max_iter=300, n_init=10, random_state=0)
         self.km.fit_predict(self.vectors_3dim)
@@ -30,20 +29,21 @@ class KMeans:
                     return k-1
 
     def getPlot(self):
+
         # Create a scatter plot
-        base_figure = plt.figure(dpi=120, figsize=(8.0, 5.0)).gca(projection='3d')
-        base_figure.scatter(
-            xs=self.df["pca-one"],
-            ys=self.df["pca-two"],
-            zs=self.df["pca-three"],
-            s=1
-        )
+        fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
+        ax = fig.add_subplot( projection='3d')
 
+        # drow all the nodes in the grapg
+        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
 
-        base_figure.scatter(self.km.cluster_centers_[:, 0], self.km.cluster_centers_[:, 1], self.km.cluster_centers_[:, 2], s=700,c=self.color, depthshade=False)
+        # drow the clusters
+        ax.scatter(self.km.cluster_centers_[:, 0], self.km.cluster_centers_[:, 1],
+                            self.km.cluster_centers_[:, 2], s=700, c=self.color, marker = 'o', depthshade=False)
+        # the axis labels
+        ax.set_xlabel('X Label')
+        ax.set_ylabel('Y Label')
+        ax.set_zlabel('Z Label')
 
-        base_figure.set_xlabel('x axis')
-        base_figure.set_ylabel('y axis')
-        base_figure.set_zlabel('z axis')
         return plt
 

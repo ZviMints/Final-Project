@@ -31,9 +31,9 @@ def ConnectedComponents_center_radius(set_3dim_vec):
 
 
 class ConnectedComponents:
-    def __init__(self, sets_vectors_3dim, df, color):
+    def __init__(self, vectors_3dim, sets_vectors_3dim, color):
         self.sets_vectors_3dim = sets_vectors_3dim
-        self.df = df
+        self.vectors_3dim = vectors_3dim
         self.color = color
         self.component_centers = []
         self.component_radiuses = []
@@ -43,29 +43,29 @@ class ConnectedComponents:
             self.component_radiuses.append(radius)
 
         self.component_centers = np.array(self.component_centers)
-        self.component_radiuses = np.array(self.component_radiuses) * 100
+        self.component_radiuses = np.array(self.component_radiuses) * 180
 
     def getPlot(self):
         # Create a scatter plot
-        base_figure = plt.figure(dpi=120, figsize=(8.0, 5.0)).gca(projection='3d')
-        base_figure.scatter(
-            xs=self.df["pca-one"],
-            ys=self.df["pca-two"],
-            zs=self.df["pca-three"],
-            s=1
-        )
+        fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
+        ax = fig.add_subplot(projection='3d')
 
-        base_figure.scatter(
+        #drow all the nodes in the grapg
+        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
+
+        #drow the clusters
+        ax.scatter(
             xs=self.component_centers[:,0],
             ys=self.component_centers[:,1],
             zs=self.component_centers[:,2],
-            depthshade=False,
             s=self.component_radiuses,
-            c=self.color
-        )
+            c=self.color,
+            marker = 's',
+            depthshade=False)
 
-        base_figure.set_xlabel('x axis')
-        base_figure.set_ylabel('y axis')
-        base_figure.set_zlabel('z axis')
+        #the axis labels
+        ax.set_xlabel('X Label')
+        ax.set_ylabel('Y Label')
+        ax.set_zlabel('Z Label')
 
         return plt

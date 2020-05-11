@@ -25,9 +25,9 @@ def main():
     # plotter.showWithBaseGraph()
     # plotter.showWithKMeans()
     # plotter.showWithCC()
-    plotter.showWithSpectral()
-    # plotter.showCombined("kmeans+spectral")
-    # print(plotter.spectral.getPlot().show())
+    # plotter.showWithSpectral()
+    plotter.showCombined("kmeans+spectral+connected")
+
 
 if __name__ == '__main__':
     main()

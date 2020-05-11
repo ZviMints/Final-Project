@@ -8,8 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 class Combined:
-    def __init__(self, df,kmeans,spectral,connected):
-        self.df = df
+    def __init__(self, kmeans,spectral,connected):
         self.kmeans = kmeans
         self.spectral =spectral
         self.connected = connected
@@ -17,59 +16,71 @@ class Combined:
 
     def getPlot(self, mode):
         # Create a scatter plot
-        base_figure = plt.figure(dpi=120, figsize=(8.0, 5.0)).gca(projection='3d')
-        base_figure.scatter(
-            xs=self.df["pca-one"],
-            ys=self.df["pca-two"],
-            zs=self.df["pca-three"],
-            s=1)
+        fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
+        ax = fig.add_subplot( projection='3d')
+
+        # drow all the nodes in the grapg
+        ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2], s=1)
 
         if mode == "kmeans+spectral":
-            base_figure.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                                self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, depthshade=False)
-            base_figure.scatter(self.spectral.vectors_3dim[:,0] , self.spectral.vectors_3dim[:, 1], self.spectral.vectors_3dim[:, 2],
-                                s=1,c=self.spectral.sc.labels_, depthshade=False)
+            # drow kmeans clusters
+            ax.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
+                       self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, marker='o', depthshade=False)
+            # drow spectral clusters
+            for i in range(len(self.spectral.CenterClusterList)):
+                center = self.spectral.CenterClusterList[i]
+                ax.scatter(center[0], center[1], center[2], c=self.spectral.color, marker='^', s=700, depthshade=False)
+
         elif mode == "kmeans+connected":
-            base_figure.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                                self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, depthshade=False)
-            base_figure.scatter(
+            # drow kmeans clusters
+            ax.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
+                       self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, marker='o', depthshade=False)
+            # drow connected clusters
+            ax.scatter(
                 xs=self.connected.component_centers[:, 0],
                 ys=self.connected.component_centers[:, 1],
                 zs=self.connected.component_centers[:, 2],
-                depthshade=False,
                 s=self.connected.component_radiuses,
-                c=self.connected.color
-            )
+                c=self.connected.color,
+                marker='s',
+                depthshade=False)
 
         elif mode == "spectral+connected":
-            base_figure.scatter(self.spectral.vectors_3dim[:, 0], self.spectral.vectors_3dim[:, 1],
-                                self.spectral.vectors_3dim[:, 2],
-                                s=1, c=self.spectral.sc.labels_, depthshade=False)
-            base_figure.scatter(
+            # drow spectral clusters
+            for i in range(len(self.spectral.CenterClusterList)):
+                center = self.spectral.CenterClusterList[i]
+                ax.scatter(center[0], center[1], center[2], c=self.spectral.color, marker='^', s=700, depthshade=False)
+            # drow connected clusters
+            ax.scatter(
                 xs=self.connected.component_centers[:, 0],
                 ys=self.connected.component_centers[:, 1],
                 zs=self.connected.component_centers[:, 2],
-                depthshade=False,
                 s=self.connected.component_radiuses,
-                c=self.connected.color)
+                c=self.connected.color,
+                marker='s',
+                depthshade=False)
 
         elif mode == "kmeans+spectral+connected":
-            base_figure.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                                self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, depthshade=False)
-            base_figure.scatter(self.spectral.vectors_3dim[:, 0], self.spectral.vectors_3dim[:, 1],
-                                self.spectral.vectors_3dim[:, 2],
-                                s=1, c=self.spectral.sc.labels_, depthshade=False)
-            base_figure.scatter(
+            # drow kmeans clusters
+            ax.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
+                       self.kmeans.km.cluster_centers_[:, 2], s=700, c=self.kmeans.color, marker='o', depthshade=False)
+            # drow spectral clusters
+            for i in range(len(self.spectral.CenterClusterList)):
+                center = self.spectral.CenterClusterList[i]
+                ax.scatter(center[0], center[1], center[2], c=self.spectral.color, marker='^', s=700, depthshade=False)
+            # drow connected clusters
+            ax.scatter(
                 xs=self.connected.component_centers[:, 0],
                 ys=self.connected.component_centers[:, 1],
                 zs=self.connected.component_centers[:, 2],
-                depthshade=False,
                 s=self.connected.component_radiuses,
-                c=self.connected.color)
+                c=self.connected.color,
+                marker='s',
+                depthshade=False)
 
-
-        base_figure.set_xlabel('x axis')
-        base_figure.set_ylabel('y axis')
-        base_figure.set_zlabel('z axis')
+            # the axis labels
+            ax.set_xlabel('X Label')
+            ax.set_ylabel('Y Label')
+            ax.set_zlabel('Z Label')
         return plt
 

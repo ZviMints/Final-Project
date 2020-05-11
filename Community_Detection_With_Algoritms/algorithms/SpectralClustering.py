@@ -53,12 +53,13 @@ def generateInteria_(vectors_3dim,k,sc):
     return inertia_
 
 class SpectralClustering:
-    def __init__(self, vectors_3dim, df, color):
+    def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
-        self.df = df
         self.color = color
         self.sc = SpectralClusteringAlgorithm(n_clusters=11, assign_labels="discretize",n_init=10, random_state=0)
         self.sc.fit_predict(self.vectors_3dim)
+        # create the centers of the clusters
+        self.CenterClusterList = makeCenterClusterList(self.vectors_3dim, 11, self.sc)
 
     def find_elbow(self):
         mms = MinMaxScaler()
@@ -83,20 +84,19 @@ class SpectralClustering:
         # plt.show()
 
     def getPlot(self):
-        #create the centers of the clusters
-        CenterClusterList = makeCenterClusterList(self.vectors_3dim, 11, self.sc)
+
 
         # Create a scatter plot
         fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
-        ax = fig.add_subplot(111,projection='3d')
+        ax = fig.add_subplot(projection='3d')
 
         #drow all the nodes in the grapg
         ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
 
         #drow the clusters
-        for i in range(len(CenterClusterList)):
-            center = CenterClusterList[i]
-            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=700)
+        for i in range(len(self.CenterClusterList)):
+            center = self.CenterClusterList[i]
+            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=700,depthshade=False)
 
 
         #the axis labels
