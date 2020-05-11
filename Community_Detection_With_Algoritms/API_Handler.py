@@ -23,8 +23,8 @@ def load(json_name):
         G = nx.read_multiline_adjlist("adjlists/test_networkxBeforeRemove.adjlist")
 
     #generate picture of networkx
-    nx.draw(G, node_size=5)
-    plt.savefig("API_results/load/networkx_before_remove.png")
+    # nx.draw(G, node_size=5)
+    # plt.savefig("API_results/load/networkx_before_remove.png")
     # Remove All 2-Connected-Components in G
     for component in list(nx.connected_components(G)):
         if len(component) <= 2: # This will actually remove only 2-connected
@@ -56,8 +56,8 @@ def embedding(G):
     saveWalks(list(node2vec.walks))
 
     # Embed nodes
-    return node2vec.fit(window=10, min_count=1, batch_words=4)
-
+    model = node2vec.fit(window=10, min_count=1, batch_words=4)
+    return model.wv
 
 #==========================================  ==========================================#
 def main():

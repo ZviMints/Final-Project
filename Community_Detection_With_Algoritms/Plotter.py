@@ -6,6 +6,7 @@ from sklearn import decomposition
 from sklearn.preprocessing import StandardScaler
 from Community_Detection_With_Algoritms.algorithms import KMeans, BaseGraph, \
     ConnectedComponents, SpectralClustering, Combined
+from node2vec import Node2Vec
 
 
 import matplotlib.pyplot as plt

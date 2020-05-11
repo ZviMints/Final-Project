@@ -23,7 +23,7 @@ def main():
     # plt = plotter.BaseGraph.getPlot()
 
     plotter.showWithBaseGraph()
-    # plotter.showWithKMeans()
+    plotter.showWithKMeans()
     # plotter.showWithCC()
     # plotter.showWithSpectral()
     # plotter.showCombined("kmeans+spectral")
