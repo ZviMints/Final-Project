@@ -30,7 +30,7 @@ def makeCenterClusterList(vectors_3dim,k,sc):
         sum = np.array([0, 0, 0])
         for node in nodeDevidedByCluster[i]:
             sum = sum + np.array(node)
-        sum = sum / len(nodeDevidedByCluster[i])
+        sum = sum / max(len(nodeDevidedByCluster[i]), 1)
         CenterClusterList.append(sum)
     return CenterClusterList
 
@@ -66,23 +66,23 @@ class SpectralClustering:
             sc = SpectralClusteringAlgorithm(n_clusters=k)
             sc = sc.fit(self.vectors_3dim)
             Sum_of_squared_distances.append(generateInteria_(self.vectors_3dim, k, sc))
-            # if (len(Sum_of_squared_distances)) > 1:
-                # gradient = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
-                # if gradient > 0:
-                #     print(k-1)
-                #     return k - 1
-        plt.plot(K, Sum_of_squared_distances, 'bx-')
-        plt.xlabel('k')
-        plt.ylabel('Sum_of_squared_distances')
-        plt.title('Elbow Method For Optimal k')
-        plt.show()
-        for i in range(2, len(Sum_of_squared_distances)):
-            gradient1 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
-            gradient2 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 2]
-
-            if (gradient1 > -300) and (gradient2 > -300):
-                print(i+16)
-                return i+16
+            if (len(Sum_of_squared_distances)) > 2:
+                gradient1 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
+                gradient2 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 2]
+                if (gradient1 > -300) and (gradient2 > -300):
+                    print(k-2)
+                    return k - 2
+        # plt.plot(K, Sum_of_squared_distances, 'bx-')
+        # plt.xlabel('k')
+        # plt.ylabel('Sum_of_squared_distances')
+        # plt.title('Elbow Method For Optimal k')
+        # plt.show()
+        # for i in range(2, len(Sum_of_squared_distances)):
+        #     gradient1 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
+        #     gradient2 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 2]
+        #
+        #     if (gradient1 > -300) and (gradient2 > -300):
+        #         return i+16
 
     def getPlot(self):
 
