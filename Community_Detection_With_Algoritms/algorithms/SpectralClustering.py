@@ -8,11 +8,6 @@ np.set_printoptions(threshold=np.inf)
 
 
 # matplotlib.use('MacOSX')
-# def makeTriangle(center):
-#     x = np.array([center[0]+3,center[1],center[2]])
-#     y = np.array([center[0],center[1]+3,center[2]])
-#     z = np.array([center[0],center[1],center[2]+3])
-#     return (x,y,z)
 
 def dist3D(p1, p2):
     p1 = np.array(p1)
@@ -54,10 +49,11 @@ class SpectralClustering:
     def __init__(self, vectors_3dim, color):
         self.vectors_3dim = vectors_3dim
         self.color = color
-        self.sc = SpectralClusteringAlgorithm(n_clusters=11, assign_labels="discretize",n_init=10, random_state=0)
+        k = self.find_elbow()
+        self.sc = SpectralClusteringAlgorithm(n_clusters=k, assign_labels="discretize",n_init=10, random_state=0)
         self.sc.fit_predict(self.vectors_3dim)
         # create the centers of the clusters
-        self.CenterClusterList = makeCenterClusterList(self.vectors_3dim, 11, self.sc)
+        self.CenterClusterList = makeCenterClusterList(self.vectors_3dim, k, self.sc)
 
     def find_elbow(self):
         mms = MinMaxScaler()
@@ -65,21 +61,28 @@ class SpectralClustering:
         data_transformed = mms.transform(self.vectors_3dim)
 
         Sum_of_squared_distances = []
-        # K = range(1, int(0.01 * len(data_transformed)))
-        K = range(6, 18)
+        K = range(17, int(0.0031 * len(data_transformed)))
         for i, k in enumerate(K):
             sc = SpectralClusteringAlgorithm(n_clusters=k)
             sc = sc.fit(self.vectors_3dim)
-            Sum_of_squared_distances.append(generateInteria_(self.vectors_3dim,k,sc))
-            if (len(Sum_of_squared_distances)) > 1:
-                gradient = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
-                if gradient > -1200:
-                    return k - 1
-        # plt.plot(K, Sum_of_squared_distances, 'bx-')
-        # plt.xlabel('k')
-        # plt.ylabel('Sum_of_squared_distances')
-        # plt.title('Elbow Method For Optimal k')
-        # plt.show()
+            Sum_of_squared_distances.append(generateInteria_(self.vectors_3dim, k, sc))
+            # if (len(Sum_of_squared_distances)) > 1:
+                # gradient = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
+                # if gradient > 0:
+                #     print(k-1)
+                #     return k - 1
+        plt.plot(K, Sum_of_squared_distances, 'bx-')
+        plt.xlabel('k')
+        plt.ylabel('Sum_of_squared_distances')
+        plt.title('Elbow Method For Optimal k')
+        plt.show()
+        for i in range(2, len(Sum_of_squared_distances)):
+            gradient1 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
+            gradient2 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 2]
+
+            if (gradient1 > -300) and (gradient2 > -300):
+                print(i+16)
+                return i+16
 
     def getPlot(self):
 

@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 np.set_printoptions(threshold=np.inf)
-
+SIZE = 160
 # matplotlib.use('MacOSX')
 
 def ConnectedComponents_center(set_3dim_vec):
@@ -38,7 +38,7 @@ class ConnectedComponents:
             self.component_radiuses.append(radius)
 
         self.component_centers = np.array(self.component_centers)
-        self.component_radiuses = np.array(self.component_radiuses) * 170
+        self.component_radiuses = np.array(self.component_radiuses) * SIZE
 
     def getPlot(self):
         # Create a scatter plot
