@@ -17,21 +17,21 @@ def load(json_name):
         G = nx.read_multiline_adjlist("adjlists/test_networkxBeforeRemove.adjlist")
 
     #generate picture of networkx
-    nx.draw(G, node_size=5)
-    plt.savefig("API_results/load/networkx_before_remove.png")
+    # nx.draw(G, node_size=1)
+    # plt.savefig("../API/client/public/models/load/networkx_before_remove.png")
     # Remove All 2-Connected-Components in G
     for component in list(nx.connected_components(G)):
         if len(component) <= 2:# This will actually remove only 2-connected
             for node in component:
                 G.remove_node(node)
-    nx.draw(G, node_size=5)
-    plt.savefig("API_results/load/networkx_after_remove.png")
+    # nx.draw(G, node_size=5)
+    # plt.savefig("../API/client/public/models/load/networkx_after_remove.png")
 
     return G
 
 #=============================================== embedding functions ================================================#
 def saveWalks(walks):
-    f = open("API_results/embedding/walks.txt", "w+")
+    f = open("../API/client/public/models/embedding/walks.txt", "w+")
     row = 1
     for sentence in walks:
         f.write("row %s:    " % str(row))
@@ -63,12 +63,12 @@ def main():
 
     #PCA from 64D to 3D
     plotter = Plotter.Plotter(G, model)
-    plt = plotter.BaseGraph.getPlot()
-    plt.savefig("API_results/PCA/BaseGraph.png")
+    plot = plotter.BaseGraph.getPlot()
+    plot.savefig("../API/client/public/models/PCA/BaseGraph.png")
 
     #results
-    plt = plotter.Combined.getPlot("kmeans+spectral+connected")
-    plt.savefig("API_results/results/result_cluster.png")
+    plot = plotter.Combined.getPlot("kmeans+spectral+connected")
+    plot.savefig("../API/client/public/models/results/result_cluster.png")
 
 if __name__ == '__main__':
     main()
