@@ -24,8 +24,8 @@ def load(json_name):
         if len(component) <= 2:# This will actually remove only 2-connected
             for node in component:
                 G.remove_node(node)
-    # nx.draw(G, node_size=5)
-    # plt.savefig("../API/client/public/models/load/networkx_after_remove.png")
+    nx.draw(G, node_size=3)
+    plt.savefig("../API/client/public/models/load/networkx_after_remove.png")
 
     return G
 
