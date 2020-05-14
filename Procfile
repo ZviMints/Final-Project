@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath API/client/server application:app
