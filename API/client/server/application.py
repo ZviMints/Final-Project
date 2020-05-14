@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 app = Flask(__name__)
 
 # Zvi Mints And Eilon Tsadok
-@app.route("/"):
+@app.route("/")
 def index():
     return "Server is UP"
 
