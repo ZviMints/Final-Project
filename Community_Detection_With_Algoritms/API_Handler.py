@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 import matplotlib.pyplot
 
-# matplotlib.use('MacOSX')
+# matplotlib.use('MacOSX's)
 # Zvi Mints and Eilon Tsadok - Mac Version
 #=============================================== load functions ================================================#
 #the function get name of the json file and return the networkx as appropriate
