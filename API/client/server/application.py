@@ -55,8 +55,8 @@ def load(dataset):
     # write json formatted data
     after = json_graph.node_link_data(G)  # node-link format to serialize
 
-    # networkx.draw(G, node_size=3)
-    plt.savefig("./load/results/networkx_after_remove.png")
+    networkx.draw(G, node_size=3)
+    plt.savefig("./load/networkx_after_remove.png")
     app.logger.debug('finished load(G)')
 
     plt.close()
