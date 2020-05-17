@@ -1,4 +1,7 @@
+import networkx
 import networkx as nx
+from gensim.models import KeyedVectors
+from gensim.test.utils import get_tmpfile
 from node2vec import Node2Vec
 from Community_Detection_With_Algoritms import Plotter
 import matplotlib.pyplot as plt
@@ -26,7 +29,6 @@ def load(json_name):
                 G.remove_node(node)
     nx.draw(G, node_size=3)
     plt.savefig("../API/client/public/models/load/networkx_after_remove.png")
-
     return G
 
 #=============================================== embedding functions ================================================#
@@ -55,11 +57,18 @@ def embedding(G):
 
 #==========================================  ==========================================#
 def main():
-    #the load section
-    G = load("pan12-sexual-predator-identification-test-corpus-2012-05-17")
+    # #the load section
+    # G = load("pan12-sexual-predator-identification-test-corpus-2012-05-17")
+    #
+    # #the embeding section
+    # model = embedding(G)
 
-    #the embeding section
-    model = embedding(G)
+    # Taking G from memory
+    G = networkx.read_multiline_adjlist("./adjlists/graph.adjlist")
+    # Taking Memory from memory
+    fname = "model.kv"
+    path = get_tmpfile(fname)
+    model = KeyedVectors.load(path, mmap='r')
 
     #PCA from 64D to 3D
     plotter = Plotter.Plotter(G, model)
