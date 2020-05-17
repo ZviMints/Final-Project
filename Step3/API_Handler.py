@@ -3,7 +3,7 @@ import networkx as nx
 from gensim.models import KeyedVectors
 from gensim.test.utils import get_tmpfile
 from node2vec import Node2Vec
-from Community_Detection_With_Algoritms import Plotter
+from Step3 import Plotter
 import matplotlib.pyplot as plt
 
 import matplotlib.pyplot

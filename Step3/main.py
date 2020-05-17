@@ -1,6 +1,6 @@
 import networkx as nx
 from gensim.models import KeyedVectors
-from Community_Detection_With_Algoritms import Plotter
+from Step3 import Plotter
 from gensim.test.utils import get_tmpfile
 
 import matplotlib.pyplot

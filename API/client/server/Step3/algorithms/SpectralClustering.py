@@ -1,4 +1,7 @@
 from collections import defaultdict
+
+from matplotlib import pylab
+from mpl_toolkits.mplot3d import proj3d
 from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm # Algorithm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -46,14 +49,15 @@ def generateInteria_(vectors_3dim,k,sc):
     return inertia_
 
 class SpectralClustering:
-    def __init__(self, vectors_3dim, color):
+    def __init__(self, vectors_3dim, color, arrow_size):
         self.vectors_3dim = vectors_3dim
         self.color = color
-        k = 16#self.find_elbow()
+        k = 8#self.find_elbow()
         self.sc = SpectralClusteringAlgorithm(n_clusters=k, assign_labels="discretize",n_init=10, random_state=0)
         self.sc.fit_predict(self.vectors_3dim)
         # create the centers of the clusters
         self.CenterClusterList = makeCenterClusterList(self.vectors_3dim, k, self.sc)
+        self.arrow_size = arrow_size
 
     def find_elbow(self):
         mms = MinMaxScaler()
@@ -90,7 +94,7 @@ class SpectralClustering:
         fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
         ax = fig.add_subplot(projection='3d')
 
-        #drow all the nodes in the graph
+        #drow all the nodes in the grapg
         ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
 
         #drow the clusters
@@ -98,10 +102,27 @@ class SpectralClustering:
             center = self.CenterClusterList[i]
             ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=700,depthshade=False)
 
+            # drow clusters label
+            x2, y2, _ = proj3d.proj_transform(center[0],center[1],center[2], ax.get_proj())
+
+            label = pylab.annotate(
+                "S"+str(i),
+                xy=(x2, y2), xytext=(self.arrow_size*1.4, self.arrow_size*0.6),
+                textcoords='offset points', ha='right', va='bottom',
+                bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
+                arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
+
+            def update_position(e):
+                x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
+                label.xy = x2, y2
+                label.update_positions(fig.canvas.renderer)
+                fig.canvas.draw()
+
+            fig.canvas.mpl_connect('button_release_event', update_position)
 
         #the axis labels
         ax.set_xlabel('X Label')
         ax.set_ylabel('Y Label')
         ax.set_zlabel('Z Label')
 
-        return plt
+        return pylab

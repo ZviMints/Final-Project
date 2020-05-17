@@ -119,7 +119,7 @@ class Combined:
 
         elif mode == "spectral+connected":
             # drow spectral clusters
-            self.spectralPlot(ax.fig)
+            self.spectralPlot(ax,fig)
             # drow connected clusters
             self.connectedPlot(ax,fig)
 
