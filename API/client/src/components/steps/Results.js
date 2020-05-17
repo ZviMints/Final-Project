@@ -65,7 +65,7 @@ handleClick = () => {
   // ============================== algorithms ===================================== //
   parseAlgoToString = () => {
     if(this.state.algorithms.length === 0) return "base"
-    return this.state.algorithms.sort((a,b) => a < b).reduce((string,algo) => (string === "") ? algo : string + "+" + algo, "")
+    return this.state.algorithms.sort().reduce((string,algo) => (string === "") ? algo : string + "+" + algo, "")
   }
 
   updateAlgorithm = (name) => {
