@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 from sklearn import decomposition
 from sklearn.preprocessing import StandardScaler
-from Community_Detection_With_Algoritms.algorithms import KMeans, BaseGraph, \
+from Step3.algorithms import KMeans, BaseGraph, \
     ConnectedComponents, SpectralClustering, Combined
 
 import matplotlib.pyplot as plt
