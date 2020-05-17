@@ -99,6 +99,12 @@ handleClick = () => {
               <h5><b>Algorithms:</b> {this.parseAlgoToString()}</h5>
               <h5><b>Image:</b> {this.state.image} </h5>
               <img key={this.state.image} src={this.state.image} width="950px" height="650px" />
+              <br />
+              <h5><b>Dictionary:</b></h5>
+              <h5><Badge variant="success">Connected-Components Clustering</Badge></h5>
+              <h5><Badge variant="danger">KMeans Clustering</Badge></h5>
+              <h5><Badge variant="warning">Clustering Clustering</Badge></h5>
+              <h5><Badge variant="primary">Nodes</Badge></h5>
             </div>
           </div>
       </div>

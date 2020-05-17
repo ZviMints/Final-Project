@@ -69,12 +69,6 @@ handleClick = () => {
          <hr/>
          <h5><b>Base Graph:</b></h5>
          <img src={this.state.response.base} width="950px" height="650px" />
-         <br />
-         <h5><b>Dictionary:</b></h5>
-         <h5><Badge variant="success">Connected-Components Clustering</Badge></h5>
-         <h5><Badge variant="danger">KMeans Clustering</Badge></h5>
-         <h5><Badge variant="warning">Clustering Clustering</Badge></h5>
-         <h5><Badge variant="primary">Nodes</Badge></h5>
        </div>
     );
   }
