@@ -158,7 +158,7 @@ def pca():
 
     if not skip:
         # Taking G from memory
-        G = networkx.read_multiline_adjlist("./load/" + dataset + "/graph.adjlist")
+        G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
         # Taking Memory from memory
         fname = "model.kv"

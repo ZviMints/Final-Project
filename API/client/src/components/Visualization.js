@@ -23,7 +23,7 @@ class Visualization  extends Component {
     this.map.set("load",<Load setStep={this.setStep} setDataset={this.setDataset}/>);
     this.map.set("embedding",<Embedding setStep={this.setStep} getDataset={this.getDataset}/>);
     this.map.set("pca",<PCA setStep={this.setStep} getDataset={this.getDataset}/>);
-    this.map.set("results",<Results setStep={this.setStep} getDataset={this.getDataset} />);
+    this.map.set("results",<Results getDataset={this.getDataset} />);
   }
 
 // ================ Scrolling ================ //
@@ -93,7 +93,7 @@ componentDidMount(){
                 { all_divs }
           </FlipMove>
           <div style={{height: '1px'}} id='#tracker' ref="trackerRef"></div>
-          { (!this.state.steps.includes("results")) ? all_others() : <div></div>  }
+          { (!this.state.steps.includes("results")) ? all_others() : null  }
           </div>
     </div>
     );

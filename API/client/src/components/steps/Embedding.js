@@ -26,10 +26,11 @@ class Embedding extends Component {
     const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ dataset: this.props.getDataset(), useServerData: true })
+            body: JSON.stringify({ dataset: this.props.getDataset(), useServerData: false })
         };
 
     const response = await fetch('/embedding', requestOptions);
+    alert("got response")
     this.setState({progressText: "Processing Server Data"})
 
     if (!response.ok) {
