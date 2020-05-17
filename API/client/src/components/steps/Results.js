@@ -50,6 +50,7 @@ class Results extends Component {
         console.log("Server Response: " + this.state.response)
         this.props.setStep("finished")
         this.setState({gotResponse: true})
+        this.setState({FetchingData: false})
 
     }
   }
