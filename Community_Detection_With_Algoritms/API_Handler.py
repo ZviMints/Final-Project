@@ -73,14 +73,14 @@ def main():
     #PCA from 64D to 3D
     plotter = Plotter.Plotter(G, model)
     plot = plotter.BaseGraph.getPlot()
-    plot.savefig("../API/client/public/models/PCA/BaseGraph.png")
+    plot.savefig("API_handler_results/BaseGraph.png")
 
     #results
     plotter.spectral.getPlot().show()
     plotter.kmeans.getPlot().show()
     plotter.Combined.getPlot("kmeans+spectral+connected").show()
     plot = plotter.Combined.getPlot("kmeans+connected")
-    plot.savefig("../API/client/public/models/results/result_cluster.png")
+    plot.savefig("API_handler_results/result_cluster.png")
 
 
 if __name__ == '__main__':

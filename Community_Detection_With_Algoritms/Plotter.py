@@ -24,19 +24,19 @@ class Plotter:
     # G is networkx
     # model is after node2vec embedded
     def __init__(self, G, model):
-        all_vectors_after_pca = make_PCA(G, model)
+        self.all_vectors_after_pca = make_PCA(G, model)
 
         # Make base graph (without algorithm)
-        self.BaseGraph = BaseGraph.BaseGraph(all_vectors_after_pca)
+        self.BaseGraph = BaseGraph.BaseGraph(self.all_vectors_after_pca)
 
         # Make Kmeans
-        self.kmeans = KMeans.KMeans(all_vectors_after_pca, "red",30)
+        self.kmeans = KMeans.KMeans(self.all_vectors_after_pca, "red",30)
 
         # Make Connected Componenet
-        self.cc = ConnectedComponents.ConnectedComponents(all_vectors_after_pca, G, "green",40)
+        self.cc = ConnectedComponents.ConnectedComponents(self.all_vectors_after_pca, G, "green",40)
 
         # Make Spectral
-        self.spectral = SpectralClustering.SpectralClustering(all_vectors_after_pca, "yellow",20)
+        self.spectral = SpectralClustering.SpectralClustering(self.all_vectors_after_pca, "yellow",20)
 
         #Make Combined
         self.Combined = Combined.Combined( self.kmeans,self.spectral,self.cc)

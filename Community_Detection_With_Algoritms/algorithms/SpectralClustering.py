@@ -58,6 +58,7 @@ class SpectralClustering:
         # create the centers of the clusters
         self.CenterClusterList = makeCenterClusterList(self.vectors_3dim, k, self.sc)
         self.arrow_size = arrow_size
+
     def find_elbow(self):
         mms = MinMaxScaler()
         mms.fit(self.vectors_3dim)
