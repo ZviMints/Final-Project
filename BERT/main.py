@@ -10,7 +10,7 @@ from Step3 import Plotter
 
 #========================================initialization of data=========================================#
 # Taking G from memory
-G = networkx.read_multiline_adjlist("./adjlists/graph.adjlist")
+G = networkx.read_multiline_adjlist("./adjlists/graphU.adjlist")
 # Taking Memory from memory
 fname = "model.kv"
 path = get_tmpfile(fname)
@@ -27,10 +27,10 @@ conversations = json2conversation.parse_data_to_case_class("C:/Users/EILON/Pycha
 plotter = Plotter.Plotter(G, model)
 
 #get all algorithms dictionary of center by cluster name
-(kmeans_centers,spectral_centers,connected_center) = plotter.getAllCentersName()
+(kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name) = plotter.getAllCentersName()
 
 #make all algorithms dictionary of cluster's nodes by cluster name
-clusters = clustersBy3DVec(kmeans_centers,spectral_centers,connected_center,plotter.all_vectors_after_pca)
+clusters = clustersBy3DVec(kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name,plotter.all_vectors_after_pca)
 
 #get list of vectors that matching to the input cluster name
 selected_vectors = clusters.getAllVectorsByClusterName("K2")

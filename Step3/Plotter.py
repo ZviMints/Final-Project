@@ -97,4 +97,4 @@ class Plotter:
         for i, center in enumerate(connected_center):
             connected_centers_name["C" + str(i)] = center
 
-        return (kmeans_centers, spectral_centers, connected_center)
+        return (kmeans_centers_name, spectral_centers_name, connected_centers_name)

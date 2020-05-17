@@ -63,6 +63,8 @@ class KMeans:
                 fig.canvas.draw()
 
             fig.canvas.mpl_connect('button_release_event', update_position)
+
+
         # the axis labels
         ax.set_xlabel('X Label')
         ax.set_ylabel('Y Label')

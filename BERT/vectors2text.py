@@ -7,7 +7,7 @@ class vectors2text:
         for id, vec in zip(G.nodes(), vectors_3dim):
             self.Vec2Id_dic[vec] = id
         self.conversations = conversations
-
+    #return all the Conversation object that match to the input vector list
     def getConversationsByGroupOfVecs(self,vecs_list):
         ConversationsByGroupOfVecs = []
         id_set = {self.Vec2Id_dic[vec] for vec in vecs_list}#making set of IDs
