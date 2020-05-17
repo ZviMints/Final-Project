@@ -29,8 +29,7 @@ class Embedding extends Component {
             body: JSON.stringify({ dataset: this.props.getDataset(), useServerData: false })
         };
 
-    const response = await fetch('/embedding', requestOptions);
-    alert("got response")
+    const response = await fetch('/embedding', requestOptions).catch(ex => alert("Timeout with ex: " + ex));
     this.setState({progressText: "Processing Server Data"})
 
     if (!response.ok) {
