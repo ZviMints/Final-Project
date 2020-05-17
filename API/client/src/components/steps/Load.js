@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
+import Form from 'react-bootstrap/Form'
 
 class Load extends Component {
   constructor(props) {
@@ -7,12 +10,15 @@ class Load extends Component {
     this.state = {
       dataset : "pan12-sexual-predator-identification-training-corpus-2012-05-01",
       clicked: false,
+      isLoading: false,
+      progressText: "In Progress",
       gotResponse: false,
       response: {
         before_path: "",
         after_path: "",
         before: "",
-        after: ""
+        after: "",
+        graphData: ""
       }
     }
   }
@@ -26,6 +32,8 @@ class Load extends Component {
         };
 
     const response = await fetch('/load', requestOptions);
+    this.setState({progressText: "Processing Server Data"})
+
     if (!response.ok) {
       this.setState({clicked: false})
       alert("Server Error")
@@ -43,11 +51,12 @@ class Load extends Component {
             before_path: data.before_path,
             after_path: data.after_path,
             before: JSON.stringify(data.before),
-            after: JSON.stringify(data.after)
+            after: JSON.stringify(data.after),
+            graphData: data.graphData
           }
         })
+        this.props.setStep("embedding")
         this.setState({gotResponse: true})
-        this.props.setStep("convert")
     }
   }
   }
@@ -55,21 +64,34 @@ class Load extends Component {
 handleClick = () => {
     this.props.setDataset(this.state.dataset)
     this.setState({clicked: true})
+    this.setState({isLoading: true})
     this.fetchLoad();
   }
 
   handleChange = (event) => {
-    this.setState({ dataset: event.target.value});
+    if(!this.state.clicked)
+      this.setState({ dataset: event.target.value});
   }
 
 // ============================== Render Main Information ===================================== //
  renderInformation = () => {
-
   const information = () => {
     return (
       <div id="information">
        <h3><b>Dataset:</b> {this.state.dataset} </h3>
        <hr/>
+
+      <div className="row">
+      <div className="column left">
+          <h4><b>Graph Information:</b></h4>
+          <Alert variant="success">
+              <b>Before Removing 2-connected componenets: </b> {this.state.response.graphData[0]} <br />
+              <b>After Removing 2-connected componenets: </b> {this.state.response.graphData[1]}
+           </Alert>
+           </div>
+      </div>
+
+      <hr/>
 
        <div className="row">
          <div className="column left">
@@ -100,6 +122,7 @@ handleClick = () => {
             <img src={this.state.response.after_path} width="450px" height="450px" />
          </div>
        </div>
+
    </div>
     );
   }
@@ -107,7 +130,7 @@ handleClick = () => {
       if(this.state.clicked)
         return (
           <div>
-           <h3><b>In Progress <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/></b></h3>
+            <h3><b> { this.state.progressText } <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/></b></h3>
          </div>
        );
   }
@@ -116,8 +139,15 @@ handleClick = () => {
  }
 
  renderButton = () => {
-     return (this.state.clicked) ? <button type="button" className="btn btn-secondary btn-lg">Load</button> : <button type="button" onClick={this.handleClick} className="btn btn-primary btn-lg active">Load</button>
- }
+   return (
+      <Button
+        variant="primary"
+        disabled={this.state.isLoading}
+        onClick={!this.state.isLoading ? this.handleClick : null}>
+        Load Dataset
+      </Button>
+    );
+}
 
  // ============================== Render ===================================== //
   render() {
@@ -125,11 +155,10 @@ handleClick = () => {
       <div className="load">
           <div className="column left">
               <h3> Select dataset: </h3>
-                <select value={this.state.dataset} onChange={this.handleChange}>
+                <Form.Control as="select">
                 <option value="pan12-sexual-predator-identification-training-corpus-2012-05-01">pan12-sexual-predator-identification-training-corpus-2012-05-01</option>
-                  <option value="pan12-sexual-predator-identification-test-corpus-2012-05-17">pan12-sexual-predator-identification-test-corpus-2012-05-17</option>
-                </select>
-                <br />
+                <option value="pan12-sexual-predator-identification-test-corpus-2012-05-17">pan12-sexual-predator-identification-test-corpus-2012-05-17</option>
+                </Form.Control>
                 { this.renderButton() }
           </div>
             <div className="column right">

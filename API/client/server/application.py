@@ -13,7 +13,7 @@ import os
 # Configurations
 all_algorithms =["base","kmeans","spectral","connected","kmeans+spectral","connected+kmeans","connected+spectral","connected+kmeans+spectral"]
 
-app = Flask(__name__, static_url_path = "/load", static_folder = "load")
+app = Flask(__name__, static_url_path = "/data", static_folder = "data")
 
 # Zvi Mints And Eilon Tsadok
 #=============================================== / route ================================================#
@@ -29,7 +29,7 @@ def load():
     # If use server data or do all process
     useServerData = request.get_json()["useServerData"]
     # Prefix for saving information
-    prefix = "/load/" + dataset
+    prefix = "/data" + "/load/" + dataset
 
     skip = True
     if not os.path.isfile("." + prefix + "/networkx_after_remove.png"):  # and os.path.isfile("." + prefix + dataset + "/networkx_before_remove.png"):
@@ -42,11 +42,10 @@ def load():
 
     # Making G (networkx)
     if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-        G = networkx.read_multiline_adjlist("./load/train_networkxBeforeRemove.adjlist")
+        G = networkx.read_multiline_adjlist("./data/start/train_networkxBeforeRemove.adjlist")
 
     elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-        G = networkx.read_multiline_adjlist("./load/test_networkxBeforeRemove.adjlist")
-
+        G = networkx.read_multiline_adjlist("./data/start/test_networkxBeforeRemove.adjlist")
     else:
            return jsonify(err="405", msg = "Invalid JSON file name")
 
@@ -58,6 +57,8 @@ def load():
     # write json formatted data
     app.logger.debug('loaded dataset with %s nodes before remove' % len(G.nodes()))
     before = json_graph.node_link_data(G)["links"]  # node-link format to serialize
+    graphData = []
+    graphData.append("%s Nodes, %s links" % (len(G.nodes()),len(G.edges())))
 
     # After Remove
     for component in list(networkx.connected_components(G)):
@@ -68,6 +69,7 @@ def load():
     # write json formatted data
     app.logger.debug('loaded dataset with %s nodes after remove' % len(G.nodes()))
     after = json_graph.node_link_data(G)["links"]  # node-link format to serialize
+    graphData.append("%s Nodes, %s links" % (len(G.nodes()),len(G.edges())))
 
     # Save after remove graph
     if not os.path.exists("." + prefix):
@@ -78,7 +80,7 @@ def load():
         networkx.draw(G, node_size=3)
         plt.savefig("." + prefix + "/networkx_after_remove.png")
 
-    return jsonify(before_path= prefix + "/networkx_before_remove.png", after_path = prefix + "/networkx_after_remove.png", before = before, after = after)
+    return jsonify(before_path= prefix + "/networkx_before_remove.png", after_path = prefix + "/networkx_after_remove.png", before = before, after = after, graphData = graphData)
 
 #=============================================== embedding route ================================================#
 def saveWalks(walks,prefix):
@@ -87,11 +89,11 @@ def saveWalks(walks,prefix):
     f = open("." + prefix +"/walks.txt", "w+")
     row = 1
     for sentence in walks:
-        f.write("row %s:    " % str(row))
+        f.write("row %s:" % str(row))
         row = row + 1
         for word in sentence:
             f.write(word)
-            f.write("  ")
+            f.write(" ")
         f.write("\n")
     f.close()
 
@@ -102,10 +104,11 @@ def embedding():
     # If use server data or do all process
     useServerData = request.get_json()["useServerData"]
     # Prefix for saving information
-    prefix = "/embedding/ " + dataset
+    prefix = "/data" + "/embedding/" + dataset
 
     skip = True
-    if not os.path.isfile("." + prefix + "/walks.txt"):
+    print("." + prefix  + "/walks.txt")
+    if not os.path.isfile("." + prefix  + "/walks.txt"):
         skip = False
 
     if not useServerData:
@@ -114,7 +117,7 @@ def embedding():
     app.logger.info('got /embedding request with skip = %s and dataset = %s' % (skip,dataset))
 
     if not skip:
-        G = networkx.read_multiline_adjlist("./load/" + dataset + "/graph.adjlist")
+        G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
          # Precompute probabilities and generate walks
         node2vec = Node2Vec(G, dimensions=64, walk_length=25, num_walks=10, workers=1)
@@ -128,7 +131,7 @@ def embedding():
         path = get_tmpfile(fname)
         model.wv.save(path)
 
-    return jsonify(res = "walks saved successfully", path = prefix + "/walks.txt")
+    return jsonify(res = "walks saved successfully", walk_length = 25, num_walks = 10, walks = open("." + prefix + "/walks.txt", "r").read())
 
 #=============================================== pca route ================================================#
 @app.route("/pca", methods=['POST'])
@@ -138,7 +141,7 @@ def pca():
     # If use server data or do all process
     useServerData = request.get_json()["useServerData"]
     # Prefix for saving information
-    prefix = "/pca/" + dataset
+    prefix = "/data" + "/pca/" + dataset
 
     if not os.path.exists("." + prefix):
         os.makedirs("." + prefix)
@@ -178,4 +181,4 @@ def results():
 
     app.logger.info('got /results request with dataset = %s and algorithms = %s' % (dataset,algorithms))
 
-    return jsonify(path=  "/pca/" + dataset + "/" + algorithms + ".png")
+    return jsonify(path=  "/data/pca/" + dataset + "/" + algorithms + ".png")
