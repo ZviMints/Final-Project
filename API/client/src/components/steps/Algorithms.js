@@ -20,11 +20,11 @@ export default class Algorithms extends Component {
               <input type="checkbox" id="algo1" name="kmeans" onChange={this.handleInputChange}/>
               <label htmlFor="kmeans">KMeans</label> <br />
 
-              <input type="checkbox" id="algo2" name="spectral_clustering" onChange={this.handleInputChange}/>
-              <label htmlFor="spectral_clustering">Spectral Clustering</label> <br />
+              <input type="checkbox" id="algo2" name="spectral" onChange={this.handleInputChange}/>
+              <label htmlFor="spectral">Spectral Clustering</label> <br />
 
-              <input type="checkbox" id="algo3" name="connected_components" onChange={this.handleInputChange}/>
-              <label htmlFor="connected_components">Connected Components</label> <br />
+              <input type="checkbox" id="algo3" name="connected" onChange={this.handleInputChange}/>
+              <label htmlFor="connected">Connected Components</label> <br />
             </div>
           );
     }

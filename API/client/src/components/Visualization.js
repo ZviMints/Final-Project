@@ -1,9 +1,9 @@
-import React, { Component, useRef, useEffect } from 'react';
+import React, { Component } from 'react';
 
 import FlipMove from "react-flip-move";
 
 import Load from './steps/Load'
-import Convert from './steps/Convert'
+import Embedding from './steps/Embedding'
 import PCA from './steps/PCA'
 import Results from './steps/Results'
 
@@ -14,17 +14,16 @@ class Visualization  extends Component {
     super(props);
     this.state = {
       steps: ["load"],
-      dataset: "",
-      algorithms: []
+      dataset: ""
     }
 
-    this.total_states = ["load","convert","pca","results"];
+    this.total_states = ["load","embedding","pca","results"];
 
     this.map = new Map();
     this.map.set("load",<Load setStep={this.setStep} setDataset={this.setDataset}/>);
-    this.map.set("convert",<Convert setStep={this.setStep} dataset={this.state.dataset}/>);
-    this.map.set("pca",<PCA setStep={this.setStep} dataset={this.state.dataset}/>);
-    this.map.set("results",<Results />);
+    this.map.set("embedding",<Embedding setStep={this.setStep} getDataset={this.getDataset}/>);
+    this.map.set("pca",<PCA setStep={this.setStep} getDataset={this.getDataset}/>);
+    this.map.set("results",<Results setStep={this.setStep} getDataset={this.getDataset} />);
   }
 
 // ================ Scrolling ================ //
@@ -39,12 +38,15 @@ componentDidMount(){
   }
 
   // ================ Handlers ================ //
+  getDataset = () => {
+    return this.state.dataset
+   }
+
 
   setStep = (newStep) => {
     let clone = [...this.state.steps];
     clone.push(newStep);
     this.setState({steps: clone})
-
    }
 
   setDataset = (newDataset) => { this.setState({dataset: newDataset})}
@@ -85,13 +87,15 @@ componentDidMount(){
   }
   // Main Return function
   return (
+    <div>
           <div id="visualization">
           <FlipMove easing="ease-in">
                 { all_divs }
           </FlipMove>
           <div style={{height: '1px'}} id='#tracker' ref="trackerRef"></div>
-          { all_others() }
+          { (!this.state.steps.includes("results")) ? all_others() : <div></div>  }
           </div>
+    </div>
     );
   }
 }

@@ -9,7 +9,7 @@ import Footer from './components/Footer'
 class Layout extends Component {
     render() {
         return (
-            <div>
+            <div id="layout">
               <Header />
               <Body />
               <Footer />

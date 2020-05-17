@@ -1,50 +1,118 @@
 import React, { Component } from 'react';
+import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
+import Badge from 'react-bootstrap/Badge'
 
 class PCA extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: false
+      clicked: false,
+      gotResponse: false,
+      IsPCAing: false,
+      progressText: "In Progress",
+      response: {
+        base: ""
+      }
     }
   }
 
-  // ============================== Handlers ===================================== //
-  handleClick = () => {
-    this.props.setStep("results")
-    this.setState({clicked: true})
+// ============================== Handlers ===================================== //
+  async fetchPCA() {
+    const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ dataset: this.props.getDataset(), useServerData: true })
+        };
+
+    const response = await fetch('/pca', requestOptions);
+    this.setState({progressText: "Processing Server Data"})
+
+    if (!response.ok) {
+      this.setState({clicked: false, IsPCAing: false})
+      alert("Server Error")
+    }
+    else {
+      const data = await response.json();
+      if(data.err) {
+        this.setState({clicked: false, IsPCAing: false})
+        alert(data.msg)
+      }
+      else {
+        this.setState({
+          response: {
+            ...this.state.response,
+            base: data.path
+          }
+        })
+        console.log("Server Response: " + this.state.response)
+        this.props.setStep("results")
+        this.setState({gotResponse: true})
+
+    }
   }
-  // ============================== Render Main Information ===================================== //
-   renderInformation = () => {
-     if(this.state.clicked) {
-       return (
-         <div>
-           <h3>test_full:</h3>
-           <img src="./models/load/test_full.jpg" width="450px" height="450px" />
-           <hr />
-           <h3>test_after_remove:</h3>
-           <img src="./models/load/test_after_remove.png" width="450px" height="450px" />
+}
+
+handleClick = () => {
+    this.setState({clicked: true})
+    this.setState({IsPCAing: true})
+    this.fetchPCA();
+  }
+
+// ============================== Render Main Information ===================================== //
+ renderInformation = () => {
+
+  const information = () => {
+    return (
+       <div id="information">
+         <h3><b>Dataset:</b> {this.props.getDataset()} </h3>
+         <hr/>
+         <h5><b>Base Graph:</b></h5>
+         <img src={this.state.response.base} width="950px" height="650px" />
+         <br />
+         <h5><b>Dictionary:</b></h5>
+         <h5><Badge variant="success">Connected-Components Clustering</Badge></h5>
+         <h5><Badge variant="danger">KMeans Clustering</Badge></h5>
+         <h5><Badge variant="warning">Clustering Clustering</Badge></h5>
+         <h5><Badge variant="primary">Nodes</Badge></h5>
        </div>
-      );
-     }
-   }
+    );
+  }
+  const Progress = () => {
+      if(this.state.clicked)
+        return (
+          <div>
+          <h3><b> { this.state.progressText } <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/></b></h3>
+         </div>
+       );
+  }
+  if (this.state.gotResponse) return information()
+  else                        return Progress()
+ }
 
-  renderButton = () => {
-       return (this.state.clicked) ? <button type="button" className="btn btn-secondary btn-lg">Results</button> : <button type="button" onClick={this.handleClick} className="btn btn-primary btn-lg active">Results</button>
-   }
+ renderButton = () => {
+   return (
+      <Button
+        variant="primary"
+        disabled={this.state.IsPCAing}
+        onClick={!this.state.IsPCAing ? this.handleClick : null}>
+        PCA
+      </Button>
+    );
+ }
 
-  // ============================== Render ===================================== //
+ // ============================== Render ===================================== //
   render() {
     return(
-      <div className="convert">
-      <div id="row">
-            <div className="column left">
-                    { this.renderButton() }
-              </div>
-            <div className="column right">
-                  { this.renderInformation() }
-              </div>
+      <div className="PCA">
+          <div className="column left">
+                <h5>Principal component analysis</h5>
+                { this.renderButton() }
           </div>
-        </div>
+            <div className="column right">
+            { this.renderInformation() }
+          </div>
+      </div>
     );
   }
 }
