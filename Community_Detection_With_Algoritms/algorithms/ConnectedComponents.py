@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import pylab
+from mpl_toolkits.mplot3d import proj3d
 from sklearn.preprocessing import MinMaxScaler
 
 np.set_printoptions(threshold=np.inf)
@@ -39,7 +41,7 @@ def make_vec3D_connected_components(G, vectors_3dim):
 
 
 class ConnectedComponents:
-    def __init__(self, vectors_3dim, G, color):
+    def __init__(self, vectors_3dim, G, color, arrow_size):
         sets_vectors_3dim = make_vec3D_connected_components(G, vectors_3dim)
         self.sets_vectors_3dim = sets_vectors_3dim
         self.vectors_3dim = vectors_3dim
@@ -53,6 +55,7 @@ class ConnectedComponents:
 
         self.component_centers = np.array(self.component_centers)
         self.component_radiuses = np.array(self.component_radiuses) * SIZE
+        self.arrow_size = arrow_size
 
     def getPlot(self):
         # Create a scatter plot
@@ -71,6 +74,27 @@ class ConnectedComponents:
             c=self.color,
             marker = 's',
             depthshade=False)
+
+        # drow clusters label
+        cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 6))]
+        for i, name in enumerate(cluster_name):
+            x2, y2, _ = proj3d.proj_transform(self.component_centers[i, 0], self.component_centers[i, 1],
+                                              self.component_centers[i, 2], ax.get_proj())
+
+            label = pylab.annotate(
+                name,
+                xy=(x2, y2), xytext=(0, -1*self.arrow_size),
+                textcoords='offset points', ha='right', va='bottom',
+                bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
+                arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
+
+            def update_position(e):
+                x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
+                label.xy = x2, y2
+                label.update_positions(fig.canvas.renderer)
+                fig.canvas.draw()
+
+            fig.canvas.mpl_connect('button_release_event', update_position)
 
         #the axis labels
         ax.set_xlabel('X Label')

@@ -30,13 +30,13 @@ class Plotter:
         self.BaseGraph = BaseGraph.BaseGraph(all_vectors_after_pca)
 
         # Make Kmeans
-        self.kmeans = KMeans.KMeans(all_vectors_after_pca, "red")
+        self.kmeans = KMeans.KMeans(all_vectors_after_pca, "red",30)
 
         # Make Connected Componenet
-        self.cc = ConnectedComponents.ConnectedComponents(all_vectors_after_pca, G, "green")
+        self.cc = ConnectedComponents.ConnectedComponents(all_vectors_after_pca, G, "green",40)
 
         # Make Spectral
-        self.spectral = SpectralClustering.SpectralClustering(all_vectors_after_pca, "yellow")
+        self.spectral = SpectralClustering.SpectralClustering(all_vectors_after_pca, "yellow",20)
 
         #Make Combined
         self.Combined = Combined.Combined( self.kmeans,self.spectral,self.cc)
@@ -71,3 +71,30 @@ class Plotter:
         algorithms["connected+spectral"] = self.Combined.getPlot("spectral+connected")
         algorithms["connected+kmeans+spectral"] = self.Combined.getPlot("kmeans+spectral+connected")
         return algorithms
+
+    def SaveAll(self,prefix):
+        self.BaseGraph.getPlot().savefig("." + prefix + "/base.png")
+        self.kmeans.getPlot().savefig("." + prefix + "/kmeans.png")
+        self.spectral.getPlot().savefig("." + prefix + "/spectral.png")
+        self.cc.getPlot().savefig("." + prefix + "/connected.png")
+        self.Combined.getPlot("kmeans+spectral").savefig("." + prefix + "/kmeans+spectral.png")
+        self.Combined.getPlot("kmeans+connected").savefig("." + prefix + "/connected+kmeans.png")
+        self.Combined.getPlot("spectral+connected").savefig("." + prefix + "/connected+spectral.png")
+        self.BaseGraph.getPlot().savefig("." + prefix + "/base.png")
+        self.Combined.getPlot("kmeans+spectral+connected").savefig("." + prefix + "/connected+kmeans+spectral.png")
+
+    def getAllCentersName(self):
+        (kmeans_centers, spectral_centers, connected_center) = (self.kmeans.km.cluster_centers_,self.spectral.CenterClusterList,self.cc.component_centers)
+        kmeans_centers_name = {}
+        for i,center in enumerate(kmeans_centers):
+            kmeans_centers_name["K"+str(i)] = center
+
+        spectral_centers_name = {}
+        for i, center in enumerate(spectral_centers):
+            spectral_centers_name["S" + str(i)] = center
+
+        connected_centers_name = {}
+        for i, center in enumerate(connected_center):
+            connected_centers_name["C" + str(i)] = center
+
+        return (kmeans_centers, spectral_centers, connected_center)

@@ -76,8 +76,12 @@ def main():
     plot.savefig("../API/client/public/models/PCA/BaseGraph.png")
 
     #results
-    plot = plotter.Combined.getPlot("kmeans+spectral+connected")
+    plotter.spectral.getPlot().show()
+    plotter.kmeans.getPlot().show()
+    plotter.Combined.getPlot("kmeans+spectral+connected").show()
+    plot = plotter.Combined.getPlot("kmeans+connected")
     plot.savefig("../API/client/public/models/results/result_cluster.png")
+
 
 if __name__ == '__main__':
     main()
