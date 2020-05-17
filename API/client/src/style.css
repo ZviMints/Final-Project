@@ -36,12 +36,12 @@ body {
 
 #body {
   border-radius: 4px;
-  margin: 15px 15px 15px 15px;
+  margin: 15px 15px 10px 15px;
   background: white;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 2px #fff inset,
             -1px -1px 2px #fff inset;
-  padding: 20px;
+  padding: 10px;
   margin-right: 10
 }
 
@@ -63,25 +63,19 @@ body {
   clear: both;
 }
 
-#body .content_column .graph {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: white;
-  height: 500px;
-  box-shadow: 0px 0px 1px 1px #001f3f inset;
-  border-radius: 3px;
-
-  background: #E0EAFC;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-}
-
 /* visualization */
-#column {
+.column {
   float: left;
-  width: 50%;
 }
+
+.left {
+  width: 30%;
+}
+
+.right {
+  width: 70%;
+}
+
 
 /* Clear floats after the columns */
 #row:after {
@@ -96,20 +90,8 @@ body {
   border-radius: 15px;
 
 }
-
-.odd {
-  border-radius: 5px;
-  background: #F2F2F2;
-  border: 1px solid #ccc;
-}
-
-.even {
-  border: 1px solid #ccc;
-  background-color: white;
-}
-
-#body #visualization .menu_column .algorithms {
-  margin-bottom: 35px;
+#body #visualization #information {
+  margin-right: 10px;
   background: #F2F2F2;
   border: 1px solid #ccc;
   box-shadow: 1px 1px 2px #fff inset,
@@ -119,11 +101,44 @@ body {
 }
 
 #body #visualization .other_buttons {
-  margin-left: 10px;
+
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0px 0px 1px 1px #001f3f inset;
+  border-radius: 3px;
+
+  background: #E0EAFC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
+
 #body #visualization .other_buttons #button {
   margin-top: 10px;
   margin-right: 10px;
+}
+#body #visualization .row {}
+
+#body #visualization .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#body #visualization .column {
+  padding: 10px;
+  float: left;
+}
+
+#body #visualization .column .left {
+  float: left;
+  padding-left: 35px;
+  width: 50%;
+}
+
+#body #visualization .column .right {
+  margin: auto;
+  float: right;
+  width: 50%;
 }
 
 .load button {

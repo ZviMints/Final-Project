@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "history": "^4.10.1",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-flip-move": "^3.0.4",
     "react-router": "^3.2.6",
