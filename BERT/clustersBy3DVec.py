@@ -29,14 +29,15 @@ class clustersBy3DVec:
                 nodesAroundCenter.append(node)
         return np.array(nodesAroundCenter)
 
-    # get list of centers with their names and return dictionary of center's name and all the vecs(nodes) inside
+    # return list of centers with their names and return dictionary of center's name and all the vecs(nodes) inside
     def convertCenters2ClustersOfVecs(self,centers):
         clustersOfVecsByCentersName = {}
         for name, center in centers.items():
             clustersOfVecsByCentersName[name] = self.findNodesByCenter(center)
         return clustersOfVecsByCentersName
 
-    def getAllVectorsByName(self,name):
+    #return list of vectors that matching to the input cluster name
+    def getAllVectorsByClusterName(self,name):
         if len(name) > 1:
             if name[0] == "K" and name[1:].isdigit() and int(name[1:]) < len(self.kmeans_clusters):
                 return self.kmeans_clusters[name]
@@ -46,7 +47,8 @@ class clustersBy3DVec:
                 return self.connected_clusters[name]
         return None
 
-    def getAllCombineVectorsByName(self,name):
+    # get list of vectors that matching to the combination of the input clusters name
+    def getAllVectorsByCombinationClustersName(self,name):
         return None#need to finish
 
 
