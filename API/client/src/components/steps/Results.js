@@ -10,7 +10,7 @@ class Results extends Component {
       clicked: false,
       gotResponse: false,
       FetchingData: false,
-      algorithms: ["kmeans","spectral","connected"],
+      algorithms: [],
       image: "/data/pca/" + this.props.getDataset() + "/base.png"
     }
   }
@@ -98,7 +98,7 @@ handleClick = () => {
               <hr/>
               <h5><b>Algorithms:</b> {this.parseAlgoToString()}</h5>
               <h5><b>Image:</b> {this.state.image} </h5>
-              <img key={this.state.image} src={this.state.image} width="950px" height="650px" />
+              <img src={this.state.image} width="950px" height="650px" />
               <br />
               <h5><b>Dictionary:</b></h5>
               <h5><Badge variant="success">Connected-Components Clustering</Badge></h5>
