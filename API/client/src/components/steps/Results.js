@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Algorithms from './Algorithms'
-import Spinner from 'react-bootstrap/Spinner'
 import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
 
@@ -11,11 +10,8 @@ class Results extends Component {
       clicked: false,
       gotResponse: false,
       FetchingData: false,
-      progressText: "In Progress",
-      algorithms: [],
-      response: {
-        image: ""
-      }
+      algorithms: ["kmeans","spectral","connected"],
+      image: "/data/pca/" + this.props.getDataset() + "/base.png"
     }
   }
 
@@ -28,7 +24,6 @@ class Results extends Component {
         };
 
     const response = await fetch('/results', requestOptions);
-    this.setState({progressText: "Processing Server Data"})
 
     if (!response.ok) {
       this.setState({clicked: false, FetchingData: false})
@@ -41,13 +36,8 @@ class Results extends Component {
         alert(data.msg)
       }
       else {
-        this.setState({
-          response: {
-            ...this.state.response,
-            image: data.path
-          }
-        })
-        console.log("Server Response: " + this.state.response)
+        this.setState({image: data.path})
+        console.log("Image State: " + this.state.image)
         this.setState({gotResponse: true})
         this.setState({FetchingData: false})
 
@@ -79,30 +69,6 @@ handleClick = () => {
    }
 
 // ============================== Render Main Information ===================================== //
- renderInformation = () => {
-
-  const information = () => {
-    return (
-       <div id="information">
-         <h3><b>Dataset:</b> {this.props.getDataset()} </h3>
-         <hr/>
-         <h5><b>Graph:</b></h5>
-         <img src={this.state.response.image} width="950px" height="650px" />
-       </div>
-    );
-  }
-  const Progress = () => {
-      if(this.state.clicked)
-        return (
-          <div>
-          <h3><b> { this.state.progressText } <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/> <Spinner animation="grow" size="sm"/></b></h3>
-         </div>
-       );
-  }
-  if (this.state.gotResponse) return information()
-  else                        return Progress()
- }
-
  renderButton = () => {
    return (
       <Button
@@ -112,6 +78,7 @@ handleClick = () => {
       </Button>
     );
  }
+
 
  // ============================== Render ===================================== //
   render() {
@@ -126,7 +93,13 @@ handleClick = () => {
                 { this.renderButton() }
           </div>
             <div className="column right">
-            { this.renderInformation() }
+            <div id="information">
+              <h3><b>Dataset:</b> {this.props.getDataset()} </h3>
+              <hr/>
+              <h5><b>Algorithms:</b> {this.parseAlgoToString()}</h5>
+              <h5><b>Image:</b> {this.state.image} </h5>
+              <img key={this.state.image} src={this.state.image} width="950px" height="650px" />
+            </div>
           </div>
       </div>
     );
