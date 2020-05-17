@@ -79,7 +79,7 @@ def main():
 
     #PCA from 64D to 3D
     plotter = Plotter.Plotter(G, model)
-    # plot = plotter.BaseGraph.getPlot()
+    plot = plotter.BaseGraph.getPlot()
     # plot.savefig("API_handler_results/BaseGraph.png")
 
     #results

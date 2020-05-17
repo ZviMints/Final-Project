@@ -76,7 +76,7 @@ class ConnectedComponents:
             depthshade=False)
 
         # drow clusters label
-        cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 6))]
+        cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 10))]
         for i, name in enumerate(cluster_name):
             x2, y2, _ = proj3d.proj_transform(self.component_centers[i, 0], self.component_centers[i, 1],
                                               self.component_centers[i, 2], ax.get_proj())

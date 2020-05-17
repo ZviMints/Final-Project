@@ -2,9 +2,9 @@ import networkx
 from gensim.models import KeyedVectors
 from gensim.test.utils import get_tmpfile
 
-from BERT import vectors2text
 from BERT.clustersBy3DVec import clustersBy3DVec
 from BERT.json2conversation import json2conversation
+from BERT.vectors2text import Vectors2Text
 from Step3 import Plotter
 
 
@@ -36,7 +36,11 @@ clusters = clustersBy3DVec(kmeans_centers_by_name,spectral_centers_by_name,conne
 selected_vectors = clusters.getAllVectorsByClusterName("K2")
 
 #find all the Conversation by list of vectors
+vectors2text = Vectors2Text(G,plotter.all_vectors_after_pca,conversations)
 selected_conversations = vectors2text.getConversationsByGroupOfVecs(selected_vectors)
 
 print(len(selected_conversations))
-print(selected_conversations[0].massage)
+for conv in selected_conversations:
+    for massage_obj in conv.messages:
+        print(massage_obj.message)
+
