@@ -154,7 +154,7 @@ renderIntersection = () => {
         </Form.Control>
       </Form.Group>
 
-     <Button variant="primary" type="submit">Primary</Button>{' '}
+     <Button variant="primary" type="submit">Show Topics</Button>{' '}
      <Button variant="danger">Reset</Button>{' '}
 
     </Form>
