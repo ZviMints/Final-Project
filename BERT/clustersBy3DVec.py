@@ -48,7 +48,12 @@ class clustersBy3DVec:
         return None
 
     # get list of vectors that matching to the combination of the input clusters name
-    def getAllVectorsByCombinationClustersName(self,name1,name2,name3):
+    def getAllVectorsByCombinationClustersName(self,name1,name2):
+        #need to check validity###########################################
+        first_cluster_vectors = self.getAllVectorsByClusterName(name1)
+        second_cluster_vectors = self.getAllVectorsByClusterName(name2)
+        if (first_cluster_vectors is not None and second_cluster_vectors is not None):
+            return findMatchvectors(first_cluster_vectors,second_cluster_vectors)
         return None#need to finish
 
 

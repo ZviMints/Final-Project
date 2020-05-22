@@ -131,9 +131,9 @@ class Combined:
             # drow connected clusters
             self.connectedPlot(ax,fig)
 
-            # the axis labels
-            ax.set_xlabel('X Label')
-            ax.set_ylabel('Y Label')
-            ax.set_zlabel('Z Label')
+        # the axis labels
+        ax.set_xlabel('X Label')
+        ax.set_ylabel('Y Label')
+        ax.set_zlabel('Z Label')
         return pylab
 

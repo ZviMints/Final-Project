@@ -27,8 +27,9 @@ def load(json_name):
         if len(component) <= 2:# This will actually remove only 2-connected
             for node in component:
                 G.remove_node(node)
-    nx.draw(G, node_size=3)
-    plt.savefig("../API/client/public/models/load/networkx_after_remove.png")
+    networkx.write_multiline_adjlist(G, "./adjlists/graphU.adjlist")
+    # nx.draw(G, node_size=3)
+    # plt.savefig("../API/client/public/models/load/networkx_after_remove.png")
     return G
 
 #=============================================== embedding functions ================================================#
@@ -49,10 +50,16 @@ def embedding(G):
     # Precompute probabilities and generate walks
     node2vec = Node2Vec(G, dimensions=64, walk_length=25, num_walks=10, workers=1)
 
-    saveWalks(list(node2vec.walks))
+    # saveWalks(list(node2vec.walks))
 
     # Embed nodes
     model = node2vec.fit(window=10, min_count=1, batch_words=4)
+
+    # Save the model into
+    fname = "model.kv"
+    path = get_tmpfile(fname)
+    model.wv.save(path)
+
     return model.wv
 
 #==========================================  ==========================================#
@@ -64,7 +71,7 @@ def main():
     # model = embedding(G)
 
     # Taking G from memory
-    G = networkx.read_multiline_adjlist("./adjlists/graph.adjlist")
+    G = networkx.read_multiline_adjlist("./adjlists/graphU.adjlist")
     # Taking Memory from memory
     fname = "model.kv"
     path = get_tmpfile(fname)
@@ -73,7 +80,7 @@ def main():
     #PCA from 64D to 3D
     plotter = Plotter.Plotter(G, model)
     plot = plotter.BaseGraph.getPlot()
-    plot.savefig("API_handler_results/BaseGraph.png")
+    # plot.savefig("API_handler_results/BaseGraph.png")
 
     #results
     plotter.spectral.getPlot().show()
