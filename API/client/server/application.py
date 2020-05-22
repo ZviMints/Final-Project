@@ -182,3 +182,11 @@ def results():
     app.logger.info('got /results request with dataset = %s and algorithms = %s' % (dataset,algorithms))
 
     return jsonify(path=  "/data/pca/" + dataset + "/" + algorithms + ".png")
+
+#=============================================== bert route ================================================#
+@app.route("/bert", methods=['POST'])
+def bert():
+    dataset = request.get_json()["dataset"]
+    cluster = request.get_json()["cluster"] # K6
+    information = "cool cluster"
+    return jsonify(information = information)
