@@ -46,7 +46,7 @@ class convert_text_2_topic:
         complex_vector = self.bert_embedding(word)
         return np.array(complex_vector[0][1][0])
 
-    #get list of the Conversation class and return bert embedded vector
+    #get list of the Conversation object and return bert embedded vector
     def clustersEmbedding(self,cluster):
         conversations_vectors = []
         for conversation in cluster:

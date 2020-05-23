@@ -1,4 +1,4 @@
-class Vectors2Text:
+class Vectors2MatchConversions:
     def __init__(self,G,vectors_3dim,conversations):
         self.G = G
         self.vectors_3dim = vectors_3dim
