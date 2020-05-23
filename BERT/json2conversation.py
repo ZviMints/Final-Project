@@ -37,7 +37,12 @@ class Conversation:
                 index = index + 1
             return secondAuthor
 
-
+    def getListOfSentences(self):
+        result = []
+        for massage in self.messages:
+            if len(massage.message) > 0:#prevent from an empty string to get into the list
+                result.append(massage.message) # a simple string that represent one sentence
+        return result
 
 class json2conversation:
     def parse_data_to_case_class(input):

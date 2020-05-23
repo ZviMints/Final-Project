@@ -169,7 +169,7 @@ def pca():
         plotter = Plotter.Plotter(G, model)
         plotter.SaveAll(prefix)
 
-    return jsonify(res = "pca completed and saved in image", path = prefix + "/base.png")
+    return jsonify(res = "pca completed and saved in image", path = prefix + "/base.png" , data = jsonfile.json)
 
 #=============================================== result route ================================================#
 @app.route("/results", methods=['POST'])
