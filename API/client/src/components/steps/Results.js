@@ -10,6 +10,7 @@ class Results extends Component {
       clicked: false,
       gotResponse: false,
       FetchingData: false,
+      bertStep: false,
       algorithms: [],
       image: "/data/pca/" + this.props.getDataset() + "/base.png"
     }
@@ -40,7 +41,6 @@ class Results extends Component {
         console.log("Image State: " + this.state.image)
         this.setState({gotResponse: true})
         this.setState({FetchingData: false})
-
     }
   }
   }
@@ -49,6 +49,11 @@ handleClick = () => {
     this.setState({clicked: true})
     this.setState({FetchingData: true})
     this.fetchResults();
+  }
+
+  handleBertClick = () => {
+    this.setState({ bertStep: true })
+    this.props.setStep("bert")
   }
 
   // ============================== algorithms ===================================== //
@@ -69,6 +74,16 @@ handleClick = () => {
    }
 
 // ============================== Render Main Information ===================================== //
+renderBertButton = () => {
+return (
+  <Button
+    variant="outline-dark"
+    onClick={!this.state.bertStep ? this.handleBertClick : null}>
+    Continue to BERT
+  </Button>
+);
+}
+
  renderButton = () => {
    return (
       <Button
@@ -90,21 +105,20 @@ handleClick = () => {
                 <hr />
                 <h5>Check which algorithm to show: </h5>
                 <Algorithms updateAlgorithm={this.updateAlgorithm} removeAlgorithm={this.removeAlgorithm} />
-                { this.renderButton() }
+                { this.renderButton() } <br /> <hr />
+                <h4>Gather insights with <b>Bert</b></h4>
+                { this.renderBertButton() }
           </div>
             <div className="column right">
             <div id="information">
               <h3><b>Dataset:</b> {this.props.getDataset()} </h3>
               <hr/>
+              <h5><b>Dictionary:</b></h5>
+              <h4> <Badge variant="success">Connected-Components Clustering</Badge> <Badge variant="danger">KMeans Clustering</Badge> <Badge variant="warning">Spectral Clustering</Badge> <Badge variant="primary">Nodes</Badge> </h4>
+              <hr/>
               <h5><b>Algorithms:</b> {this.parseAlgoToString()}</h5>
               <h5><b>Image:</b> {this.state.image} </h5>
               <img src={this.state.image} width="950px" height="650px" />
-              <br />
-              <h5><b>Dictionary:</b></h5>
-              <h5><Badge variant="success">Connected-Components Clustering</Badge></h5>
-              <h5><Badge variant="danger">KMeans Clustering</Badge></h5>
-              <h5><Badge variant="warning">Clustering Clustering</Badge></h5>
-              <h5><Badge variant="primary">Nodes</Badge></h5>
             </div>
           </div>
       </div>

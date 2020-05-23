@@ -6,6 +6,7 @@ import Load from './steps/Load'
 import Embedding from './steps/Embedding'
 import PCA from './steps/PCA'
 import Results from './steps/Results'
+import BERT from './steps/BERT'
 
 
 class Visualization  extends Component {
@@ -17,13 +18,14 @@ class Visualization  extends Component {
       dataset: ""
     }
 
-    this.total_states = ["load","embedding","pca","results"];
+    this.total_states = ["load","embedding","pca","results", "bert"];
 
     this.map = new Map();
     this.map.set("load",<Load setStep={this.setStep} setDataset={this.setDataset}/>);
     this.map.set("embedding",<Embedding setStep={this.setStep} getDataset={this.getDataset}/>);
     this.map.set("pca",<PCA setStep={this.setStep} getDataset={this.getDataset}/>);
-    this.map.set("results",<Results getDataset={this.getDataset} />);
+    this.map.set("results",<Results setStep={this.setStep} getDataset={this.getDataset} />);
+    this.map.set("bert",<BERT getDataset={this.getDataset} />);
   }
 
 // ================ Scrolling ================ //
