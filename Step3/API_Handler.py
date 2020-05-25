@@ -4,6 +4,7 @@ from gensim.models import KeyedVectors
 from gensim.test.utils import get_tmpfile
 from node2vec import Node2Vec
 from Step3 import Plotter
+# import Plotter
 import matplotlib.pyplot as plt
 
 import matplotlib.pyplot

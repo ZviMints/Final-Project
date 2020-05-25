@@ -1,18 +1,18 @@
-import matplotlib as matplotlib
-import networkx as nx
-import numpy as np
 from sklearn import decomposition
 from sklearn.preprocessing import StandardScaler
-from Step3.algorithms import KMeans, BaseGraph, \
-    ConnectedComponents, SpectralClustering, Combined
-
-import matplotlib.pyplot as plt
-
+#windows import
+# from Step3.algorithms import KMeans, BaseGraph, \
+#     ConnectedComponents, SpectralClustering, Combined
+#linux imports
+import sys
+sys.path.append('/mnt/c/Users/EILON/PycharmProjects/Final-Project/Step3/algorithms/')
+import KMeans, BaseGraph, ConnectedComponents, SpectralClustering, Combined
 # matplotlib.use('MacOSX')
 
 # =============================================== Help Methods ===============================================
 def make_PCA(G, model):
     pca = decomposition.PCA(n_components=3)
+    # all_vectors_after_pca = pca.fit_transform(StandardScaler().fit_transform(model.vectors))
     all_vectors_after_pca = pca.fit_transform(StandardScaler().fit_transform(model.vectors))
     return all_vectors_after_pca
 
@@ -30,13 +30,13 @@ class Plotter:
         self.BaseGraph = BaseGraph.BaseGraph(self.all_vectors_after_pca)
 
         # Make Kmeans
-        self.kmeans = KMeans.KMeans(self.all_vectors_after_pca, "red",30)
+        self.kmeans = KMeans.KMeans(self.all_vectors_after_pca, "red", 20)
 
         # Make Connected Componenet
-        self.cc = ConnectedComponents.ConnectedComponents(self.all_vectors_after_pca, G, "green",40)
+        self.cc = ConnectedComponents.ConnectedComponents(self.all_vectors_after_pca, G, "green", 40)
 
         # Make Spectral
-        self.spectral = SpectralClustering.SpectralClustering(self.all_vectors_after_pca, "yellow",20)
+        self.spectral = SpectralClustering.SpectralClustering(self.all_vectors_after_pca, "yellow", 20)
 
         #Make Combined
         self.Combined = Combined.Combined( self.kmeans,self.spectral,self.cc)
