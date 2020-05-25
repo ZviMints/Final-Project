@@ -63,38 +63,43 @@ class ConnectedComponents:
         ax = fig.add_subplot(projection='3d')
 
         #drow all the nodes in the grapg
-        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
+        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1, alpha=0.1)
 
         #drow the clusters
         ax.scatter(
-            xs=self.component_centers[:,0],
-            ys=self.component_centers[:,1],
-            zs=self.component_centers[:,2],
-            s=self.component_radiuses,
-            c=self.color,
-            marker = 's',
-            depthshade=False)
+            xs=self.component_centers[:8,0],
+            ys=self.component_centers[:8,1],
+            zs=self.component_centers[:8,2],
+            s=self.component_radiuses[:8],
+            c=self.color, marker = 's',
+            depthshade=False, alpha=0.9)
 
         # drow clusters label
-        cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 10))]
+        cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 8))]
         for i, name in enumerate(cluster_name):
-            x2, y2, _ = proj3d.proj_transform(self.component_centers[i, 0], self.component_centers[i, 1],
-                                              self.component_centers[i, 2], ax.get_proj())
+            ax.text(self.component_centers[i, 0] - 0.3, self.component_centers[i, 1] - 0.3,
+                    self.component_centers[i, 2] - 0.3, name, None)
 
-            label = pylab.annotate(
-                name,
-                xy=(x2, y2), xytext=(0, -1*self.arrow_size),
-                textcoords='offset points', ha='right', va='bottom',
-                bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
-                arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-
-            def update_position(e):
-                x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-                label.xy = x2, y2
-                label.update_positions(fig.canvas.renderer)
-                fig.canvas.draw()
-
-            fig.canvas.mpl_connect('button_release_event', update_position)
+        # # drow clusters label
+        # cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 6))]
+        # for i, name in enumerate(cluster_name):
+        #     x2, y2, _ = proj3d.proj_transform(self.component_centers[i, 0], self.component_centers[i, 1],
+        #                                       self.component_centers[i, 2], ax.get_proj())
+        #
+        #     label = pylab.annotate(
+        #         name,
+        #         xy=(x2, y2), xytext=(0, -1*self.arrow_size),
+        #         textcoords='offset points', ha='right', va='bottom',
+        #         bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
+        #         arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
+        #
+        #     def update_position(e):
+        #         x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
+        #         label.xy = x2, y2
+        #         label.update_positions(fig.canvas.renderer)
+        #         fig.canvas.draw()
+        #
+        #     fig.canvas.mpl_connect('button_release_event', update_position)
 
         #the axis labels
         ax.set_xlabel('X Label')

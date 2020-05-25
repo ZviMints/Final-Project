@@ -94,31 +94,34 @@ class SpectralClustering:
         fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
         ax = fig.add_subplot(projection='3d')
 
-        # drow all the nodes in the grapg
-        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1)
+        #drow all the nodes in the grapg
+        ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1, alpha=0.1)
 
         #drow the clusters
         for i in range(len(self.CenterClusterList)):
             center = self.CenterClusterList[i]
-            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=700,depthshade=False)
+            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=600,depthshade=False, alpha=0.9)
 
             # drow clusters label
-            x2, y2, _ = proj3d.proj_transform(center[0],center[1],center[2], ax.get_proj())
+            ax.text(center[0] - 0.3, center[1] - 0.3, center[2] - 0.3, "S"+str(i), None)
 
-            label = pylab.annotate(
-                "S"+str(i),
-                xy=(x2, y2), xytext=(self.arrow_size*1.4, self.arrow_size*0.6),
-                textcoords='offset points', ha='right', va='bottom',
-                bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
-                arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-
-            def update_position(e):
-                x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-                label.xy = x2, y2
-                label.update_positions(fig.canvas.renderer)
-                fig.canvas.draw()
-
-            fig.canvas.mpl_connect('button_release_event', update_position)
+            # # drow clusters label
+            # x2, y2, _ = proj3d.proj_transform(center[0],center[1],center[2], ax.get_proj())
+            #
+            # label = pylab.annotate(
+            #     "S"+str(i),
+            #     xy=(x2, y2), xytext=(self.arrow_size*1.4, self.arrow_size*0.6),
+            #     textcoords='offset points', ha='right', va='bottom',
+            #     bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
+            #     arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
+            #
+            # def update_position(e):
+            #     x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
+            #     label.xy = x2, y2
+            #     label.update_positions(fig.canvas.renderer)
+            #     fig.canvas.draw()
+            #
+            # fig.canvas.mpl_connect('button_release_event', update_position)
 
         #the axis labels
         ax.set_xlabel('X Label')
