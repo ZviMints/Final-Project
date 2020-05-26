@@ -22,7 +22,7 @@ def build_graph(input):
                 G.add_node(conversation.firstAuthor)
                 G.add_node(conversation.secondAuthor)
                 G.add_edge(conversation.firstAuthor, conversation.secondAuthor)
-                print("(%s) --- (%s) Inserted to G" % (conversation.firstAuthor, conversation.secondAuthor))
+                # print("(%s) --- (%s) Inserted to G" % (conversation.firstAuthor, conversation.secondAuthor))
 
     print("G with %s totalConnection with %s totalNodes" % (G.number_of_edges(), G.number_of_nodes()))
     return G , conversations
@@ -48,8 +48,9 @@ input = {
 
 # Building Graph
 G, conversations = build_graph(input)
-with bz2.BZ2File("saved_objects/conversations_train_dataset_before_remove.pbz2", 'w') as f:
-    cPickle.dump(conversations, f)
+print("number of conversations before: " + str(len(conversations)))
+# with bz2.BZ2File("saved_objects/conversations_train_dataset_before_remove.pbz2", 'w') as f:
+#     cPickle.dump(conversations, f)
 
 # Remove All 2-Connected-Components in G
 id_to_remove_from_dataset = []
@@ -64,7 +65,9 @@ for index, conv in enumerate(conversations):
     if conv.firstAuthor in set_id_to_remove or conv.secondAuthor in set_id_to_remove:
         del conversations[index]
 
-with bz2.BZ2File("saved_objects/conversations_train_dataset_after_remove" + ".pbz2", 'w') as f:
-    cPickle.dump(conversations, f)
+print("number of conversations after: " + str(len(conversations)))
+
+# with bz2.BZ2File("saved_objects/conversations_train_dataset_after_remove" + ".pbz2", 'w') as f:
+#     cPickle.dump(conversations, f)
 
 print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
