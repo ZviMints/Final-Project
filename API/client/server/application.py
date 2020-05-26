@@ -40,6 +40,13 @@ class Conversation:
                 index = index + 1
             return secondAuthor
 
+    def getListOfSentences(self):
+        result = []
+        for message in self.messages:
+            if message.message is not None and len(message.message) > 0:#prevent from an empty string to get into the list
+                result.append(message.message) # a simple string that represent one sentence
+        return result
+
 #=============================================== main app ================================================#
 # Configurations
 all_algorithms =["base","kmeans","spectral","connected","kmeans+spectral","connected+kmeans","connected+spectral","connected+kmeans+spectral"]
