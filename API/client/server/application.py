@@ -14,21 +14,21 @@ from Bert import clustersBy3DVec
 import _pickle as cPickle
 # =============================================== models ================================================ #
 class Message:
-    def _init_(self, author, time, message):
+    def __init__(self, author, time, message):
         self.author = author
         self.time = time
         self.message = message
-    def _str_(self):
+    def __str__(self):
         return "(%s, %s): %s" % (self.author,self.time,self.message)
 
 class Conversation:
-    def _init_(self, id, messages):
+    def __init__(self, id, messages):
         self.id = id
         self.messages = messages  # Array of 'Messages' case class
         self.firstAuthor = messages[0].author
         self.secondAuthor = self.getSecondAuthor(self.firstAuthor, messages)
 
-    def _str_(self):
+    def __str__(self):
         return "[Conversation] ConversationId: " + self.id + " \n" + "\n".join(
             [str(message) for message in self.messages]) + "\n"
 
@@ -40,6 +40,7 @@ class Conversation:
                 index = index + 1
             return secondAuthor
 
+    # return list of string (massages) from conversaton
     def getListOfSentences(self):
         result = []
         for message in self.messages:

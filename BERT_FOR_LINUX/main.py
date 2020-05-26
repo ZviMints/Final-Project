@@ -23,7 +23,6 @@ class Message:
     def __str__(self):
         return "(%s, %s): %s" % (self.author,self.time,self.message)
 
-
 class Conversation:
     def __init__(self, id, messages):
         self.id = id
@@ -43,7 +42,7 @@ class Conversation:
                 index = index + 1
             return secondAuthor
 
-    #return list of string (massages) from conversaton
+    # return list of string (massages) from conversaton
     def getListOfSentences(self):
         result = []
         for message in self.messages:
