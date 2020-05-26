@@ -9,18 +9,44 @@ from node2vec import Node2Vec
 from Step3 import Plotter
 import os.path
 import os
+import bz2
+from Bert import clustersBy3DVec
+import _pickle as cPickle
+# =============================================== models ================================================ #
+class Message:
+    def _init_(self, author, time, message):
+        self.author = author
+        self.time = time
+        self.message = message
+    def _str_(self):
+        return "(%s, %s): %s" % (self.author,self.time,self.message)
 
+class Conversation:
+    def _init_(self, id, messages):
+        self.id = id
+        self.messages = messages  # Array of 'Messages' case class
+        self.firstAuthor = messages[0].author
+        self.secondAuthor = self.getSecondAuthor(self.firstAuthor, messages)
+
+    def _str_(self):
+        return "[Conversation] ConversationId: " + self.id + " \n" + "\n".join(
+            [str(message) for message in self.messages]) + "\n"
+
+    def getSecondAuthor(self, firstAuthor, messages):
+            secondAuthor = self.firstAuthor
+            index = 0
+            while (secondAuthor == firstAuthor) & (index < len(messages)):
+                secondAuthor = messages[index].author
+                index = index + 1
+            return secondAuthor
+
+#=============================================== main app ================================================#
 # Configurations
 all_algorithms =["base","kmeans","spectral","connected","kmeans+spectral","connected+kmeans","connected+spectral","connected+kmeans+spectral"]
 
 app = Flask(__name__, static_url_path = "/data", static_folder = "data")
 
 # Zvi Mints And Eilon Tsadok
-#=============================================== / route ================================================#
-@app.route("/")
-def index():
-    return "Server is UP"
-
 #=============================================== load route ================================================#
 @app.route("/load", methods=['POST'])
 def load():
@@ -169,7 +195,7 @@ def pca():
         plotter = Plotter.Plotter(G, model)
         plotter.SaveAll(prefix)
 
-    return jsonify(res = "pca completed and saved in image", path = prefix + "/base.png" , data = jsonfile.json)
+    return jsonify(res = "pca completed and saved in image", path = prefix + "/base.png")
 
 #=============================================== result route ================================================#
 @app.route("/results", methods=['POST'])
@@ -184,6 +210,56 @@ def results():
     return jsonify(path=  "/data/pca/" + dataset + "/" + algorithms + ".png")
 
 #=============================================== bert route ================================================#
+@app.route("/getLabels", methods=['POST'])
+def getLabels():
+        # Getting datset from request
+        dataset = request.get_json()["dataset"]
+        # If use server data or do all process
+        useServerData = request.get_json()["useServerData"]
+        # Prefix for saving information
+        prefix = "/data" + "/bert/" + dataset
+
+        skip = True
+        if not os.path.isfile("todo"):
+            skip = False
+
+        if not useServerData:
+            skip = False
+
+        app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip,dataset))
+        if not skip:
+            # Taking G from memory
+            G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
+
+            # Taking Memory from memory
+            fname = "model.kv"
+            path = get_tmpfile(fname)
+            model = KeyedVectors.load(path, mmap='r')
+
+            #convert the json file to list of Conversation objects
+            if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
+                data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+            elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
+                data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+
+            conversations = cPickle.load(data) # List of conversations object
+            # plotter = Plotter.Plotter(G, model)
+            #
+            # # Bert Starting Here
+            #
+            # # Get all algorithms dictionary of center by cluster name
+            # (kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name) = plotter.getAllCentersName()
+            #
+            # # Make all algorithms dictionary of cluster's nodes by cluster name
+            # clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name,plotter.all_vectors_after_pca)
+            #
+            # # Generate set of all possible combination. each combination represented by immutable list of string
+            # clusters_names = clusters.makeCombinationsGroups()
+            # return clusters_names
+            return "working"
+
+
+
 @app.route("/bert", methods=['POST'])
 def bert():
     dataset = request.get_json()["dataset"]

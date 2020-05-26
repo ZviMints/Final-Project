@@ -7,3 +7,6 @@ node2vec
 numpy
 sklearn
 gensim
+bert-embedding
+pickle-mixin
+ijson

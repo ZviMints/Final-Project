@@ -5,8 +5,8 @@ from sklearn.preprocessing import StandardScaler
 #     ConnectedComponents, SpectralClustering, Combined
 #linux imports
 import sys
-sys.path.append('/mnt/c/Users/EILON/PycharmProjects/Final-Project/Step3/algorithms/')
-import KMeans, BaseGraph, ConnectedComponents, SpectralClustering, Combined
+# sys.path.append('/mnt/c/Users/EILON/PycharmProjects/Final-Project/Step3/algorithms/')
+from Step3.algorithms import KMeans, BaseGraph, ConnectedComponents, SpectralClustering, Combined
 # matplotlib.use('MacOSX')
 
 # =============================================== Help Methods ===============================================
