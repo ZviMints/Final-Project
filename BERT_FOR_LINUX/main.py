@@ -43,7 +43,7 @@ class Conversation:
                 index = index + 1
             return secondAuthor
 
-#return list of string (massages) from conversaton
+    #return list of string (massages) from conversaton
     def getListOfSentences(self):
         result = []
         for message in self.messages:
@@ -93,9 +93,6 @@ model = KeyedVectors.load(path, mmap='r')
 # model = embedding(G)
 
 #convert the json file to list of Conversation objects
-# conversations = json2conversation.parse_data_to_case_class("/mnt/c/Users/EILON/PycharmProjects/data_set/test"
-#                  "/pan12-sexual-predator-identification-test-corpus-2012-05-21"
-#                  "/pan12-sexual-predator-identification-test-corpus-2012-05-17")
 data = bz2.BZ2File("saved_objects/conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
 conversations = cPickle.load(data)
 print("data conversations amount " + str(len(conversations)))

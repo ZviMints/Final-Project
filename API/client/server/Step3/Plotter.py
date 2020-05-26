@@ -10,7 +10,7 @@ from Step3.algorithms import KMeans, BaseGraph, ConnectedComponents, SpectralClu
 # matplotlib.use('MacOSX')
 
 # =============================================== Help Methods ===============================================
-def make_PCA(G, model):
+def make_PCA(model):
     pca = decomposition.PCA(n_components=3)
     # all_vectors_after_pca = pca.fit_transform(StandardScaler().fit_transform(model.vectors))
     all_vectors_after_pca = pca.fit_transform(StandardScaler().fit_transform(model.vectors))
@@ -23,8 +23,8 @@ class Plotter:
 
     # G is networkx
     # model is after node2vec embedded
-    def __init__(self, G, model):
-        self.all_vectors_after_pca = make_PCA(G, model)
+    def __init__(self, G , model):
+        self.all_vectors_after_pca = make_PCA(model)
 
         # Make base graph (without algorithm)
         self.BaseGraph = BaseGraph.BaseGraph(self.all_vectors_after_pca)

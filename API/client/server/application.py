@@ -270,6 +270,9 @@ def getLabels():
 @app.route("/bert", methods=['POST'])
 def bert():
     dataset = request.get_json()["dataset"]
-    cluster = request.get_json()["cluster"] # K6
+    cluster = request.get_json()["cluster"]  # example1: ('K0', 'S0', 'C2')  example2: ('K3', 'C0') example3:  ('S7',)
+                                             # you will get a set of tuples that each tuple look like those above here
+                                             # it will look like that {('K0', 'S0', 'C2'), ('K7',), ('S7',), ('K3', 'S0', 'C0'), ('K3', 'C3')}
     information = "cool cluster"
-    return jsonify(information = information)
+    return jsonify(information = information)  # ['notice', 'clothe', 'feet', 'ship', 'quart']
+

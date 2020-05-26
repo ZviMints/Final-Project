@@ -7,7 +7,7 @@ import _pickle as cPickle
 import sys
 max_val = sys.float_info.max
 
-MAX_CLUSTER_SIZE = 500
+MAX_CLUSTER_SIZE = 1
 
 # def load_obj(name):
 #     with open('saved_objects/' + name + '.pkl', 'rb') as file:
