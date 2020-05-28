@@ -169,7 +169,6 @@ body {
   margin-bottom: 10px;
   background: #fafafa;  /* fallback for old browsers */
   padding-right: 30px;
-
 }
 
 #clusters #cluster-done{
@@ -204,11 +203,11 @@ body {
 .bert .left {
   float: left;
   padding-left: 35px;
-  width: 95%;
+  width: 50%;
 }
 
 .bert .right {
   margin: auto;
   float: right;
-  width:5%
+  width:50%
 }

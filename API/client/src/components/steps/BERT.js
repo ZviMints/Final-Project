@@ -19,7 +19,7 @@ class BERT extends Component {
       option_cluster: "",
       option_topic: "",
       show_option_answer:false,
-      image: "/data/pca/" + this.props.getDataset() + "/base.png"
+      image: "/data/pca/" + this.props.getDataset() + "/connected+kmeans+spectral.png"
     }
     {this.fetchAllLabels()}
   }
@@ -192,6 +192,7 @@ renderBertMenu = () => {
           </div>
             <div className="right">
             <div id="bert information">
+            <img src={this.state.image} width="950px" height="650px" />
             </div>
           </div>
       </div>
