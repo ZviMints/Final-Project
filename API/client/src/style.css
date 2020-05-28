@@ -188,7 +188,7 @@ body {
 
 #clusters #cluster .left {
   float: left;
-  width: 70%;
+  width: 80%;
 }
 .topic_response {
   margin-top: 15px;
@@ -203,11 +203,11 @@ body {
 .bert .left {
   float: left;
   padding-left: 35px;
-  width: 50%;
+  width: 45%;
 }
 
 .bert .right {
   margin: auto;
   float: right;
-  width:50%
+  width:55%;
 }
