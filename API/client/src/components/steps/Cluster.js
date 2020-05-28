@@ -39,7 +39,7 @@ class Cluster extends React.Component {
 
         <div className="row">
           <div className="left">
-            {this.props.clusters}
+            {this.props.printArray(this.props.clusters)}
           </div>
 
           <div className="right">

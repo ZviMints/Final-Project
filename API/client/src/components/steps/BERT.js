@@ -95,7 +95,9 @@ setOptionTopic = (topic) => {
 }
 
 // ============================== Render Main Information ===================================== //
-
+  printArray = (arr) => {
+    return "[" + arr.map(key => " " + key) + " ]"
+  }
  renderButton = () => {
    return (
       <Button
@@ -115,7 +117,7 @@ findAllClusters = () => {
         <div className="left"><b>Clusters</b></div>
         <div className="right"><b>Topic</b></div>
       </div>
-        { this.state.labels.filter(arr => arr.length !== 0).map(clusters => <Cluster key={clusters} props={this.props} fetchTopic={this.fetchTopic} clusters = {clusters} /> )}
+        { this.state.labels.filter(arr => arr.length !== 0).map(clusters => <Cluster printArray={this.printArray} key={clusters} props={this.props} fetchTopic={this.fetchTopic} clusters = {clusters} /> )}
       </ul>
   );
 }
@@ -145,7 +147,7 @@ findSpecificCluster = () => {
         <Form.Label><b>Select Clusters Intersection</b></Form.Label>
         <Form.Control as="select" custom>
         <option disabled>Select Intersection</option>
-          {this.state.labels.filter(arr => arr.length !== 0).map(cluster => <option key={cluster} onChange={this.handleChange} key={cluster}>{cluster}</option>)}
+          {this.state.labels.filter(arr => arr.length !== 0).map(cluster => <option key={cluster} onChange={this.handleChange} key={cluster}>{this.printArray(cluster)}</option>)}
         </Form.Control>
       </Form.Group>
       <Button
