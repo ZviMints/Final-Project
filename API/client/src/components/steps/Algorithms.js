@@ -17,13 +17,13 @@ export default class Algorithms extends Component {
   render() {
         return (
             <div className="algorithms">
-              <input type="checkbox" id="algo1" name="kmeans" onChange={this.handleInputChange}/>
+              <input type="checkbox" className="checkbox" id="algo1" name="kmeans" onChange={this.handleInputChange}/>{'   '}
               <label htmlFor="kmeans">KMeans</label> <br />
 
-              <input type="checkbox" id="algo2" name="spectral" onChange={this.handleInputChange}/>
+              <input type="checkbox"  className="checkbox" id="algo2" name="spectral" onChange={this.handleInputChange}/>{'   '}
               <label htmlFor="spectral">Spectral Clustering</label> <br />
 
-              <input type="checkbox" id="algo3" name="connected" onChange={this.handleInputChange}/>
+              <input type="checkbox"  className="checkbox" id="algo3" name="connected" onChange={this.handleInputChange}/>{'   '}
               <label htmlFor="connected">Connected Components</label> <br />
             </div>
           );

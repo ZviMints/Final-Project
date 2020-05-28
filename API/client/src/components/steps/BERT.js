@@ -1,54 +1,76 @@
 import React, { Component } from 'react';
-import Algorithms from './Algorithms'
 import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
-import Form from 'react-bootstrap/Form'
-import Nav from 'react-bootstrap/Nav'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import Spinner from 'react-bootstrap/Spinner'
+import Cluster from './Cluster'
+import Form from 'react-bootstrap/Form'
+import Alert from 'react-bootstrap/Alert'
 
 class BERT extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clicked: false,
-      gotResponse: false,
-      FetchingData: false,
-      key: "by_algo",
-      algorithms: [],
+      gotAllLabels: false,
+      labels: [],
+      fetchingAllLabels: false,
+      key: "all",
+      option_cluster: "",
+      option_topic: "",
+      show_option_answer:false,
       image: "/data/pca/" + this.props.getDataset() + "/base.png"
     }
+    {this.fetchAllLabels()}
   }
 
 // ============================== Handlers ===================================== //
-  async fetchBERT() {
+  async fetchAllLabels() {
     const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ dataset: this.props.getDataset(), algorithms: this.parseAlgoToString() })
+            body: JSON.stringify({ dataset: this.props.getDataset(), useServerData: false})
         };
-
-    const response = await fetch('/bert', requestOptions);
-
+    const response = await fetch('/getLabels', requestOptions);
     if (!response.ok) {
-      this.setState({clicked: false, FetchingData: false})
+      this.setState({gotAllLabels: false, fetchingAllLabels: false})
       alert("Server Error")
     }
     else {
       const data = await response.json();
       if(data.err) {
-        this.setState({clicked: false, FetchingData: false})
+        this.setState({gotAllLabels: false, fetchingAllLabels: false})
         alert(data.msg)
       }
       else {
-        this.setState({image: data.path})
-        console.log("Image State: " + this.state.image)
-        this.setState({gotResponse: true})
-        this.setState({FetchingData: false})
-
+        this.setState({labels: data.labels})
+        this.setState({option_cluster: data.labels.filter(arr => arr.length !== 0)[0]})
+        console.log("labels: " + this.state.labels)
+        this.setState({gotAllLabels: true,  fetchingAllLabels: true})
     }
   }
+}
+  async fetchTopic(cluster, setFunction) {
+    const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ dataset: this.props.getDataset(), useServerData: false, cluster: cluster})
+        };
+    const response = await fetch('/bert', requestOptions);
+    if (!response.ok) {
+      alert("Server Error")
+    }
+    else {
+      const data = await response.json();
+      if(data.err) {
+        alert(data.msg)
+      }
+      else {
+        console.log("running setFunction with topic: " + data.topic)
+        setFunction(data.topic)
+    }
   }
+}
 
 handleClick = () => {
     this.setState({clicked: true})
@@ -56,26 +78,24 @@ handleClick = () => {
     this.fetchBERT();
   }
 
-  // ============================== algorithms ===================================== //
-  parseAlgoToString = () => {
-    if(this.state.algorithms.length === 0) return "base"
-    return this.state.algorithms.sort().reduce((string,algo) => (string === "") ? algo : string + "+" + algo, "")
-  }
-
-  updateAlgorithm = (name) => {
-       let clone = [...this.state.algorithms];
-       clone.push(name);
-       this.setState({algorithms: clone})
-   }
-
-   removeAlgorithm = (name) => {
-     const newList = this.state.algorithms.filter(algorithm => algorithm !== name)
-     this.setState({algorithms: newList})
-   }
   setKey = (key) => {
     this.setState({key: key})
   }
+
+  handleChange(event) {
+    this.setState({option_cluster: event.target.value});
+  }
+
+setOptionTopic = (topic) => {
+  this.setState({ option_topic: topic })
+}
+  handleSubmit = (event) => {
+    this.setState({show_option_answer:true})
+    this.fetchTopic(this.state.option_cluster,this.setOptionTopic);
+}
+
 // ============================== Render Main Information ===================================== //
+
  renderButton = () => {
    return (
       <Button
@@ -87,92 +107,76 @@ handleClick = () => {
  }
 
 
-renderByAlgo = () => {
-  const algo = "kmeans"
-  return (
-    <div>
-    <Form>
-      <Form.Group controlId="exampleForm.ControlSelect1">
-        <Form.Label><b><h5>Relevant Algorithm</h5></b></Form.Label>
-        <Form.Control as="select">
-          <option>KMeans</option>
-          <option>Connected Components</option>
-          <option>Spectral Clustering</option>
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="exampleForm.ControlSelect2">
-      <Form.Label><b><h5>KMeans</h5></b></Form.Label>
-        <Form.Control as="select" multiple>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Form.Control>
-      </Form.Group>
-
-      <Button variant="primary" type="submit">
-      Show Topics
-    </Button>
-    </Form>
-    </div>
+findAllClusters = () => {
+  const information = () => {
+    return (
+      <ul id="clusters">
+      <div className="row">
+        <div className="left"><b>Clusters</b></div>
+        <div className="right"><b>Topic</b></div>
+      </div>
+        { this.state.labels.filter(arr => arr.length !== 0).map(clusters => <Cluster key={clusters} props={this.props} fetchTopic={this.fetchTopic} clusters = {clusters} /> )}
+      </ul>
   );
 }
+  const loading = () => { return <Spinner animation="border" /> }
 
-renderIntersection = () => {
+  if (this.state.gotAllLabels) return information()
+  else                         return loading()
+}
+
+findSpecificCluster = () => {
+  const renderAnswerForTopic = () => {
+    return (
+      <div className="topic_response">
+      <Alert variant="warning">
+      <b>{this.state.option_cluster} Topic: </b> {this.state.option_topic === "" ? <Spinner animation="border" /> : this.state.option_topic}
+      </Alert>
+      </div>
+  );
+  }
+
+  const loading = () => { return <Spinner animation="border" /> }
+  const information = () => {
   return (
     <div>
     <Form>
-      <Form.Group controlId="exampleForm.ControlSelect2">
-      <Form.Label><b><h5>KMeans</h5></b></Form.Label>
-        <Form.Control as="select" multiple>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+      <Form.Group controlId="exampleForm.SelectCustom">
+        <Form.Label><b>Select Clusters Intersection</b></Form.Label>
+        <Form.Control as="select" custom>
+        <option disabled>Select Intersection</option>
+          {this.state.labels.filter(arr => arr.length !== 0).map(cluster => <option key={cluster} onChange={this.handleChange} key={cluster}>{cluster}</option>)}
         </Form.Control>
       </Form.Group>
-      <Form.Group controlId="exampleForm.ControlSelect2">
-      <Form.Label><b><h5>Connected Components</h5></b></Form.Label>
-        <Form.Control as="select" multiple>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Form.Control>
-      </Form.Group>
-      <Form.Group controlId="exampleForm.ControlSelect2">
-      <Form.Label><b><h5>Spectral Clustering</h5></b></Form.Label>
-        <Form.Control as="select" multiple>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </Form.Control>
-      </Form.Group>
+      <Button
+      onClick={!this.state.show_option_answer ? this.handleSubmit : null}
+      variant="primary"
+      disabled={!this.state.show_option_answer ? false : true}
+      >
+        Submit
+      </Button>
+      </Form>
 
-     <Button variant="primary" type="submit">Show Topics</Button>{' '}
-     <Button variant="danger">Reset</Button>{' '}
-
-    </Form>
+    {this.state.show_option_answer ? renderAnswerForTopic() : null}
     </div>
   );
+  }
+
+  if (this.state.gotAllLabels) return information()
+  else                         return loading()
 }
 
 
 renderBertMenu = () => {
   return (
     <Tabs id="menu" activeKey={this.state.key} onSelect={(k) => this.setKey(k)}>
-      <Tab eventKey="by_algo" title="By Cluster Algorithm">
+      <Tab eventKey="all" title="All Clusters">
       <br />
-      {this.renderByAlgo()}
+      {this.findAllClusters()}
       </Tab>
-      <Tab eventKey="intersection" title="Clusters Intersection">
+      <Tab eventKey="specific" title="Find Specific Topic">
       <br />
-      {this.renderIntersection()}
+      {this.findSpecificCluster()}
       </Tab>
     </Tabs>
   );
@@ -180,20 +184,14 @@ renderBertMenu = () => {
  // ============================== Render ===================================== //
   render() {
     return(
-      <div className="BERT">
-          <div className="column left">
+      <div className="bert">
+          <div className="left">
                 <b><h4>BERT</h4></b>
                 <hr />
                 { this.renderBertMenu() }
           </div>
-            <div className="column right">
-            <div id="information">
-              <h3><b>Dataset:</b> {this.props.getDataset()} </h3>
-              <hr/>
-              <h5><b>Dictionary:</b></h5>
-              <h4> <Badge variant="success">Connected-Components Clustering</Badge> <Badge variant="danger">KMeans Clustering</Badge> <Badge variant="warning">Spectral Clustering</Badge> <Badge variant="primary">Nodes</Badge> </h4>
-              <hr />
-              <img src={this.state.image} width="950px" height="650px" />
+            <div className="right">
+            <div id="bert information">
             </div>
           </div>
       </div>

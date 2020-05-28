@@ -122,6 +122,7 @@ handleClick = () => {
 
  // ============================== Render ===================================== //
   render() {
+    
     return(
       <div className="Embedding">
           <div className="column left">

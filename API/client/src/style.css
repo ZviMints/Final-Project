@@ -26,12 +26,8 @@ body {
   margin-top: 15px;
   margin-left: 15px;
 }
-
-#menu button {
-  padding:  3px 10px 3px 10px;
-  margin: 3px;
-  box-shadow: 0px 0px 1px 1px #001f3f inset;
-  border-radius: 3px;
+#menu .button {
+  margin-right: 5px;
 }
 
 #body {
@@ -102,7 +98,7 @@ body {
 
 #body #visualization .other_buttons {
 
-  padding: 10px;
+  padding: 0px 11px 11px 11px;
   background-color: white;
   box-shadow: 0px 0px 1px 1px #001f3f inset;
   border-radius: 3px;
@@ -151,14 +147,68 @@ body {
   font-size: 20px;
   color: white;
   background: #0575E6;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #021B79, #0575E6);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #021B79, #0575E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  box-shadow: 1px 1px 3px black;
-  padding: 5px 5px 5px 15px;
-  border-radius: 10px;
+  box-shadow: 1px 1px 2px black;
+  padding: 5px 5px 5px 5px;
+  border-radius: 5px;
+  margin-left: 10px;
 
 }
 .algorithms input {
-  height: 25px;
-  width: 25px;
+  height: 18px;
+  width: 18px;
+}
+
+#clusters {
+  list-style-type: none;
+  margin: 0; /* To remove default bottom margin */
+   padding: 0; /* To remove default left padding */
+}
+#clusters #cluster {
+  font-size: 15px;
+  padding: 5px;
+  margin-bottom: 10px;
+  background: #fafafa;  /* fallback for old browsers */
+  padding-right: 30px;
+
+}
+
+#clusters #cluster-done{
+  font-size: 15px;
+  padding: 5px;
+  margin-bottom: 10px;
+  padding-right: 30px;
+  background: #E0EAFC;  /* fallback for old browsers */
+}
+
+
+
+#clusters #cluster .right {
+  float: right;
+  width: 30%;
+}
+
+#clusters #cluster .left {
+  float: left;
+  width: 70%;
+}
+.topic_response {
+  margin-top: 15px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.bert .left {
+  float: left;
+  padding-left: 35px;
+  width: 95%;
+}
+
+.bert .right {
+  margin: auto;
+  float: right;
+  width:5%
 }

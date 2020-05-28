@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Algorithms from './Algorithms'
 import Button from 'react-bootstrap/Button'
 import Badge from 'react-bootstrap/Badge'
+import Spinner from 'react-bootstrap/Spinner'
 
 class Results extends Component {
   constructor(props) {
@@ -87,9 +88,9 @@ return (
  renderButton = () => {
    return (
       <Button
-        variant="primary"
+        variant="light"
         onClick={!this.state.FetchingData ? this.handleClick : null}>
-        Show Graph
+        <b>Show Graph</b>
       </Button>
     );
  }

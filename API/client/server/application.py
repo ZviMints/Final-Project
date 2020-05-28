@@ -12,6 +12,8 @@ import os
 import bz2
 from Bert import clustersBy3DVec
 import _pickle as cPickle
+import time
+
 # =============================================== models ================================================ #
 class Message:
     def __init__(self, author, time, message):
@@ -235,22 +237,22 @@ def getLabels():
             skip = False
 
         app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip,dataset))
-        if not skip:
-            # Taking G from memory
-            G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
-
-            # Taking Memory from memory
-            fname = "model.kv"
-            path = get_tmpfile(fname)
-            model = KeyedVectors.load(path, mmap='r')
-
-            #convert the json file to list of Conversation objects
-            if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-                data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
-            elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-                data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
-
-            conversations = cPickle.load(data) # List of conversations object
+        # if not skip:
+            # # Taking G from memory
+            # G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
+            #
+            # # Taking Memory from memory
+            # fname = "model.kv"
+            # path = get_tmpfile(fname)
+            # model = KeyedVectors.load(path, mmap='r')
+            #
+            # #convert the json file to list of Conversation objects
+            # if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
+            #     data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+            # elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
+            #     data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+            #
+            # # conversations = cPickle.load(data) # List of conversations object
             # plotter = Plotter.Plotter(G, model)
             #
             # # Bert Starting Here
@@ -264,7 +266,10 @@ def getLabels():
             # # Generate set of all possible combination. each combination represented by immutable list of string
             # clusters_names = clusters.makeCombinationsGroups()
             # return clusters_names
-            return "working"
+        time.sleep(1)
+        labels =  [[], ["K0","S0","C2"], ["K3","C0"], ["S7"]]
+        sortedLabels = sorted(labels, key=len)
+        return jsonify(labels = sortedLabels)
 
 
 
@@ -274,6 +279,6 @@ def bert():
     cluster = request.get_json()["cluster"]  # example1: ('K0', 'S0', 'C2')  example2: ('K3', 'C0') example3:  ('S7',)
                                              # you will get a set of tuples that each tuple look like those above here
                                              # it will look like that {('K0', 'S0', 'C2'), ('K7',), ('S7',), ('K3', 'S0', 'C0'), ('K3', 'C3')}
-    information = "cool cluster"
-    return jsonify(information = information)  # ['notice', 'clothe', 'feet', 'ship', 'quart']
-
+    time.sleep(1)
+    topic = "cool cluster"
+    return jsonify(topic = topic)  # ['notice', 'clothe', 'feet', 'ship', 'quart']

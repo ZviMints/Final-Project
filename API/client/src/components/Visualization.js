@@ -77,13 +77,16 @@ componentDidMount(){
    )
 
     const all_others = () => { return (
+      <div>
+      <h5>Next Steps: </h5>
       <div className="other_buttons">
-      <h4>Next Steps: </h4>
       {                       this.total_states
                               .filter(step => ! this.state.steps.includes(step))
                               .map((step,index) => <button key={index} id="button" onClick={() => alert("step '" + step + "' cannot be completed yet, following the previous steps")} type="button" name="results"  key={index}  className="btn btn-secondary">{step.charAt(0).toUpperCase() + step.slice(1)}</button>)
 
       }
+      </div>
+
       </div>
     );
   }
@@ -95,7 +98,7 @@ componentDidMount(){
                 { all_divs }
           </FlipMove>
           <div style={{height: '1px'}} id='#tracker' ref="trackerRef"></div>
-          { (!this.state.steps.includes("results")) ? all_others() : null  }
+          { (!this.state.steps.includes("bert")) ? all_others() : null  }
           </div>
     </div>
     );
