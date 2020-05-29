@@ -10,45 +10,17 @@ from Step3 import Plotter
 import os.path
 import os
 import bz2
-from Bert import clustersBy3DVec
+import pickle
 import _pickle as cPickle
+from Bert import clustersBy3DVec
+from Bert import Vectors2MatchConversions
+from Bert import convert_Conversations_2_topic
+from Bert import loadDataset2Conversation
 import time
 
 # =============================================== models ================================================ #
-class Message:
-    def __init__(self, author, time, message):
-        self.author = author
-        self.time = time
-        self.message = message
-    def __str__(self):
-        return "(%s, %s): %s" % (self.author,self.time,self.message)
 
-class Conversation:
-    def __init__(self, id, messages):
-        self.id = id
-        self.messages = messages  # Array of 'Messages' case class
-        self.firstAuthor = messages[0].author
-        self.secondAuthor = self.getSecondAuthor(self.firstAuthor, messages)
 
-    def __str__(self):
-        return "[Conversation] ConversationId: " + self.id + " \n" + "\n".join(
-            [str(message) for message in self.messages]) + "\n"
-
-    def getSecondAuthor(self, firstAuthor, messages):
-            secondAuthor = self.firstAuthor
-            index = 0
-            while (secondAuthor == firstAuthor) & (index < len(messages)):
-                secondAuthor = messages[index].author
-                index = index + 1
-            return secondAuthor
-
-    # return list of string (massages) from conversaton
-    def getListOfSentences(self):
-        result = []
-        for message in self.messages:
-            if message.message is not None and len(message.message) > 0:#prevent from an empty string to get into the list
-                result.append(message.message) # a simple string that represent one sentence
-        return result
 
 #=============================================== main app ================================================#
 # Configurations
@@ -237,37 +209,36 @@ def getLabels():
             skip = False
 
         app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip,dataset))
-        # if not skip:
-            # # Taking G from memory
-            # G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
-            #
-            # # Taking Memory from memory
-            # fname = "model.kv"
-            # path = get_tmpfile(fname)
-            # model = KeyedVectors.load(path, mmap='r')
-            #
-            # #convert the json file to list of Conversation objects
-            # if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-            #     data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
-            # elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-            #     data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
-            #
-            # # conversations = cPickle.load(data) # List of conversations object
-            # plotter = Plotter.Plotter(G, model)
-            #
-            # # Bert Starting Here
-            #
-            # # Get all algorithms dictionary of center by cluster name
-            # (kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name) = plotter.getAllCentersName()
-            #
-            # # Make all algorithms dictionary of cluster's nodes by cluster name
-            # clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name,plotter.all_vectors_after_pca)
-            #
-            # # Generate set of all possible combination. each combination represented by immutable list of string
-            # clusters_names = clusters.makeCombinationsGroups()
+        if not skip:
+            # Taking G from memory
+            G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
+
+            # Taking Memory from memory
+            fname = "model.kv"
+            path = get_tmpfile(fname)
+            model = KeyedVectors.load(path, mmap='r')
+
+            #convert the json file to list of Conversation objects
+            if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
+                data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+            elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
+                data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+
+            plotter = Plotter.Plotter(G, model)
+
+            # Bert Starting Here
+
+            # Get all algorithms dictionary of center by cluster name
+            (kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name) = plotter.getAllCentersName()
+
+            # Make all algorithms dictionary of cluster's nodes by cluster name
+            clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name,plotter.all_vectors_after_pca)
+
+            # Generate set of all possible combination. each combination represented by immutable list of string
+            clusters_names = clusters.makeCombinationsGroups()
+
             # return clusters_names
-        time.sleep(1)
-        labels =  [[], ["K0","S0","C2"], ["K3","C0"], ["S7"]]
+        labels = list(clusters_names)
         sortedLabels = sorted(labels, key=len)
         return jsonify(labels = sortedLabels)
 
@@ -276,9 +247,56 @@ def getLabels():
 @app.route("/bert", methods=['POST'])
 def bert():
     dataset = request.get_json()["dataset"]
-    cluster = request.get_json()["cluster"]  # example1: ('K0', 'S0', 'C2')  example2: ('K3', 'C0') example3:  ('S7',)
+    option_cluster_name = request.get_json()["cluster"]  # example1: ('K0', 'S0', 'C2')  example2: ('K3', 'C0') example3:  ('S7',)
                                              # you will get a set of tuples that each tuple look like those above here
                                              # it will look like that {('K0', 'S0', 'C2'), ('K7',), ('S7',), ('K3', 'S0', 'C0'), ('K3', 'C3')}
-    time.sleep(1)
-    topic = "cool cluster"
-    return jsonify(topic = topic)  # ['notice', 'clothe', 'feet', 'ship', 'quart']
+
+    app.logger.info('got /bert request with dataset = %s' % (dataset))
+
+    # ====================== Todo: Save In memory ================= #
+    # Taking G from memory
+    G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
+
+    # Taking Memory from memory
+    fname = "model.kv"
+    path = get_tmpfile(fname)
+    model = KeyedVectors.load(path, mmap='r')
+
+    # convert the json file to list of Conversation objects
+    if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
+        data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2",
+                           'rb')  # 40820 conversations
+    elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
+        data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2",
+                           'rb')  # 40820 conversations
+
+    # conversations = cPickle.load(data) # List of conversations object
+    conversations = loadDataset2Conversation.loadConversations("C:/Users/EILON/PycharmProjects/data_set/traning"
+                     "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
+                     "/pan12-sexual-predator-identification-training-corpus-2012-05-01")
+    plotter = Plotter.Plotter(G, model)
+
+    # Bert Starting Here
+    # Get all algorithms dictionary of center by cluster name
+    (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
+
+    # Make all algorithms dictionary of cluster's nodes by cluster name
+    clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
+                                               connected_center_by_name, plotter.all_vectors_after_pca)
+    # ====================== End of Todo ========================== #
+
+    # get list of vectors that matching to the input cluster name
+    selected_vectors = clusters.getAllVectorsByCombinationClustersName(option_cluster_name)
+
+    app.logger.info("start process of extracting topic")
+    # get list of Conversation objects from list of vectors
+    vectors2Conversations = Vectors2MatchConversions.Vectors2MatchConversions(G, plotter.all_vectors_after_pca,
+                                                                              conversations)
+    selected_conversations = vectors2Conversations.getConversationsFromGroupOfVecs(selected_vectors)
+
+    # get list of 5 most similar topics from list of Conversation objects
+    conversations2Topics = convert_Conversations_2_topic.convert_Conversations_2_topic()
+    clusters_vector = conversations2Topics.clustersEmbedding(selected_conversations)
+    topics_list = conversations2Topics.vector2Topic(clusters_vector)
+
+    return jsonify(topic = str(topics_list))  # ['notice', 'clothe', 'feet', 'ship', 'quart']

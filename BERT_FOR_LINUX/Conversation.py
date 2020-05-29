@@ -18,7 +18,7 @@ class Conversation:
                 index = index + 1
             return secondAuthor
 
-#return list of string (massages) from conversaton
+    #return list of string (massages) from conversaton
     def getListOfSentences(self):
         result = []
         for message in self.messages:

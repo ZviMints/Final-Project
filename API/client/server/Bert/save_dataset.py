@@ -41,7 +41,7 @@ def parse_data_to_case_class(input):
 
 
 input = {
-    "data_path": "/mnt/c/Users/EILON/PycharmProjects/data_set/traning"
+    "data_path": "C:/Users/EILON/PycharmProjects/data_set/traning"
                  "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
                  "/pan12-sexual-predator-identification-training-corpus-2012-05-01",
 }
@@ -49,8 +49,8 @@ input = {
 # Building Graph
 G, conversations = build_graph(input)
 print("number of conversations before: " + str(len(conversations)))
-# with bz2.BZ2File("saved_objects/conversations_train_dataset_before_remove.pbz2", 'w') as f:
-#     cPickle.dump(conversations, f)
+with bz2.BZ2File("../data/start/conversations_train_dataset_before_remove.pbz2", 'w') as f:
+    cPickle.dump(conversations, f)
 
 # Remove All 2-Connected-Components in G
 id_to_remove_from_dataset = []
@@ -67,7 +67,7 @@ for index, conv in enumerate(conversations):
 
 print("number of conversations after: " + str(len(conversations)))
 
-# with bz2.BZ2File("saved_objects/conversations_train_dataset_after_remove" + ".pbz2", 'w') as f:
-#     cPickle.dump(conversations, f)
+with bz2.BZ2File("../data/start/conversations_train_dataset_after_remove.pbz2", 'w') as f:
+    cPickle.dump(conversations, f)
 
 print("[+] G after remove 2-Connected-Components remains with %s edges and %s nodes" % (G.number_of_edges(), G.number_of_nodes()))
