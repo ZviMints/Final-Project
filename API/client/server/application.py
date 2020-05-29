@@ -10,16 +10,21 @@ from Step3 import Plotter
 import os.path
 import os
 import bz2
+import sys
+sys.path.append('./')
+
 import pickle
 import _pickle as cPickle
 from Bert import clustersBy3DVec
 from Bert import Vectors2MatchConversions
 from Bert import convert_Conversations_2_topic
 from Bert import loadDataset2Conversation
+from Bert import Message
+from Bert import Conversation
+
 import time
 
 # =============================================== models ================================================ #
-
 
 
 #=============================================== main app ================================================#
@@ -260,18 +265,19 @@ def bert():
     model = KeyedVectors.load(path, mmap='r')
 
     # convert the json file to list of Conversation objects
+    basepath = os.path.abspath(".")
+    op = "\\" if sys.platform.startswith('win') else "/"
+    data = bz2.BZ2File(basepath + op + "Bert" + op + "word2vector.pbz2", 'rb')
     if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-        data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2",
-                           'rb')  # 40820 conversations
+        conversations = loadDataset2Conversation.loadConversations(
+            "C:/Users/EILON/PycharmProjects/data_set/traning"
+            "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
+            "/pan12-sexual-predator-identification-training-corpus-2012-05-01")  # 40820 conversations
     elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-        data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2",
-                           'rb')  # 40820 conversations
-
-    # conversations = cPickle.load(data) # List of conversations object
-    conversations = loadDataset2Conversation.loadConversations(
-                     "C:/Users/EILON/PycharmProjects/data_set/traning"
-                     "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
-                     "/pan12-sexual-predator-identification-training-corpus-2012-05-01")
+        conversations = loadDataset2Conversation.loadConversations(
+            "C:/Users/EILON/PycharmProjects/data_set/test"
+            "/pan12-sexual-predator-identification-test-corpus-2012-05-21"
+            "/pan12-sexual-predator-identification-test-corpus-2012-05-17")
 
     plotter = Plotter.Plotter(G, model)
 

@@ -20,5 +20,5 @@ for line in in_file.readlines():
 # save_obj(vectors_bank, "word2vec")
 
 # saving a compress pickle file
-with bz2.BZ2File("../data/start/word2vector.pbz2", 'w') as f:
+with bz2.BZ2File("word2vector.pbz2", 'w') as f:
     cPickle.dump(vectors_bank, f)

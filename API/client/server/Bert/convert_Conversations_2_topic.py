@@ -8,7 +8,6 @@ import sys
 max_val = sys.float_info.max
 import os.path
 import os
-
 MAX_CLUSTER_SIZE = 2
 
 # def load_obj(name):
@@ -29,7 +28,8 @@ class convert_Conversations_2_topic:
     def __init__(self):
         self.bert_embedding = BertEmbedding()
         # self.vectors_bank_dic = load_obj("word2vec")
-        data = bz2.BZ2File("../data/start/word2vector.pbz2", 'rb')
+        basepath = os.path.abspath(".")
+        data = bz2.BZ2File(basepath +"\Bert\word2vector.pbz2", 'rb')
         self.vectors_bank_dic = cPickle.load(data)
 
     # get conversation (list of sentences) and return bert embedded vector (do not get empty sentence)
