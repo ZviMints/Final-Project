@@ -76,4 +76,3 @@ class convert_Conversations_2_topic:
             if max_v > dist:
                 top_5_similar[i_max] = (name_i, dist)
         return [name[0] for name in top_5_similar]
-

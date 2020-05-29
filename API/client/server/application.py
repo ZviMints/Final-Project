@@ -247,10 +247,7 @@ def getLabels():
 @app.route("/bert", methods=['POST'])
 def bert():
     dataset = request.get_json()["dataset"]
-    option_cluster_name = request.get_json()["cluster"]  # example1: ('K0', 'S0', 'C2')  example2: ('K3', 'C0') example3:  ('S7',)
-                                             # you will get a set of tuples that each tuple look like those above here
-                                             # it will look like that {('K0', 'S0', 'C2'), ('K7',), ('S7',), ('K3', 'S0', 'C0'), ('K3', 'C3')}
-
+    option_cluster_name = request.get_json()["cluster"]
     app.logger.info('got /bert request with dataset = %s' % (dataset))
 
     # ====================== Todo: Save In memory ================= #
@@ -271,12 +268,13 @@ def bert():
                            'rb')  # 40820 conversations
 
     # conversations = cPickle.load(data) # List of conversations object
-    conversations = loadDataset2Conversation.loadConversations("C:/Users/EILON/PycharmProjects/data_set/traning"
+    conversations = loadDataset2Conversation.loadConversations(
+                     "C:/Users/EILON/PycharmProjects/data_set/traning"
                      "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
                      "/pan12-sexual-predator-identification-training-corpus-2012-05-01")
+
     plotter = Plotter.Plotter(G, model)
 
-    # Bert Starting Here
     # Get all algorithms dictionary of center by cluster name
     (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
 
@@ -288,10 +286,9 @@ def bert():
     # get list of vectors that matching to the input cluster name
     selected_vectors = clusters.getAllVectorsByCombinationClustersName(option_cluster_name)
 
-    app.logger.info("start process of extracting topic")
+    app.logger.info("Start process of extracting topics...")
     # get list of Conversation objects from list of vectors
-    vectors2Conversations = Vectors2MatchConversions.Vectors2MatchConversions(G, plotter.all_vectors_after_pca,
-                                                                              conversations)
+    vectors2Conversations = Vectors2MatchConversions.Vectors2MatchConversions(G, plotter.all_vectors_after_pca,conversations)
     selected_conversations = vectors2Conversations.getConversationsFromGroupOfVecs(selected_vectors)
 
     # get list of 5 most similar topics from list of Conversation objects
