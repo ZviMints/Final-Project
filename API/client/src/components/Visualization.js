@@ -14,7 +14,7 @@ class Visualization  extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      steps: ["bert"],
+      steps: ["load"],
       dataset: ""
     }
 
