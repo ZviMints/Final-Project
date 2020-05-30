@@ -18,6 +18,7 @@ class BERT extends Component {
       key: "all",
       option_cluster: "",
       option_topic: "",
+      lock: true,
       show_option_answer:false,
       image: "/data/pca/" + this.props.getDataset() + "/connected+kmeans+spectral.png"
     }
@@ -108,16 +109,28 @@ setOptionTopic = (topic) => {
     );
  }
 
+handleLockButton = () => {
+  this.setState({lock:false})
+}
+
+getLock = () => { return this.state.lock }
+
 
 findAllClusters = () => {
   const information = () => {
     return (
       <ul id="clusters">
+      <Button
+      className="lockButton"
+      onClick={this.state.lock ? this.handleLockButton : null}
+      variant="outline-dark"
+      disabled={this.state.lock ? false : true}
+      > Fetch Data </Button>
       <div className="row">
         <div className="left"><b>Clusters</b></div>
         <div className="right"><b>Topic</b></div>
       </div>
-        { this.state.labels.filter(arr => arr.length !== 0).map(clusters => <Cluster printArray={this.printArray} key={clusters} props={this.props} fetchTopic={this.fetchTopic} clusters = {clusters} /> )}
+        { this.state.labels.filter(arr => arr.length !== 0).map(clusters => <Cluster getLock={this.getLock} printArray={this.printArray} key={clusters} props={this.props} fetchTopic={this.fetchTopic} clusters = {clusters} /> )}
       </ul>
   );
 }
@@ -172,13 +185,13 @@ findSpecificCluster = () => {
 renderBertMenu = () => {
   return (
     <Tabs id="menu" activeKey={this.state.key} onSelect={(k) => this.setKey(k)}>
-      <Tab eventKey="all" title="All Clusters">
-      <br />
-      {this.findAllClusters()}
-      </Tab>
       <Tab eventKey="specific" title="Find Specific Topic">
       <br />
       {this.findSpecificCluster()}
+      </Tab>
+      <Tab eventKey="all" title="All Clusters">
+      <br />
+      {this.findAllClusters()}
       </Tab>
     </Tabs>
   );

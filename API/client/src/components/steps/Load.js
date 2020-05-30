@@ -155,7 +155,7 @@ handleClick = () => {
       <div className="load">
           <div className="column left">
               <h3> Select dataset: </h3>
-                <Form.Control as="select">
+                <Form.Control as="select" onChange={this.handleChange}>
                 <option value="pan12-sexual-predator-identification-training-corpus-2012-05-01">pan12-sexual-predator-identification-training-corpus-2012-05-01</option>
                 <option value="pan12-sexual-predator-identification-test-corpus-2012-05-17">pan12-sexual-predator-identification-test-corpus-2012-05-17</option>
                 </Form.Control>

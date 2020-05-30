@@ -200,6 +200,11 @@ body {
   clear: both;
 }
 
+.bert .lockButton {
+  margin-top: 5px;
+  box-shadow: 0px 0px 5px black;
+  margin-bottom: 20px;
+}
 .bert .left {
   float: left;
   padding-left: 35px;
