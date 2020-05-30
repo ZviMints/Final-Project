@@ -6,9 +6,9 @@ class Cluster extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      topic: ""
+      topic: "",
+      lock: this.props.getLock()
     }
-    this.props.fetchTopic(this.props.clusters,this.setTopicFunction)
   }
 
   setTopicFunction = (topic) => {
@@ -31,12 +31,13 @@ class Cluster extends React.Component {
 
     const renderTagOrProgress = () => {
       if (this.state.topic !== "") return information()
-      else                       return loading()
+      else if(this.props.getLock()) return null
+      else if(!this.props.getLock())    return loading()
     }
 
+    if (!this.props.getLock()) this.props.fetchTopic(this.props.clusters,this.setTopicFunction)
     return (
       <li id={this.state.topic === "" ? "cluster" : "cluster-done"}>
-
         <div className="row">
           <div className="left">
             {this.props.printArray(this.props.clusters)}
@@ -46,9 +47,6 @@ class Cluster extends React.Component {
           {renderTagOrProgress()}
           </div>
         </div>
-
-
-
       </li>
     );
   }
