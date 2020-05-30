@@ -27,7 +27,7 @@ class convert_Conversations_2_topic:
     def __init__(self):
         self.bert_embedding = BertEmbedding()
         # self.vectors_bank_dic = load_obj("word2vec")
-        data = bz2.BZ2File("saved_objects/word2vector.pbz2", 'rb')
+        data = bz2.BZ2File("saved_objects/word2vectorUpdate.pbz2", 'rb')
         self.vectors_bank_dic = cPickle.load(data)
 
     # get conversation (list of sentences) and return bert embedded vector (do not get empty sentence)

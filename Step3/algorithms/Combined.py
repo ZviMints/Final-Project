@@ -119,8 +119,8 @@ class Combined:
         fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
         ax = fig.add_subplot( projection='3d')
 
-        # # drow all the nodes in the graph
-        # ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2], s=1, alpha=0.1)
+        # drow all the nodes in the graph
+        ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2], s=1, alpha=0.1)
 
         if mode == "kmeans+spectral":
             # drow kmeans clusters

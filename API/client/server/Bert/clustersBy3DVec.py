@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-R = 3
+R = 2.3
 MIN_NODES_FOR_MATCH = 1
 
 def isNodeInside(center, node):

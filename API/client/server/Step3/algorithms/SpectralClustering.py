@@ -100,7 +100,7 @@ class SpectralClustering:
         #drow the clusters
         for i in range(len(self.CenterClusterList)):
             center = self.CenterClusterList[i]
-            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=600,depthshade=False, alpha=0.9)
+            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=600,depthshade=False, alpha=0.7)
 
             # drow clusters label
             ax.text(center[0] - 0.3, center[1] - 0.3, center[2] - 0.3, "S"+str(i), None)

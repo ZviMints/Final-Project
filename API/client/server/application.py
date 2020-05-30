@@ -11,6 +11,7 @@ import os.path
 import os
 import bz2
 import sys
+
 sys.path.append('./')
 
 import pickle
@@ -27,14 +28,16 @@ import time
 # =============================================== models ================================================ #
 
 
-#=============================================== main app ================================================#
+# =============================================== main app ================================================#
 # Configurations
-all_algorithms =["base","kmeans","spectral","connected","kmeans+spectral","connected+kmeans","connected+spectral","connected+kmeans+spectral"]
+all_algorithms = ["base", "kmeans", "spectral", "connected", "kmeans+spectral", "connected+kmeans",
+                  "connected+spectral", "connected+kmeans+spectral"]
 
-app = Flask(__name__, static_url_path = "/data", static_folder = "data")
+app = Flask(__name__, static_url_path="/data", static_folder="data")
+
 
 # Zvi Mints And Eilon Tsadok
-#=============================================== load route ================================================#
+# =============================================== load route ================================================#
 @app.route("/load", methods=['POST'])
 def load():
     # Getting datset from request
@@ -45,13 +48,14 @@ def load():
     prefix = "/data" + "/load/" + dataset
 
     skip = True
-    if not os.path.isfile("." + prefix + "/networkx_after_remove.png"):  # and os.path.isfile("." + prefix + dataset + "/networkx_before_remove.png"):
+    if not os.path.isfile(
+            "." + prefix + "/networkx_after_remove.png"):  # and os.path.isfile("." + prefix + dataset + "/networkx_before_remove.png"):
         skip = False
 
     if not useServerData:
         skip = False
 
-    app.logger.info('got /load request with skip = %s and dataset = %s' % (skip,dataset))
+    app.logger.info('got /load request with skip = %s and dataset = %s' % (skip, dataset))
 
     # Making G (networkx)
     if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
@@ -60,7 +64,7 @@ def load():
     elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
         G = networkx.read_multiline_adjlist("./data/start/test_networkxBeforeRemove.adjlist")
     else:
-           return jsonify(err="405", msg = "Invalid JSON file name")
+        return jsonify(err="405", msg="Invalid JSON file name")
 
     # if not skip:
     #    # Plotting
@@ -71,18 +75,18 @@ def load():
     app.logger.debug('loaded dataset with %s nodes before remove' % len(G.nodes()))
     before = json_graph.node_link_data(G)["links"]  # node-link format to serialize
     graphData = []
-    graphData.append("%s Nodes, %s links" % (len(G.nodes()),len(G.edges())))
+    graphData.append("%s Nodes, %s links" % (len(G.nodes()), len(G.edges())))
 
     # After Remove
     for component in list(networkx.connected_components(G)):
-        if len(component) <= 2: # This will actually remove only 2-connected
+        if len(component) <= 2:  # This will actually remove only 2-connected
             for node in component:
                 G.remove_node(node)
 
     # write json formatted data
     app.logger.debug('loaded dataset with %s nodes after remove' % len(G.nodes()))
     after = json_graph.node_link_data(G)["links"]  # node-link format to serialize
-    graphData.append("%s Nodes, %s links" % (len(G.nodes()),len(G.edges())))
+    graphData.append("%s Nodes, %s links" % (len(G.nodes()), len(G.edges())))
 
     # Save after remove graph
     if not os.path.exists("." + prefix):
@@ -93,13 +97,15 @@ def load():
         networkx.draw(G, node_size=3)
         plt.savefig("." + prefix + "/networkx_after_remove.png")
 
-    return jsonify(before_path= prefix + "/networkx_before_remove.png", after_path = prefix + "/networkx_after_remove.png", before = before, after = after, graphData = graphData)
+    return jsonify(before_path=prefix + "/networkx_before_remove.png", after_path=prefix + "/networkx_after_remove.png",
+                   before=before, after=after, graphData=graphData)
 
-#=============================================== embedding route ================================================#
-def saveWalks(walks,prefix):
+
+# =============================================== embedding route ================================================#
+def saveWalks(walks, prefix):
     if not os.path.exists("." + prefix):
         os.makedirs("." + prefix)
-    f = open("." + prefix +"/walks.txt", "w+")
+    f = open("." + prefix + "/walks.txt", "w+")
     row = 1
     for sentence in walks:
         f.write("row %s:" % str(row))
@@ -109,6 +115,7 @@ def saveWalks(walks,prefix):
             f.write(" ")
         f.write("\n")
     f.close()
+
 
 @app.route("/embedding", methods=['POST'])
 def embedding():
@@ -120,21 +127,21 @@ def embedding():
     prefix = "/data" + "/embedding/" + dataset
 
     skip = True
-    print("." + prefix  + "/walks.txt")
-    if not os.path.isfile("." + prefix  + "/walks.txt"):
+    print("." + prefix + "/walks.txt")
+    if not os.path.isfile("." + prefix + "/walks.txt"):
         skip = False
 
     if not useServerData:
         skip = False
 
-    app.logger.info('got /embedding request with skip = %s and dataset = %s' % (skip,dataset))
+    app.logger.info('got /embedding request with skip = %s and dataset = %s' % (skip, dataset))
 
     if not skip:
         G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
-         # Precompute probabilities and generate walks
+        # Precompute probabilities and generate walks
         node2vec = Node2Vec(G, dimensions=64, walk_length=25, num_walks=10, workers=1)
-        saveWalks(list(node2vec.walks),prefix)
+        saveWalks(list(node2vec.walks), prefix)
 
         # Embed nodes
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
@@ -144,9 +151,11 @@ def embedding():
         path = get_tmpfile(fname)
         model.wv.save(path)
 
-    return jsonify(res = "walks saved successfully", walk_length = 25, num_walks = 10, walks = open("." + prefix + "/walks.txt", "r").read())
+    return jsonify(res="walks saved successfully", walk_length=25, num_walks=10,
+                   walks=open("." + prefix + "/walks.txt", "r").read())
 
-#=============================================== pca route ================================================#
+
+# =============================================== pca route ================================================#
 @app.route("/pca", methods=['POST'])
 def pca():
     # Getting datset from request
@@ -155,7 +164,7 @@ def pca():
     useServerData = request.get_json()["useServerData"]
     # Prefix for saving information
     prefix = "/data" + "/pca/" + dataset
-
+    print(dataset)
     if not os.path.exists("." + prefix):
         os.makedirs("." + prefix)
 
@@ -167,7 +176,7 @@ def pca():
     if not useServerData:
         skip = False
 
-    app.logger.info('got /pca request with skip = %s and dataset = %s' % (skip,dataset))
+    app.logger.info('got /pca request with skip = %s and dataset = %s' % (skip, dataset))
 
     if not skip:
         # Taking G from memory
@@ -182,9 +191,10 @@ def pca():
         plotter = Plotter.Plotter(G, model)
         plotter.SaveAll(prefix)
 
-    return jsonify(res = "pca completed and saved in image", path = prefix + "/base.png")
+    return jsonify(res="pca completed and saved in image", path=prefix + "/base.png")
 
-#=============================================== result route ================================================#
+
+# =============================================== result route ================================================#
 @app.route("/results", methods=['POST'])
 def results():
     # Getting datset from request
@@ -192,61 +202,64 @@ def results():
     # Getting algorithms from request
     algorithms = request.get_json()["algorithms"]
 
-    app.logger.info('got /results request with dataset = %s and algorithms = %s' % (dataset,algorithms))
+    app.logger.info('got /results request with dataset = %s and algorithms = %s' % (dataset, algorithms))
 
-    return jsonify(path=  "/data/pca/" + dataset + "/" + algorithms + ".png")
+    return jsonify(path="/data/pca/" + dataset + "/" + algorithms + ".png")
 
-#=============================================== bert route ================================================#
+
+# =============================================== bert route ================================================#
 @app.route("/getLabels", methods=['POST'])
 def getLabels():
-        # Getting datset from request
-        dataset = request.get_json()["dataset"]
-        # If use server data or do all process
-        useServerData = request.get_json()["useServerData"]
-        # Prefix for saving information
-        prefix = "/data" + "/bert/" + dataset
+    # Getting datset from request
+    dataset = request.get_json()["dataset"]
+    # If use server data or do all process
+    useServerData = request.get_json()["useServerData"]
+    # Prefix for saving information
+    prefix = "/data" + "/bert/" + dataset
 
-        skip = True
-        if not os.path.isfile("todo"):
-            skip = False
+    skip = True
+    if not os.path.isfile("todo"):
+        skip = False
 
-        if not useServerData:
-            skip = False
+    if not useServerData:
+        skip = False
 
-        app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip,dataset))
-        if not skip:
-            # Taking G from memory
-            G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
+    app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip, dataset))
+    if not skip:
+        # Taking G from memory
+        G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
-            # Taking Memory from memory
-            fname = "model.kv"
-            path = get_tmpfile(fname)
-            model = KeyedVectors.load(path, mmap='r')
+        # Taking Memory from memory
+        fname = "model.kv"
+        path = get_tmpfile(fname)
+        model = KeyedVectors.load(path, mmap='r')
 
-            #convert the json file to list of Conversation objects
-            if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-                data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
-            elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-                data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2", 'rb')  # 40820 conversations
+        # convert the json file to list of Conversation objects
+        if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
+            data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2",
+                               'rb')  # 40820 conversations
+        elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
+            data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2",
+                               'rb')  # 40820 conversations
 
-            plotter = Plotter.Plotter(G, model)
+        plotter = Plotter.Plotter(G, model)
 
-            # Bert Starting Here
+        # Bert Starting Here
 
-            # Get all algorithms dictionary of center by cluster name
-            (kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name) = plotter.getAllCentersName()
+        # Get all algorithms dictionary of center by cluster name
+        (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
 
-            # Make all algorithms dictionary of cluster's nodes by cluster name
-            clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name,spectral_centers_by_name,connected_center_by_name,plotter.all_vectors_after_pca)
+        # Make all algorithms dictionary of cluster's nodes by cluster name
+        clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
+                                                   connected_center_by_name, plotter.all_vectors_after_pca)
 
-            # Generate set of all possible combination. each combination represented by immutable list of string
-            clusters_names = clusters.makeCombinationsGroups()
+        # Generate set of all possible combination. each combination represented by immutable list of string
+        clusters_names = clusters.makeCombinationsGroups()
 
-            # return clusters_names
-        labels = list(clusters_names)
-        sortedLabels = sorted(labels, key=len)
-        return jsonify(labels = sortedLabels)
-
+        # return clusters_names
+    labels = list(clusters_names)
+    sortedLabels = sorted(labels, key=len)
+    return jsonify(labels=sortedLabels)
 
 
 @app.route("/bert", methods=['POST'])
@@ -267,7 +280,7 @@ def bert():
     # convert the json file to list of Conversation objects
     basepath = os.path.abspath(".")
     op = "\\" if sys.platform.startswith('win') else "/"
-    data = bz2.BZ2File(basepath + op + "Bert" + op + "word2vector.pbz2", 'rb')
+
     if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
         conversations = loadDataset2Conversation.loadConversations(
             "C:/Users/EILON/PycharmProjects/data_set/traning"
@@ -294,7 +307,8 @@ def bert():
 
     app.logger.info("Start process of extracting topics...")
     # get list of Conversation objects from list of vectors
-    vectors2Conversations = Vectors2MatchConversions.Vectors2MatchConversions(G, plotter.all_vectors_after_pca,conversations)
+    vectors2Conversations = Vectors2MatchConversions.Vectors2MatchConversions(G, plotter.all_vectors_after_pca,
+                                                                              conversations)
     selected_conversations = vectors2Conversations.getConversationsFromGroupOfVecs(selected_vectors)
 
     # get list of 5 most similar topics from list of Conversation objects
@@ -302,4 +316,4 @@ def bert():
     clusters_vector = conversations2Topics.clustersEmbedding(selected_conversations)
     topics_list = conversations2Topics.vector2Topic(clusters_vector)
 
-    return jsonify(topic = str(topics_list))  # ['notice', 'clothe', 'feet', 'ship', 'quart']
+    return jsonify(topic=str(topics_list))  # ['notice', 'clothe', 'feet', 'ship', 'quart']

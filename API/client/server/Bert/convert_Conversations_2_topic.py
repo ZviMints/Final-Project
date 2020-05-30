@@ -1,19 +1,12 @@
-import pickle
 from bert_embedding import BertEmbedding
 import numpy as np
 import bz2
-import pickle
 import _pickle as cPickle
 import sys
 max_val = sys.float_info.max
 import os.path
 import os
-MAX_CLUSTER_SIZE = 2
-
-# def load_obj(name):
-#     with open('saved_objects/' + name + '.pkl', 'rb') as file:
-#         return pickle.load(file)
-
+MAX_CLUSTER_SIZE = 5
 
 def max_top5(top_5_similar):
     max_v, i_max = top_5_similar[0][1], 0
@@ -29,7 +22,7 @@ class convert_Conversations_2_topic:
         self.bert_embedding = BertEmbedding()
         # self.vectors_bank_dic = load_obj("word2vec")
         basepath = os.path.abspath(".")
-        data = bz2.BZ2File(basepath +"\Bert\word2vector.pbz2", 'rb')
+        data = bz2.BZ2File(basepath +"\data\\bert\word2vectorUpdate.pbz2", 'rb')
         self.vectors_bank_dic = cPickle.load(data)
 
     # get conversation (list of sentences) and return bert embedded vector (do not get empty sentence)

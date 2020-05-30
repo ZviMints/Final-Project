@@ -1,25 +1,26 @@
 import matplotlib as matplotlib
 from matplotlib import pylab
 from mpl_toolkits.mplot3d import proj3d
-from sklearn.cluster import KMeans as KMeansAlgorithm # Algorithm
+from sklearn.cluster import KMeans as KMeansAlgorithm  # Algorithm
 import matplotlib.pyplot as plt
-from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm # Algorithm
+from sklearn.cluster import SpectralClustering as SpectralClusteringAlgorithm  # Algorithm
 from sklearn.preprocessing import MinMaxScaler
+
 
 # matplotlib.use('MacOSX')
 
 
 class Combined:
-    def __init__(self, kmeans,spectral,connected):
+    def __init__(self, kmeans, spectral, connected):
         self.kmeans = kmeans
-        self.spectral =spectral
+        self.spectral = spectral
         self.connected = connected
 
-    def kmeansPlot(self,ax,fig):
+    def kmeansPlot(self, ax, fig):
         # drow kmeans clusters
         ax.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
                    self.kmeans.km.cluster_centers_[:, 2], s=600, c=self.kmeans.color, marker='o',
-                   depthshade=False, alpha=0.5)
+                   depthshade=False, alpha=0.3)
 
         # drow clusters label
         cluster_name = ["K" + str(i) for i in range(len(self.kmeans.km.cluster_centers_))]
@@ -48,12 +49,12 @@ class Combined:
         #
         #     fig.canvas.mpl_connect('button_release_event', update_position)
 
-    def spectralPlot(self,ax,fig):
+    def spectralPlot(self, ax, fig):
         # drow spectral clusters
         for i in range(len(self.spectral.CenterClusterList)):
             center = self.spectral.CenterClusterList[i]
             ax.scatter(center[0], center[1], center[2], c=self.spectral.color, marker='^', s=600,
-                       depthshade=False,  alpha=0.7)
+                       depthshade=False, alpha=0.5)
 
             # drow clusters label
             ax.text(center[0] - 0.3, center[1] - 0.3, center[2] - 0.3, "S" + str(i), None, alpha=1)
@@ -76,7 +77,7 @@ class Combined:
             #
             # fig.canvas.mpl_connect('button_release_event', update_position)
 
-    def connectedPlot(self,ax,fig):
+    def connectedPlot(self, ax, fig):
         # drow connected clusters
         ax.scatter(
             xs=self.connected.component_centers[:8, 0],
@@ -85,7 +86,7 @@ class Combined:
             s=self.connected.component_radiuses[:8],
             c=self.connected.color,
             marker='s',
-            depthshade=False, alpha=0.3)
+            depthshade=False, alpha=0.2)
 
         # drow clusters label
         cluster_name = ["C" + str(i) for i in range(min(len(self.connected.component_centers), 8))]
@@ -117,40 +118,40 @@ class Combined:
     def getPlot(self, mode):
         # Create a scatter plot
         fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
-        ax = fig.add_subplot( projection='3d')
+        ax = fig.add_subplot(projection='3d')
 
-        # # drow all the nodes in the graph
-        # ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2], s=1, alpha=0.1)
+        # drow all the nodes in the graph
+        ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2], s=1,
+                   alpha=0.1)
 
         if mode == "kmeans+spectral":
             # drow kmeans clusters
-            self.kmeansPlot(ax,fig)
+            self.kmeansPlot(ax, fig)
             # drow spectral clusters
-            self.spectralPlot(ax,fig)
+            self.spectralPlot(ax, fig)
 
         elif mode == "kmeans+connected":
             # drow kmeans clusters
-            self.kmeansPlot(ax,fig)
+            self.kmeansPlot(ax, fig)
             # drow connected clusters
-            self.connectedPlot(ax,fig)
+            self.connectedPlot(ax, fig)
 
         elif mode == "spectral+connected":
             # drow spectral clusters
-            self.spectralPlot(ax,fig)
+            self.spectralPlot(ax, fig)
             # drow connected clusters
-            self.connectedPlot(ax,fig)
+            self.connectedPlot(ax, fig)
 
         elif mode == "kmeans+spectral+connected":
             # drow kmeans clusters
-            self.kmeansPlot(ax,fig)
+            self.kmeansPlot(ax, fig)
             # drow spectral clusters
-            self.spectralPlot(ax,fig)
+            self.spectralPlot(ax, fig)
             # drow connected clusters
-            self.connectedPlot(ax,fig)
+            self.connectedPlot(ax, fig)
 
             # the axis labels
             ax.set_xlabel('X Label')
             ax.set_ylabel('Y Label')
             ax.set_zlabel('Z Label')
         return pylab
-

@@ -45,7 +45,7 @@ class KMeans:
 
         # drow the clusters
         ax.scatter(self.km.cluster_centers_[:, 0], self.km.cluster_centers_[:, 1], self.km.cluster_centers_[:, 2],
-                   s=600, c=self.color, marker='o', depthshade=False, alpha=0.9)
+                   s=600, c=self.color, marker='o', depthshade=False, alpha=0.7)
 
         # drow clusters label
         cluster_name = ["K" + str(i) for i in range(len(self.km.cluster_centers_))]

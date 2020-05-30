@@ -72,7 +72,7 @@ class ConnectedComponents:
             zs=self.component_centers[:8,2],
             s=self.component_radiuses[:8],
             c=self.color, marker = 's',
-            depthshade=False, alpha=0.9)
+            depthshade=False, alpha=0.7)
 
         # drow clusters label
         cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 8))]
