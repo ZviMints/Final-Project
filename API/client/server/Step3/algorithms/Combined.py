@@ -17,16 +17,13 @@ class Combined:
         self.connected = connected
 
     def kmeansPlot(self, ax, fig):
-        # drow kmeans clusters
-        ax.scatter(self.kmeans.km.cluster_centers_[:, 0], self.kmeans.km.cluster_centers_[:, 1],
-                   self.kmeans.km.cluster_centers_[:, 2], s=600, c=self.kmeans.color, marker='o',
-                   depthshade=False, alpha=0.3)
-
-        # drow clusters label
-        cluster_name = ["K" + str(i) for i in range(len(self.kmeans.km.cluster_centers_))]
-        for i, name in enumerate(cluster_name):
-            ax.text(self.kmeans.km.cluster_centers_[i, 0] - 0.3, self.kmeans.km.cluster_centers_[i, 1] - 0.3,
-                    self.kmeans.km.cluster_centers_[i, 2] - 0.3, name, None, alpha=1)
+        # drow the clusters and labels
+        for name, vector in self.kmeans.clustersNames().items():
+            #clusters
+            ax.scatter(vector[0], vector[1], vector[2],
+                       s=600, c=self.kmeans.color, marker='o', depthshade=False, alpha=0.3)
+            #labels
+            ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
         # # drow clusters label
         # cluster_name = ["K" + str(i) for i in range(len(self.kmeans.km.cluster_centers_))]
@@ -50,14 +47,13 @@ class Combined:
         #     fig.canvas.mpl_connect('button_release_event', update_position)
 
     def spectralPlot(self, ax, fig):
-        # drow spectral clusters
-        for i in range(len(self.spectral.CenterClusterList)):
-            center = self.spectral.CenterClusterList[i]
-            ax.scatter(center[0], center[1], center[2], c=self.spectral.color, marker='^', s=600,
-                       depthshade=False, alpha=0.5)
+        # drow the clusters and labels
+        for name, vector in self.spectral.clustersNames().items():
+            # clusters
+            ax.scatter(vector[0], vector[1], vector[2], c=self.spectral.color, marker='^', s=600, depthshade=False, alpha=0.5)
 
-            # drow clusters label
-            ax.text(center[0] - 0.3, center[1] - 0.3, center[2] - 0.3, "S" + str(i), None, alpha=1)
+            # labels
+            ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
             # # drow clusters label
             # x2, y2, _ = proj3d.proj_transform(center[0], center[1], center[2], ax.get_proj())
@@ -78,21 +74,13 @@ class Combined:
             # fig.canvas.mpl_connect('button_release_event', update_position)
 
     def connectedPlot(self, ax, fig):
-        # drow connected clusters
-        ax.scatter(
-            xs=self.connected.component_centers[:8, 0],
-            ys=self.connected.component_centers[:8, 1],
-            zs=self.connected.component_centers[:8, 2],
-            s=self.connected.component_radiuses[:8],
-            c=self.connected.color,
-            marker='s',
-            depthshade=False, alpha=0.2)
-
-        # drow clusters label
-        cluster_name = ["C" + str(i) for i in range(min(len(self.connected.component_centers), 8))]
-        for i, name in enumerate(cluster_name):
-            ax.text(self.connected.component_centers[i, 0] - 0.3, self.connected.component_centers[i, 1] - 0.3,
-                    self.connected.component_centers[i, 2] - 0.3, name, None, alpha=1)
+        # drow the clusters and labels
+        for name, vector in self.connected.clustersNames().items():
+            #clusters
+            ax.scatter(vector[0], vector[1], vector[2],
+                       s=600, c=self.connected.color, marker='s', depthshade=False, alpha=0.2)
+            #labels
+            ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
         # # drow clusters label
         # cluster_name = ["C" + str(i) for i in range(min(len(self.connected.component_centers), 6))]
@@ -121,8 +109,8 @@ class Combined:
         ax = fig.add_subplot(projection='3d')
 
         # drow all the nodes in the graph
-        ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2], s=1,
-                   alpha=0.1)
+        ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2],
+                   s=1, alpha=0.1)
 
         if mode == "kmeans+spectral":
             # drow kmeans clusters

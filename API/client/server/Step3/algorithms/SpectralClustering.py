@@ -97,13 +97,13 @@ class SpectralClustering:
         #drow all the nodes in the grapg
         ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1, alpha=0.1)
 
-        #drow the clusters
-        for i in range(len(self.CenterClusterList)):
-            center = self.CenterClusterList[i]
-            ax.scatter(center[0],center[1],center[2], c=self.color, marker='^', s=600,depthshade=False, alpha=0.7)
+        # drow the clusters and labels
+        for name, vector in self.clustersNames().items():
+            # clusters
+            ax.scatter(vector[0],vector[1],vector[2], c=self.color, marker='^', s=600,depthshade=False, alpha=0.7)
 
-            # drow clusters label
-            ax.text(center[0] - 0.3, center[1] - 0.3, center[2] - 0.3, "S"+str(i), None)
+            # labels
+            ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
             # # drow clusters label
             # x2, y2, _ = proj3d.proj_transform(center[0],center[1],center[2], ax.get_proj())

@@ -23,7 +23,7 @@ class Plotter:
 
     # G is networkx
     # model is after node2vec embedded
-    def __init__(self, G , model):
+    def __init__(self, G, model):
         self.all_vectors_after_pca = make_PCA(model)
 
         # Make base graph (without algorithm)
@@ -84,17 +84,4 @@ class Plotter:
         self.Combined.getPlot("kmeans+spectral+connected").savefig("." + prefix + "/connected+kmeans+spectral.png")
 
     def getAllCentersName(self):
-        (kmeans_centers, spectral_centers, connected_center) = (self.kmeans.km.cluster_centers_,self.spectral.CenterClusterList,self.cc.component_centers)
-        kmeans_centers_name = {}
-        for i,center in enumerate(kmeans_centers):
-            kmeans_centers_name["K"+str(i)] = center
-
-        spectral_centers_name = {}
-        for i, center in enumerate(spectral_centers):
-            spectral_centers_name["S" + str(i)] = center
-
-        connected_centers_name = {}
-        for i, center in enumerate(connected_center):
-            connected_centers_name["C" + str(i)] = center
-
-        return (kmeans_centers_name, spectral_centers_name, connected_centers_name)
+        return (self.kmeans.clustersNames(), self.spectral.clustersNames(), self.cc.clustersNames())

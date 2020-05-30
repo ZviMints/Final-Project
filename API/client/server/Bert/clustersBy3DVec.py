@@ -2,7 +2,7 @@ import math
 import numpy as np
 import itertools
 
-R = 2.3
+R = 1.9
 MIN_NODES_FOR_MATCH = 1
 
 
@@ -127,7 +127,7 @@ class clustersBy3DVec:
         # generate all to valid combinations
         kmeans_names = [tuple([cluster_name]) for cluster_name in self.kmeans_clusters]
         spectral_names = [tuple([cluster_name]) for cluster_name in self.spectral_clusters]
-        connected_names = [tuple([cluster_name]) for cluster_name, i in zip(self.connected_clusters, range(10))]
+        connected_names = [tuple([cluster_name]) for cluster_name in self.connected_clusters]
         valid_combinations = kmeans_names + spectral_names + connected_names
 
         for combination in all_possible_combinations:

@@ -7,6 +7,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 np.set_printoptions(threshold=np.inf)
 SIZE = 160
+MAX_CLUSTERS_ANOUNT = 8
 # matplotlib.use('MacOSX')
 
 def ConnectedComponents_center(set_3dim_vec):
@@ -65,20 +66,13 @@ class ConnectedComponents:
         #drow all the nodes in the grapg
         ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1, alpha=0.1)
 
-        #drow the clusters
-        ax.scatter(
-            xs=self.component_centers[:8,0],
-            ys=self.component_centers[:8,1],
-            zs=self.component_centers[:8,2],
-            s=self.component_radiuses[:8],
-            c=self.color, marker = 's',
-            depthshade=False, alpha=0.7)
-
-        # drow clusters label
-        cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 8))]
-        for i, name in enumerate(cluster_name):
-            ax.text(self.component_centers[i, 0] - 0.3, self.component_centers[i, 1] - 0.3,
-                    self.component_centers[i, 2] - 0.3, name, None)
+        # drow the clusters and labels
+        for name, vector in self.clustersNames().items():
+            #clusters
+            ax.scatter(vector[0], vector[1], vector[2],
+                       s=600, c=self.color, marker='s', depthshade=False, alpha=0.7)
+            #labels
+            ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
         # # drow clusters label
         # cluster_name = ["C" + str(i) for i in range(min(len(self.component_centers), 6))]
@@ -112,7 +106,8 @@ class ConnectedComponents:
     def clustersNames(self):
         connected_centers_name = {}
         for i, center in enumerate(self.component_centers):
-            connected_centers_name["C" + str(i)] = center
+            if i < MAX_CLUSTERS_ANOUNT:
+                connected_centers_name["C" + str(i)] = center
         return connected_centers_name
 
 

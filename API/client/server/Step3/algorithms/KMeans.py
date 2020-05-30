@@ -43,15 +43,13 @@ class KMeans:
         # drow all the nodes in the graph
         ax.scatter(self.vectors_3dim[:, 0], self.vectors_3dim[:, 1], self.vectors_3dim[:, 2], s=1, alpha=0.1)
 
-        # drow the clusters
-        ax.scatter(self.km.cluster_centers_[:, 0], self.km.cluster_centers_[:, 1], self.km.cluster_centers_[:, 2],
-                   s=600, c=self.color, marker='o', depthshade=False, alpha=0.7)
-
-        # drow clusters label
-        cluster_name = ["K" + str(i) for i in range(len(self.km.cluster_centers_))]
-        for i, name in enumerate(cluster_name):
-            ax.text(self.km.cluster_centers_[i, 0] - 0.3, self.km.cluster_centers_[i, 1] - 0.3,
-                    self.km.cluster_centers_[i, 2] - 0.3, name, None)
+        # drow the clusters and labels
+        for name, vector in self.clustersNames().items():
+            #clusters
+            ax.scatter(vector[0], vector[1], vector[2],
+                       s=600, c=self.color, marker='o', depthshade=False, alpha=0.7)
+            #labels
+            ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
         # cluster_name = ["K" + str(i) for i in range(len(self.km.cluster_centers_))]
         # for i, name in enumerate(cluster_name):
