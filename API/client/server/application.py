@@ -10,6 +10,7 @@ from Step3 import Plotter
 import os.path
 import os
 import bz2
+import _pickle as cPickle
 import sys
 
 sys.path.append('./')
@@ -27,7 +28,7 @@ import time
 
 # =============================================== models ================================================ #
 
-plotter = None
+# plotter = None
 # =============================================== main app ================================================#
 # Configurations
 all_algorithms = ["base", "kmeans", "spectral", "connected", "kmeans+spectral", "connected+kmeans",
@@ -188,10 +189,14 @@ def pca():
         model = KeyedVectors.load(path, mmap='r')
 
         # using a global keyword
-        global plotter
+        # global plotter
         # PCA from 64D to 3D
         plotter = Plotter.Plotter(G, model)
         plotter.SaveAll(prefix)
+
+        # saving a compress pickle file
+        with bz2.BZ2File("." + prefix + "/plotter.pbz2", 'w') as f:
+            cPickle.dump(plotter, f)
 
     return jsonify(res="pca completed and saved in image", path=prefix + "/base.png")
 
@@ -228,25 +233,9 @@ def getLabels():
 
     app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip, dataset))
     if not skip:
-        # Taking G from memory
-        # G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
-        #
-        # # Taking Memory from memory
-        # fname = "model.kv"
-        # path = get_tmpfile(fname)
-        # model = KeyedVectors.load(path, mmap='r')
-        #
-        # # convert the json file to list of Conversation objects
-        # if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-        #     data = bz2.BZ2File("./data/start/" + "conversations_train_dataset_after_remove.pbz2",
-        #                        'rb')  # 40820 conversations
-        # elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-        #     data = bz2.BZ2File("./data/start/" + "conversations_test_dataset_after_remove.pbz2",
-        #                        'rb')  # 40820 conversations
-        #
-        # plotter = Plotter.Plotter(G, model)
-
-        # Bert Starting Here
+        # load plotter
+        data = bz2.BZ2File("." + "/data" + "/pca/" + dataset + "/plotter.pbz2", 'rb')
+        plotter = cPickle.load(data)
 
         # Get all algorithms dictionary of center by cluster name
         (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
@@ -272,15 +261,6 @@ def bert():
     # Taking G from memory
     G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
-    # # Taking Memory from memory
-    # fname = "model.kv"
-    # path = get_tmpfile(fname)
-    # model = KeyedVectors.load(path, mmap='r')
-    #
-    # # convert the json file to list of Conversation objects
-    # basepath = os.path.abspath(".")
-    # op = "\\" if sys.platform.startswith('win') else "/"
-
     if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
         conversations = loadDataset2Conversation.loadConversations(
             "C:/Users/EILON/PycharmProjects/data_set/traning"
@@ -292,7 +272,9 @@ def bert():
             "/pan12-sexual-predator-identification-test-corpus-2012-05-21"
             "/pan12-sexual-predator-identification-test-corpus-2012-05-17")
 
-    # plotter = Plotter.Plotter(G, model)
+    # load plotter
+    data = bz2.BZ2File("." + "/data" + "/pca/" + dataset + "/plotter.pbz2", 'rb')
+    plotter = cPickle.load(data)
 
     # Get all algorithms dictionary of center by cluster name
     (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()

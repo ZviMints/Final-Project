@@ -2,7 +2,7 @@ import math
 import numpy as np
 import itertools
 
-R = 1.9
+R = 2.3
 MIN_NODES_FOR_MATCH = 1
 
 

@@ -1,7 +1,5 @@
-import pickle
 import convert_Conversations_2_topic
 import bz2
-import pickle
 import _pickle as cPickle
 
 
