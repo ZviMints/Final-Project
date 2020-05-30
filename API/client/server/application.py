@@ -253,11 +253,9 @@ def getLabels():
         clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
                                                    connected_center_by_name, plotter.all_vectors_after_pca)
 
-        # Generate set of all possible combination. each combination represented by immutable list of string
-        clusters_names = clusters.makeCombinationsGroups()
+        # Generate list of all possible combination. each combination represented by tuple of string
+        labels = clusters.makeCombinationsGroups()
 
-        # return clusters_names
-    labels = list(clusters_names)
     sortedLabels = sorted(labels, key=len)
     return jsonify(labels=sortedLabels)
 

@@ -1,8 +1,10 @@
 import math
 import numpy as np
+import itertools
 
 R = 2.3
 MIN_NODES_FOR_MATCH = 1
+
 
 def isNodeInside(center, node):
     # find squared distance
@@ -15,6 +17,8 @@ def isNodeInside(center, node):
 
 
 def findMatchVectors(first_cluster_vectors, second_cluster_vectors):
+    if first_cluster_vectors is None or second_cluster_vectors is None:
+        return None
     matchVectors = []
     for vector in first_cluster_vectors:
         if vector in second_cluster_vectors:
@@ -25,16 +29,14 @@ def findMatchVectors(first_cluster_vectors, second_cluster_vectors):
     return np.array(list(matchVectors))
 
 
-
 class clustersBy3DVec:
-    def __init__(self,kmeans_centers,spectral_centers,connected_center,vectors_3dim):
+    def __init__(self, kmeans_centers, spectral_centers, connected_center, vectors_3dim):
         self.vectors_3dim = vectors_3dim
         self.kmeans_clusters = self.convertCenters2ClustersOfVecs(kmeans_centers)
         self.spectral_clusters = self.convertCenters2ClustersOfVecs(spectral_centers)
         self.connected_clusters = self.convertCenters2ClustersOfVecs(connected_center)
 
-
-    def findNodesByCenter(self,center):
+    def findNodesByCenter(self, center):
         nodesAroundCenter = []
         for node in self.vectors_3dim:
             if isNodeInside(center, node):
@@ -42,13 +44,13 @@ class clustersBy3DVec:
         return np.array(nodesAroundCenter)
 
     # the input is list of centers with their names and return dictionary of center's name and all the vecs(nodes) inside
-    def convertCenters2ClustersOfVecs(self,centers):
+    def convertCenters2ClustersOfVecs(self, centers):
         clustersOfVecsByCentersName = {}
         for name, center in centers.items():
             clustersOfVecsByCentersName[name] = self.findNodesByCenter(center)
         return clustersOfVecsByCentersName
 
-    #return list of vectors that matching to the input cluster name
+    # return list of vectors that matching to the input cluster name
     def getAllVectorsBySingleClusterName(self, name):
         if len(name) > 1:
             if name[0] == "K" and name[1:].isdigit() and int(name[1:]) < len(self.kmeans_clusters):
@@ -65,10 +67,10 @@ class clustersBy3DVec:
         first_cluster_vectors = self.getAllVectorsBySingleClusterName(name1)
         second_cluster_vectors = self.getAllVectorsBySingleClusterName(name2)
         if (first_cluster_vectors is not None and second_cluster_vectors is not None):
-            return findMatchVectors(first_cluster_vectors,second_cluster_vectors)
+            return findMatchVectors(first_cluster_vectors, second_cluster_vectors)
         return None
 
-    #can handle any kind of clusters names combination(a combination represented by tuple of string),
+    # can handle any kind of clusters names combination(a combination represented by list of string),
     # return a matching list of vectors
     def getAllVectorsByCombinationClustersName(self, cluster_names_tuple):
         combination_size = len(cluster_names_tuple)
@@ -83,27 +85,53 @@ class clustersBy3DVec:
         print("you insert illegal combination")
         return None
 
-    #generate set of optional combination. each combination represented by tuple of string
+    # generate set of optional combination. each combination represented by tuple of string
+    # def makeCombinationsGroups(self):
+    #     combinations_list_by_names = []
+    #     for vec in self.vectors_3dim:
+    #         combination_name = []
+    #         for cluster_name in self.kmeans_clusters:
+    #             combinations_list_by_names.append(tuple([cluster_name]))
+    #             if vec in self.kmeans_clusters[cluster_name]:
+    #                 combination_name.append(cluster_name)
+    #                 break
+    #         for cluster_name in self.spectral_clusters:
+    #             combinations_list_by_names.append(tuple([cluster_name]))
+    #             if vec in self.spectral_clusters[cluster_name]:
+    #                 combination_name.append(cluster_name)
+    #                 break
+    #         for i, cluster_name in enumerate(self.connected_clusters):
+    #             if i < 10:
+    #                 combinations_list_by_names.append(tuple([cluster_name]))
+    #                 if vec in self.connected_clusters[cluster_name]:
+    #                     combination_name.append(cluster_name)
+    #                     break
+    #         if len(combination_name) > 1:
+    #             combinations_list_by_names.append(tuple(combination_name))
+    #     return set(combinations_list_by_names)
+
     def makeCombinationsGroups(self):
-        combinations_list_by_names = []
-        for vec in self.vectors_3dim:
-            combination_name = []
-            for cluster_name in self.kmeans_clusters:
-                combinations_list_by_names.append(tuple([cluster_name]))
-                if vec in self.kmeans_clusters[cluster_name]:
-                    combination_name.append(cluster_name)
-                    break
-            for cluster_name in self.spectral_clusters:
-                combinations_list_by_names.append(tuple([cluster_name]))
-                if vec in self.spectral_clusters[cluster_name]:
-                    combination_name.append(cluster_name)
-                    break
-            for i, cluster_name in enumerate(self.connected_clusters):
-                if i < 10:
-                    combinations_list_by_names.append(tuple([cluster_name]))
-                    if vec in self.connected_clusters[cluster_name]:
-                        combination_name.append(cluster_name)
-                        break
-            if len(combination_name) > 1:
-                combinations_list_by_names.append(tuple(combination_name))
-        return set(combinations_list_by_names)
+        # generate data to the combinations step
+        kmeans_names = [cluster_name for cluster_name in self.kmeans_clusters]
+        spectral_names = [cluster_name for cluster_name in self.spectral_clusters]
+        connected_names = [cluster_name for cluster_name, i in zip(self.connected_clusters, range(10))]
+        triple = [kmeans_names, spectral_names, connected_names]
+        double1 = [kmeans_names, spectral_names]
+        double2 = [kmeans_names, connected_names]
+        double3 = [connected_names, spectral_names]
+
+        # generate all to possible combinations
+        all_possible_combinations = list(itertools.product(*triple)) + list(itertools.product(*double1)) + \
+                                    list(itertools.product(*double2)) + list(itertools.product(*double3))
+
+        # generate all to valid combinations
+        kmeans_names = [tuple([cluster_name]) for cluster_name in self.kmeans_clusters]
+        spectral_names = [tuple([cluster_name]) for cluster_name in self.spectral_clusters]
+        connected_names = [tuple([cluster_name]) for cluster_name, i in zip(self.connected_clusters, range(10))]
+        valid_combinations = kmeans_names + spectral_names + connected_names
+
+        for combination in all_possible_combinations:
+           if self.getAllVectorsByCombinationClustersName(combination) is not None:
+               valid_combinations.append(combination)
+
+        return valid_combinations

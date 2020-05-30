@@ -129,3 +129,10 @@ class SpectralClustering:
         ax.set_zlabel('Z Label')
 
         return pylab
+
+    # Get dictionary of centers by cluster name
+    def clustersNames(self):
+        spectral_centers_name = {}
+        for i, center in enumerate(self.CenterClusterList):
+            spectral_centers_name["S" + str(i)] = center
+        return spectral_centers_name

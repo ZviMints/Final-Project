@@ -77,3 +77,12 @@ class KMeans:
         ax.set_ylabel('Y Label')
         ax.set_zlabel('Z Label')
         return pylab
+
+
+    # Get dictionary of centers by cluster name
+    def clustersNames(self):
+        kmeans_centers_name = {}
+        for i, center in enumerate(self.km.cluster_centers_):
+            kmeans_centers_name["K" + str(i)] = center
+        return kmeans_centers_name
+

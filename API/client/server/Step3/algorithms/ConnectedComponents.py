@@ -108,4 +108,11 @@ class ConnectedComponents:
 
         return plt
 
+    # Get dictionary of centers by cluster name
+    def clustersNames(self):
+        connected_centers_name = {}
+        for i, center in enumerate(self.component_centers):
+            connected_centers_name["C" + str(i)] = center
+        return connected_centers_name
+
 
