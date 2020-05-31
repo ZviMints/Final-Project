@@ -70,7 +70,7 @@ class ConnectedComponents:
         for name, vector in self.clustersNames().items():
             #clusters
             ax.scatter(vector[0], vector[1], vector[2],
-                       s=600, c=self.color, marker='s', depthshade=False, alpha=0.7)
+                       s=600, c=self.color, marker='s', depthshade=False, alpha=0.2)
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 

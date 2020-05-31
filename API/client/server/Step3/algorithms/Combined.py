@@ -21,7 +21,7 @@ class Combined:
         for name, vector in self.kmeans.clustersNames().items():
             #clusters
             ax.scatter(vector[0], vector[1], vector[2],
-                       s=600, c=self.kmeans.color, marker='o', depthshade=False, alpha=0.3)
+                       s=700, c=self.kmeans.color, marker='o', depthshade=False, alpha=0.3)
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
@@ -50,7 +50,7 @@ class Combined:
         # drow the clusters and labels
         for name, vector in self.spectral.clustersNames().items():
             # clusters
-            ax.scatter(vector[0], vector[1], vector[2], c=self.spectral.color, marker='^', s=600, depthshade=False, alpha=0.5)
+            ax.scatter(vector[0], vector[1], vector[2], c=self.spectral.color, marker='^', s=700, depthshade=False, alpha=0.5)
 
             # labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
@@ -78,7 +78,7 @@ class Combined:
         for name, vector in self.connected.clustersNames().items():
             #clusters
             ax.scatter(vector[0], vector[1], vector[2],
-                       s=600, c=self.connected.color, marker='s', depthshade=False, alpha=0.2)
+                       s=700, c=self.connected.color, marker='s', depthshade=False, alpha=0.2)
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
@@ -108,9 +108,9 @@ class Combined:
         fig = plt.figure(dpi=120, figsize=(8.0, 5.0))
         ax = fig.add_subplot(projection='3d')
 
-        # drow all the nodes in the graph
-        ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2],
-                   s=1, alpha=0.1)
+        # # drow all the nodes in the graph
+        # ax.scatter(self.kmeans.vectors_3dim[:, 0], self.kmeans.vectors_3dim[:, 1], self.kmeans.vectors_3dim[:, 2],
+        #            s=1, alpha=0.1)
 
         if mode == "kmeans+spectral":
             # drow kmeans clusters

@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from matplotlib import cm
 
-
+MAX_CLUSTERS_ANOUNT = 10
 # matplotlib.use('MacOSX')
 
 class KMeans:
@@ -47,7 +47,7 @@ class KMeans:
         for name, vector in self.clustersNames().items():
             #clusters
             ax.scatter(vector[0], vector[1], vector[2],
-                       s=600, c=self.color, marker='o', depthshade=False, alpha=0.7)
+                       s=700, c=self.color, marker='o', depthshade=False, alpha=0.3)
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
@@ -81,6 +81,7 @@ class KMeans:
     def clustersNames(self):
         kmeans_centers_name = {}
         for i, center in enumerate(self.km.cluster_centers_):
-            kmeans_centers_name["K" + str(i)] = center
+            if i < MAX_CLUSTERS_ANOUNT:
+                kmeans_centers_name["K" + str(i)] = center
         return kmeans_centers_name
 

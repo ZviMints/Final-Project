@@ -31,7 +31,7 @@ import time
 # plotter = None
 # =============================================== main app ================================================#
 # Configurations
-all_algorithms = ["base", "kmeans", "spectral", "connected", "kmeans+spectral", "connected+kmeans",
+all_algorithms = ["plotter_sign", "base", "kmeans", "spectral", "connected", "kmeans+spectral", "connected+kmeans",
                   "connected+spectral", "connected+kmeans+spectral"]
 
 app = Flask(__name__, static_url_path="/data", static_folder="data")
@@ -151,7 +151,8 @@ def embedding():
         fname = "model.kv"
         path = get_tmpfile(fname)
         model.wv.save(path)
-
+        f = open("." + prefix + "/model_sign.txt", "w+")
+        f.close()
     return jsonify(res="walks saved successfully", walk_length=25, num_walks=10,
                    walks=open("." + prefix + "/walks.txt", "r").read())
 
@@ -195,8 +196,11 @@ def pca():
         plotter.SaveAll(prefix)
 
         # saving a compress pickle file
-        with bz2.BZ2File("." + prefix + "/plotter.pbz2", 'w') as f:
+        fname = "plotter.pbz2"
+        path = get_tmpfile(fname)
+        with bz2.BZ2File(path, 'w') as f:
             cPickle.dump(plotter, f)
+        plt.savefig("." + prefix + "/plotter_sign.png")
 
     return jsonify(res="pca completed and saved in image", path=prefix + "/base.png")
 
@@ -234,7 +238,9 @@ def getLabels():
     app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip, dataset))
     if not skip:
         # load plotter
-        data = bz2.BZ2File("." + "/data" + "/pca/" + dataset + "/plotter.pbz2", 'rb')
+        fname = "plotter.pbz2"
+        path = get_tmpfile(fname)
+        data = bz2.BZ2File(path, 'rb')
         plotter = cPickle.load(data)
 
         # Get all algorithms dictionary of center by cluster name
@@ -273,7 +279,9 @@ def bert():
             "/pan12-sexual-predator-identification-test-corpus-2012-05-17")
 
     # load plotter
-    data = bz2.BZ2File("." + "/data" + "/pca/" + dataset + "/plotter.pbz2", 'rb')
+    fname = "plotter.pbz2"
+    path = get_tmpfile(fname)
+    data = bz2.BZ2File(path, 'rb')
     plotter = cPickle.load(data)
 
     # Get all algorithms dictionary of center by cluster name

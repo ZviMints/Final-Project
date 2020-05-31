@@ -9,7 +9,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 np.set_printoptions(threshold=np.inf)
 
-
+MAX_CLUSTERS_ANOUNT = 10
 # matplotlib.use('MacOSX')
 
 def dist3D(p1, p2):
@@ -100,7 +100,7 @@ class SpectralClustering:
         # drow the clusters and labels
         for name, vector in self.clustersNames().items():
             # clusters
-            ax.scatter(vector[0],vector[1],vector[2], c=self.color, marker='^', s=600,depthshade=False, alpha=0.7)
+            ax.scatter(vector[0],vector[1],vector[2], c=self.color, marker='^', s=700,depthshade=False, alpha=0.5)
 
             # labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
@@ -134,5 +134,6 @@ class SpectralClustering:
     def clustersNames(self):
         spectral_centers_name = {}
         for i, center in enumerate(self.CenterClusterList):
-            spectral_centers_name["S" + str(i)] = center
+            if i < MAX_CLUSTERS_ANOUNT:
+                spectral_centers_name["S" + str(i)] = center
         return spectral_centers_name
