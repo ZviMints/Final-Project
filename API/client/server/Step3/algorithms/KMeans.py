@@ -47,7 +47,7 @@ class KMeans:
         for name, vector in self.clustersNames().items():
             #clusters
             ax.scatter(vector[0], vector[1], vector[2],
-                       s=700, c=self.color, marker='o', depthshade=False, alpha=0.3)
+                       s=750, c=self.color, marker='o', depthshade=False, alpha=0.3)
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 

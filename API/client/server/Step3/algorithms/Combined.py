@@ -21,7 +21,7 @@ class Combined:
         for name, vector in self.kmeans.clustersNames().items():
             #clusters
             ax.scatter(vector[0], vector[1], vector[2],
-                       s=700, c=self.kmeans.color, marker='o', depthshade=False, alpha=0.3)
+                       s=750, c=self.kmeans.color, marker='o', depthshade=False, alpha=0.3)
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
@@ -50,7 +50,7 @@ class Combined:
         # drow the clusters and labels
         for name, vector in self.spectral.clustersNames().items():
             # clusters
-            ax.scatter(vector[0], vector[1], vector[2], c=self.spectral.color, marker='^', s=700, depthshade=False, alpha=0.5)
+            ax.scatter(vector[0], vector[1], vector[2], c=self.spectral.color, marker='^', s=750, depthshade=False, alpha=0.5)
 
             # labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)

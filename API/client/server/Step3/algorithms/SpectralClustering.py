@@ -100,7 +100,7 @@ class SpectralClustering:
         # drow the clusters and labels
         for name, vector in self.clustersNames().items():
             # clusters
-            ax.scatter(vector[0],vector[1],vector[2], c=self.color, marker='^', s=700,depthshade=False, alpha=0.5)
+            ax.scatter(vector[0],vector[1],vector[2], c=self.color, marker='^', s=750,depthshade=False, alpha=0.5)
 
             # labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)

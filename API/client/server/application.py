@@ -27,11 +27,12 @@ from Bert import Conversation
 import time
 
 # =============================================== models ================================================ #
-
-# plotter = None
+conversations =None
+plotter = None
+clusters = None
 # =============================================== main app ================================================#
 # Configurations
-all_algorithms = ["plotter_sign", "base", "kmeans", "spectral", "connected", "kmeans+spectral", "connected+kmeans",
+all_algorithms = ["base", "kmeans", "spectral", "connected", "kmeans+spectral", "connected+kmeans",
                   "connected+spectral", "connected+kmeans+spectral"]
 
 app = Flask(__name__, static_url_path="/data", static_folder="data")
@@ -132,6 +133,9 @@ def embedding():
     if not os.path.isfile("." + prefix + "/walks.txt"):
         skip = False
 
+    if not os.path.isfile(get_tmpfile(dataset + "model.kv")):
+        skip = False
+
     if not useServerData:
         skip = False
 
@@ -148,11 +152,9 @@ def embedding():
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
         # Save the model into
-        fname = "model.kv"
+        fname = dataset + "model.kv"
         path = get_tmpfile(fname)
         model.wv.save(path)
-        f = open("." + prefix + "/model_sign.txt", "w+")
-        f.close()
     return jsonify(res="walks saved successfully", walk_length=25, num_walks=10,
                    walks=open("." + prefix + "/walks.txt", "r").read())
 
@@ -175,6 +177,9 @@ def pca():
         if not os.path.isfile("." + prefix + "/" + algo + ".png"):
             skip = False
 
+    if not os.path.isfile(get_tmpfile(dataset + "plotter.pbz2")):
+        skip = False
+
     if not useServerData:
         skip = False
 
@@ -185,22 +190,20 @@ def pca():
         G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
         # Taking Memory from memory
-        fname = "model.kv"
+        fname = dataset + "model.kv"
         path = get_tmpfile(fname)
         model = KeyedVectors.load(path, mmap='r')
 
-        # using a global keyword
-        # global plotter
+        global plotter
         # PCA from 64D to 3D
         plotter = Plotter.Plotter(G, model)
         plotter.SaveAll(prefix)
 
         # saving a compress pickle file
-        fname = "plotter.pbz2"
+        fname = dataset + "plotter.pbz2"
         path = get_tmpfile(fname)
         with bz2.BZ2File(path, 'w') as f:
             cPickle.dump(plotter, f)
-        plt.savefig("." + prefix + "/plotter_sign.png")
 
     return jsonify(res="pca completed and saved in image", path=prefix + "/base.png")
 
@@ -225,33 +228,27 @@ def getLabels():
     dataset = request.get_json()["dataset"]
     # If use server data or do all process
     useServerData = request.get_json()["useServerData"]
-    # Prefix for saving information
-    prefix = "/data" + "/bert/" + dataset
 
-    skip = True
-    if not os.path.isfile("todo"):
-        skip = False
+    global plotter
 
-    if not useServerData:
-        skip = False
-
-    app.logger.info('got /getLabels request with skip = %s and dataset = %s' % (skip, dataset))
-    if not skip:
-        # load plotter
-        fname = "plotter.pbz2"
+    # load plotter
+    if plotter is None:
+        fname = dataset + "plotter.pbz2"
         path = get_tmpfile(fname)
         data = bz2.BZ2File(path, 'rb')
         plotter = cPickle.load(data)
 
-        # Get all algorithms dictionary of center by cluster name
-        (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
 
-        # Make all algorithms dictionary of cluster's nodes by cluster name
-        clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
+    # Get all algorithms dictionary of center by cluster name
+    (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
+
+    # Make all algorithms dictionary of cluster's nodes by cluster name
+    global clusters
+    clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
                                                    connected_center_by_name, plotter.all_vectors_after_pca)
 
-        # Generate list of all possible combination. each combination represented by tuple of string
-        labels = clusters.makeCombinationsGroups()
+    # Generate list of all possible combination. each combination represented by tuple of string
+    labels = clusters.makeCombinationsGroups()
 
     sortedLabels = sorted(labels, key=len)
     return jsonify(labels=sortedLabels)
@@ -263,34 +260,38 @@ def bert():
     option_cluster_name = request.get_json()["cluster"]
     app.logger.info('got /bert request with dataset = %s' % (dataset))
 
-    # ====================== Todo: Save In memory ================= #
     # Taking G from memory
     G = networkx.read_multiline_adjlist("." + "/data" + "/load/" + dataset + "/graph.adjlist")
 
-    if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
-        conversations = loadDataset2Conversation.loadConversations(
-            "C:/Users/EILON/PycharmProjects/data_set/traning"
-            "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
-            "/pan12-sexual-predator-identification-training-corpus-2012-05-01")  # 40820 conversations
-    elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
-        conversations = loadDataset2Conversation.loadConversations(
-            "C:/Users/EILON/PycharmProjects/data_set/test"
-            "/pan12-sexual-predator-identification-test-corpus-2012-05-21"
-            "/pan12-sexual-predator-identification-test-corpus-2012-05-17")
+    global conversations
+    if conversations is None:
+        if dataset == "pan12-sexual-predator-identification-training-corpus-2012-05-01":
+            conversations = loadDataset2Conversation.loadConversations(
+                "C:/Users/EILON/PycharmProjects/data_set/traning"
+                "/pan12-sexual-predator-identification-training-corpus-2012-05-01"
+                "/pan12-sexual-predator-identification-training-corpus-2012-05-01")  # 40820 conversations
+        elif dataset == "pan12-sexual-predator-identification-test-corpus-2012-05-17":
+            conversations = loadDataset2Conversation.loadConversations(
+                "C:/Users/EILON/PycharmProjects/data_set/test"
+                "/pan12-sexual-predator-identification-test-corpus-2012-05-21"
+                "/pan12-sexual-predator-identification-test-corpus-2012-05-17")
 
     # load plotter
-    fname = "plotter.pbz2"
-    path = get_tmpfile(fname)
-    data = bz2.BZ2File(path, 'rb')
-    plotter = cPickle.load(data)
+    global plotter
+    if plotter is None:
+        fname = dataset + "plotter.pbz2"
+        path = get_tmpfile(fname)
+        data = bz2.BZ2File(path, 'rb')
+        plotter = cPickle.load(data)
 
-    # Get all algorithms dictionary of center by cluster name
-    (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
+    global clusters
+    if clusters is None:
+        # Get all algorithms dictionary of center by cluster name
+        (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
 
-    # Make all algorithms dictionary of cluster's nodes by cluster name
-    clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
+        # Make all algorithms dictionary of cluster's nodes by cluster name
+        clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
                                                connected_center_by_name, plotter.all_vectors_after_pca)
-    # ====================== End of Todo ========================== #
 
     # get list of vectors that matching to the input cluster name
     selected_vectors = clusters.getAllVectorsByCombinationClustersName(option_cluster_name)
