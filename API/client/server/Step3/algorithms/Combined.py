@@ -25,27 +25,6 @@ class Combined:
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
-        # # drow clusters label
-        # cluster_name = ["K" + str(i) for i in range(len(self.kmeans.km.cluster_centers_))]
-        # for i, name in enumerate(cluster_name):
-        #     x2, y2, _ = proj3d.proj_transform(self.kmeans.km.cluster_centers_[i, 0], self.kmeans.km.cluster_centers_[i, 1],
-        #                                       self.kmeans.km.cluster_centers_[i, 2], ax.get_proj())
-        #
-        #     label = pylab.annotate(
-        #         name,
-        #         xy=(x2, y2), xytext=(-1*self.kmeans.arrow_size, -1*self.kmeans.arrow_size),
-        #         textcoords='offset points', ha='right', va='bottom',
-        #         bbox=dict(boxstyle='round,pad=0.5', fc=self.kmeans.color, alpha=0.5),
-        #         arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-        #
-        #     def update_position(e):
-        #         x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-        #         label.xy = x2, y2
-        #         label.update_positions(fig.canvas.renderer)
-        #         fig.canvas.draw()
-        #
-        #     fig.canvas.mpl_connect('button_release_event', update_position)
-
     def spectralPlot(self, ax, fig):
         # drow the clusters and labels
         for name, vector in self.spectral.clustersNames().items():
@@ -55,23 +34,6 @@ class Combined:
             # labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
-            # # drow clusters label
-            # x2, y2, _ = proj3d.proj_transform(center[0], center[1], center[2], ax.get_proj())
-            #
-            # label = pylab.annotate(
-            #     "S" + str(i),
-            #     xy=(x2, y2), xytext=(self.spectral.arrow_size*1.4, self.spectral.arrow_size*0.6),
-            #     textcoords='offset points', ha='right', va='bottom',
-            #     bbox=dict(boxstyle='round,pad=0.5', fc=self.spectral.color, alpha=0.5),
-            #     arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-            #
-            # def update_position(e):
-            #     x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-            #     label.xy = x2, y2
-            #     label.update_positions(fig.canvas.renderer)
-            #     fig.canvas.draw()
-            #
-            # fig.canvas.mpl_connect('button_release_event', update_position)
 
     def connectedPlot(self, ax, fig):
         # drow the clusters and labels
@@ -82,26 +44,6 @@ class Combined:
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
-        # # drow clusters label
-        # cluster_name = ["C" + str(i) for i in range(min(len(self.connected.component_centers), 6))]
-        # for i, name in enumerate(cluster_name):
-        #     x2, y2, _ = proj3d.proj_transform(self.connected.component_centers[i, 0], self.connected.component_centers[i, 1],
-        #                                       self.connected.component_centers[i, 2], ax.get_proj())
-        #
-        #     label = pylab.annotate(
-        #         name,
-        #         xy=(x2, y2), xytext=(0, -1*self.connected.arrow_size),
-        #         textcoords='offset points', ha='right', va='bottom',
-        #         bbox=dict(boxstyle='round,pad=0.5', fc=self.connected.color, alpha=0.5),
-        #         arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-        #
-        #     def update_position(e):
-        #         x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-        #         label.xy = x2, y2
-        #         label.update_positions(fig.canvas.renderer)
-        #         fig.canvas.draw()
-        #
-        #     fig.canvas.mpl_connect('button_release_event', update_position)
 
     def getPlot(self, mode):
         # Create a scatter plot

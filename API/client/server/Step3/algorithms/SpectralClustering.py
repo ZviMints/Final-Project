@@ -76,17 +76,6 @@ class SpectralClustering:
                 if (gradient1 > -300) and (gradient2 > -300):
                     return k - 3
 
-        # plt.plot(K, Sum_of_squared_distances, 'bx-')
-        # plt.xlabel('k')
-        # plt.ylabel('Sum_of_squared_distances')
-        # plt.title('Elbow Method For Optimal k')
-        # plt.show()
-        # for i in range(2, len(Sum_of_squared_distances)):
-        #     gradient1 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 1]
-        #     gradient2 = Sum_of_squared_distances[i] - Sum_of_squared_distances[i - 2]
-        #     if (gradient1 > -300) and (gradient2 > -300):
-        #         print(i+15)
-        #         return i+15
         return 20
 
     def getPlot(self):
@@ -104,24 +93,6 @@ class SpectralClustering:
 
             # labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
-
-            # # drow clusters label
-            # x2, y2, _ = proj3d.proj_transform(center[0],center[1],center[2], ax.get_proj())
-            #
-            # label = pylab.annotate(
-            #     "S"+str(i),
-            #     xy=(x2, y2), xytext=(self.arrow_size*1.4, self.arrow_size*0.6),
-            #     textcoords='offset points', ha='right', va='bottom',
-            #     bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
-            #     arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-            #
-            # def update_position(e):
-            #     x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-            #     label.xy = x2, y2
-            #     label.update_positions(fig.canvas.renderer)
-            #     fig.canvas.draw()
-            #
-            # fig.canvas.mpl_connect('button_release_event', update_position)
 
         #the axis labels
         ax.set_xlabel('X Label')

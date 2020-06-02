@@ -51,24 +51,6 @@ class KMeans:
             #labels
             ax.text(vector[0] - 0.3, vector[1] - 0.3, vector[2] - 0.3, name, None)
 
-        # cluster_name = ["K" + str(i) for i in range(len(self.km.cluster_centers_))]
-        # for i, name in enumerate(cluster_name):
-        #     x2, y2, _ = proj3d.proj_transform(self.km.cluster_centers_[i,0], self.km.cluster_centers_[i,1],self.km.cluster_centers_[i,2], ax.get_proj())
-        #
-        #     label = pylab.annotate(
-        #         name,
-        #         xy=(x2, y2), xytext=(-1*self.arrow_size, -1*self.arrow_size),
-        #         textcoords='offset points', ha='right', va='bottom',
-        #         bbox=dict(boxstyle='round,pad=0.5', fc=self.color, alpha=0.5),
-        #         arrowprops=dict(arrowstyle='->', connectionstyle='arc3,rad=0'))
-        #
-        #     def update_position(e):
-        #         x2, y2, _ = proj3d.proj_transform(1, 1, 1, ax.get_proj())
-        #         label.xy = x2, y2
-        #         label.update_positions(fig.canvas.renderer)
-        #         fig.canvas.draw()
-        #
-        #     fig.canvas.mpl_connect('button_release_event', update_position)
 
         # the axis labels
         ax.set_xlabel('X Label')
