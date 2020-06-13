@@ -3,6 +3,10 @@
 - `Eilon Tsadok`
 - `Zvi Mints`<br>
 Managed by `Or Anidjar` and `Amit Dvir`
+
+# Poster Describe Research and Software Development Project
+Here will be very cool image - be ready!
+
 # Motivation
 In this project, we will explore how to benefit the knowledge that can be extracted
 from a `Knowledge Graph`, in order to detect a community of pedophilles with some
@@ -42,4 +46,3 @@ of users that are sharing close enough behavioral patterns.
 
 # Winning Plan
 [![Plain](https://i.ibb.co/DzG2QJG/Screen-Shot-2020-03-24-at-15-05-50.png "Plain")](https://i.ibb.co/DzG2QJG/Screen-Shot-2020-03-24-at-15-05-50.png "Plain")
-
