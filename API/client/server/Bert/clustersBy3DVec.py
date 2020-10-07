@@ -85,31 +85,6 @@ class clustersBy3DVec:
         print("you insert illegal combination")
         return None
 
-    # generate set of optional combination. each combination represented by tuple of string
-    # def makeCombinationsGroups(self):
-    #     combinations_list_by_names = []
-    #     for vec in self.vectors_3dim:
-    #         combination_name = []
-    #         for cluster_name in self.kmeans_clusters:
-    #             combinations_list_by_names.append(tuple([cluster_name]))
-    #             if vec in self.kmeans_clusters[cluster_name]:
-    #                 combination_name.append(cluster_name)
-    #                 break
-    #         for cluster_name in self.spectral_clusters:
-    #             combinations_list_by_names.append(tuple([cluster_name]))
-    #             if vec in self.spectral_clusters[cluster_name]:
-    #                 combination_name.append(cluster_name)
-    #                 break
-    #         for i, cluster_name in enumerate(self.connected_clusters):
-    #             if i < 10:
-    #                 combinations_list_by_names.append(tuple([cluster_name]))
-    #                 if vec in self.connected_clusters[cluster_name]:
-    #                     combination_name.append(cluster_name)
-    #                     break
-    #         if len(combination_name) > 1:
-    #             combinations_list_by_names.append(tuple(combination_name))
-    #     return set(combinations_list_by_names)
-
     def makeCombinationsGroups(self):
         # generate data to the combinations step
         kmeans_names = [cluster_name for cluster_name in self.kmeans_clusters]

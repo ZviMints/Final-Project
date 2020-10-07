@@ -50,7 +50,7 @@ class convert_Conversations_2_topic:
         if cluster is None:
             return None
         conversations_vectors = []
-        print("cluster amount of conversations size is: " + str(len(cluster)))##########################delet########
+
         for conversation, i in zip(cluster, range(MAX_CLUSTER_SIZE)):
             sentence_list = self.conversationEmbedding(conversation.getListOfSentences())
             conversations_vectors.append(sentence_list)

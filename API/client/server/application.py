@@ -133,8 +133,8 @@ def embedding():
     if not os.path.isfile("." + prefix + "/walks.txt"):
         skip = False
 
-    if not os.path.isfile(get_tmpfile(dataset + "model.kv")):
-        skip = False
+    # if not os.path.isfile(get_tmpfile(dataset + "model.kv")):
+    #     skip = False
 
     if not useServerData:
         skip = False

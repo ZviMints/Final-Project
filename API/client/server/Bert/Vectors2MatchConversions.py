@@ -17,7 +17,7 @@ class Vectors2MatchConversions:
 
         for conversation in self.conversations:
             firstID = conversation.firstAuthor
-            secodID = conversation.secondAuthor
-            if (firstID in id_set or secodID in id_set):
+            secondID = conversation.secondAuthor
+            if (firstID in id_set and secondID in id_set):
                 ConversationsByGroupOfVecs.append(conversation)
         return ConversationsByGroupOfVecs
