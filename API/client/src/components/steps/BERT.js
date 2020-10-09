@@ -145,7 +145,7 @@ findSpecificCluster = () => {
     return (
       <div className="topic_response">
       <Alert variant="warning">
-      <b>{this.state.option_cluster} Topic: </b> {this.state.option_topic === "" ? <Spinner animation="border" /> : this.state.option_topic}
+      <b>Topic: </b> {this.state.option_topic === "" ? <Spinner animation="border" /> : this.state.option_topic}
       </Alert>
       </div>
   );

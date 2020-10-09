@@ -6,7 +6,7 @@ import sys
 max_val = sys.float_info.max
 import os.path
 import os
-MAX_CLUSTER_SIZE = 5
+MAX_CLUSTER_SIZE = 20
 
 def max_top5(top_5_similar):
     max_v, i_max = top_5_similar[0][1], 0

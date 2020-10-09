@@ -148,7 +148,7 @@ def embedding():
         node2vec = Node2Vec(G, dimensions=64, walk_length=25, num_walks=10, workers=1)
         saveWalks(list(node2vec.walks), prefix)
 
-        # Embed nodes
+        # Creates the embeddings using gensim's Word2Vec.
         model = node2vec.fit(window=10, min_count=1, batch_words=4)
 
         # Save the model into
@@ -286,10 +286,10 @@ def bert():
 
     global clusters
     if clusters is None:
-        # Get all algorithms dictionary of center by cluster name
+        # Get all algorithms dictionary of center by cluster names
         (kmeans_centers_by_name, spectral_centers_by_name, connected_center_by_name) = plotter.getAllCentersName()
 
-        # Make all algorithms dictionary of cluster's nodes by cluster name
+        # Make all algorithms dictionary of cluster's nodes by cluster names
         clusters = clustersBy3DVec.clustersBy3DVec(kmeans_centers_by_name, spectral_centers_by_name,
                                                connected_center_by_name, plotter.all_vectors_after_pca)
 
