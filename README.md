@@ -5,7 +5,7 @@
 Managed by `Or Anidjar` and `Amit Dvir`
 
 # Poster Describe Research and Software Development Project
-<img src="./poster.png"/>
+<img src="./Documentation & Presentation/Poster.png"/>
 
 # Motivation
 In this project, we will explore how to benefit the knowledge that can be extracted
